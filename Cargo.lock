@@ -37,10 +37,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
-name = "adnonymous"
+name = "admeta"
 version = "4.0.0-dev"
 dependencies = [
- "adnonymous-runtime",
+ "admeta-runtime",
  "frame-benchmarking",
  "frame-benchmarking-cli",
  "jsonrpc-core",
@@ -74,7 +74,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "adnonymous-runtime"
+name = "admeta-runtime"
 version = "4.0.0-dev"
 dependencies = [
  "frame-benchmarking",

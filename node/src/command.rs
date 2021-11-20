@@ -3,7 +3,7 @@ use crate::{
 	cli::{Cli, Subcommand},
 	service,
 };
-use adnonymous_runtime::Block;
+use admeta_runtime::Block;
 use sc_cli::{ChainSpec, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
 
@@ -42,7 +42,7 @@ impl SubstrateCli for Cli {
 	}
 
 	fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		&adnonymous_runtime::VERSION
+		&admeta_runtime::VERSION
 	}
 }
 

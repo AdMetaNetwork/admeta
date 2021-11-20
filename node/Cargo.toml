@@ -1,17 +1,17 @@
 [package]
-name = 'adnonymous'
+name = 'admeta'
 version = '4.0.0-dev'
-description = 'The Adnonymous Substrate node.'
-authors = ['Adnonymous Network']
-homepage = 'https://adnonymous.io/'
+description = 'The admeta Substrate node.'
+authors = ['admeta Network']
+homepage = 'https://admeta.network/'
 edition = '2021'
 license = 'GPLv3'
 publish = false
-repository = 'https://github.com/AdnonymousNetwork/adnonymous'
+repository = 'https://github.com/admetaNetwork/admeta'
 build = 'build.rs'
 
 [[bin]]
-name = 'adnonymous'
+name = 'admeta'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -21,7 +21,7 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '3.0.0'
 
-[dependencies.adnonymous-runtime]
+[dependencies.admeta-runtime]
 path = '../runtime'
 version = '4.0.0-dev'
 
@@ -169,4 +169,4 @@ version = '4.0.0-dev'
 
 [features]
 default = []
-runtime-benchmarks = ['adnonymous-runtime/runtime-benchmarks']
+runtime-benchmarks = ['admeta-runtime/runtime-benchmarks']

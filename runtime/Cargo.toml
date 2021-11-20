@@ -1,13 +1,13 @@
 [package]
-name = 'adnonymous-runtime'
+name = 'admeta-runtime'
 version = '4.0.0-dev'
-description = 'The Adnonymous Substrate runtime'
-authors = ['Adnonymous Network']
-homepage = 'https://adnonymous.io/'
+description = 'The admeta Substrate runtime'
+authors = ['admeta Network']
+homepage = 'https://admeta.network/'
 edition = '2021'
 license = 'GPLv3'
 publish = false
-repository = 'https://github.com/AdnonymousNetwork/adnonymous'
+repository = 'https://github.com/admetaNetwork/admeta'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

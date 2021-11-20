@@ -1,2 +1,2 @@
-# adnonymous
-The ADnonymous blockchain implementation.
+# AdMeta
+The AdMeta blockchain implementation.
