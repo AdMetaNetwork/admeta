@@ -1,13 +1,13 @@
 [package]
-name = 'pallet-template'
+name = 'pallet-ad'
 version = '4.0.0-dev'
-description = 'FRAME pallet template for defining custom runtime logic.'
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
-homepage = 'https://substrate.io/'
+description = 'The AdMeta pallet-ad.'
+authors = ['AdMeta Network']
+homepage = 'https://admeta.network/'
 edition = '2021'
-license = 'Unlicense'
+license = 'GPLv3'
 publish = false
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
+repository = 'https://github.com/AdMetaNetwork/admeta'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']

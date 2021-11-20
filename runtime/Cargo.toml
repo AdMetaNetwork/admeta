@@ -1,20 +1,20 @@
 [package]
 name = 'admeta-runtime'
 version = '4.0.0-dev'
-description = 'The admeta Substrate runtime'
-authors = ['admeta Network']
+description = 'The AdMeta Substrate runtime'
+authors = ['AdMeta Network']
 homepage = 'https://admeta.network/'
 edition = '2021'
 license = 'GPLv3'
 publish = false
-repository = 'https://github.com/admetaNetwork/admeta'
+repository = 'https://github.com/AdMetaNetwork/admeta'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
 
-[dependencies.pallet-template]
+[dependencies.pallet-ad]
 default-features = false
-path = '../pallets/template'
+path = '../pallets/ad'
 version = '4.0.0-dev'
 
 [build-dependencies.substrate-wasm-builder]
@@ -198,7 +198,7 @@ runtime-benchmarks = [
     'frame-system/runtime-benchmarks',
     'hex-literal',
     'pallet-balances/runtime-benchmarks',
-    'pallet-template/runtime-benchmarks',
+    'pallet-ad/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
 ]
@@ -214,7 +214,7 @@ std = [
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
-    'pallet-template/std',
+    'pallet-ad/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',

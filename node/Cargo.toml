@@ -1,13 +1,13 @@
 [package]
 name = 'admeta'
 version = '4.0.0-dev'
-description = 'The admeta Substrate node.'
-authors = ['admeta Network']
+description = 'The AdMeta Substrate node.'
+authors = ['AdMeta Network']
 homepage = 'https://admeta.network/'
 edition = '2021'
 license = 'GPLv3'
 publish = false
-repository = 'https://github.com/admetaNetwork/admeta'
+repository = 'https://github.com/AdMetaNetwork/admeta'
 build = 'build.rs'
 
 [[bin]]
