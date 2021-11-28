@@ -1,13 +1,13 @@
 [package]
-name = 'pallet-ad'
-version = '4.0.0-dev'
-description = 'The AdMeta pallet-ad.'
 authors = ['AdMeta Network']
-homepage = 'https://admeta.network/'
+description = 'The AdMeta pallet-ad.'
 edition = '2021'
+homepage = 'https://admeta.network/'
 license = 'GPLv3'
+name = 'pallet-ad'
 publish = false
 repository = 'https://github.com/AdMetaNetwork/admeta'
+version = '4.0.0-dev'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -37,6 +37,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
+[dependencies.sp-runtime]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
 [dependencies.scale-info]
 default-features = false
 features = ['derive']
@@ -54,20 +60,14 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
-[dev-dependencies.sp-runtime]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'monthly-2021-11-1'
-version = '4.0.0-dev'
-
 [features]
 default = ['std']
 runtime-benchmarks = ['frame-benchmarking']
 std = [
-    'codec/std',
-    'scale-info/std',
-    'frame-support/std',
-    'frame-system/std',
-    'frame-benchmarking/std',
+  'codec/std',
+  'scale-info/std',
+  'frame-support/std',
+  'frame-system/std',
+  'frame-benchmarking/std',
 ]
 try-runtime = ['frame-support/try-runtime']
