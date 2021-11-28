@@ -20,6 +20,7 @@ pub mod pallet {
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating, StaticLookup};
+	use sp_std::prelude::*;
 
 	pub type Url = Vec<u8>;
 	pub type BlockNumberOf<T> = <T as frame_system::Config>::BlockNumber;
@@ -55,19 +56,19 @@ pub mod pallet {
 	/// This defines impression ads, which pays by CPI
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
 	#[scale_info(skip_type_params(T))]
-	pub struct ImpressionAd<AccountId, Balance, BlockNumber> {
+	pub struct ImpressionAd<T: Config> {
 		// The account who proposed this ad
-		pub proposer: AccountId,
+		pub proposer: T::AccountId,
 		// The URL where this ad's metadata stores
 		pub metadata: Url,
 		// The bond reserved for this ad
-		pub bond: Balance,
+		pub bond: BalanceOf<T>,
 		// The cost per impression (CPI)
-		pub cpi: Balance,
+		pub cpi: BalanceOf<T>,
 		// The total number of impressions in this ad
 		pub amount: u32,
 		// The end block of this ad
-		pub end_block: BlockNumber,
+		pub end_block: BlockNumberOf<T>,
 		// The preference of target group
 		pub preference: AdPreference,
 		// The approval status
@@ -110,13 +111,8 @@ pub mod pallet {
 	#[pallet::storage]
 	#[pallet::getter(fn impression_ads)]
 	/// Impression ads storage
-	pub type ImpressionAds<T: Config> = StorageMap<
-		_,
-		Blake2_128Concat,
-		T::AdIndex,
-		ImpressionAd<T::AccountId, BalanceOf<T>, BlockNumberOf<T>>,
-		OptionQuery,
-	>;
+	pub type ImpressionAds<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AdIndex, ImpressionAd<T>, OptionQuery>;
 
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
@@ -183,7 +179,7 @@ pub mod pallet {
 			T::Currency::reserve(&who, bond + ad_cost)
 				.map_err(|_| Error::<T>::InsufficientProposalBalance)?;
 
-			let ad = ImpressionAd {
+			let ad = ImpressionAd::<T> {
 				proposer: who.clone(),
 				metadata: ad_url,
 				bond,
@@ -194,7 +190,7 @@ pub mod pallet {
 				approved: false,
 			};
 
-			ImpressionAds::insert(ad_index, ad);
+			<ImpressionAds<T>>::insert(ad_index, ad);
 			//AdCount::<T>::put(ad_index.saturating_add(T::AdIndex::from(1u8)));
 
 			Self::deposit_event(Event::NewAdProposal(ad_index, who));

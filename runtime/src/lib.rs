@@ -62,6 +62,12 @@ pub type Index = u32;
 /// A hash of some data used by the chain.
 pub type Hash = sp_core::H256;
 
+/// Currency units
+pub const UNITS: Balance = 1_000_000_000_000;
+pub const DOLLARS: Balance = UNITS;
+pub const CENTS: Balance = DOLLARS / 100;
+pub const MILLICENTS: Balance = CENTS / 1_000;
+
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
 /// the specifics of the runtime. They can then be made to be agnostic over specific formats
 /// of data like extrinsics, allowing for them to continue syncing the network through upgrades
@@ -274,9 +280,20 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+parameter_types! {
+	pub const MaxAdDataLength: u32 = 10000;
+	pub const AdDepositBase: Balance = 1 * DOLLARS;
+	pub const AdDepositPerByte: Balance = 1 * CENTS;
+}
+
 /// Configure the pallet-ad in pallets/ad.
 impl pallet_ad::Config for Runtime {
 	type Event = Event;
+	type AdIndex = u32;
+	type Currency = Balances;
+	type MaxAdDataLength = MaxAdDataLength;
+	type AdDepositBase = AdDepositBase;
+	type AdDepositPerByte = AdDepositPerByte;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.

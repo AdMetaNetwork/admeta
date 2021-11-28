@@ -37,6 +37,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
+[dependencies.sp-std]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
 [dependencies.sp-runtime]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
