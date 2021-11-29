@@ -1,6 +1,6 @@
 use admeta_runtime::{
-	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
-	SystemConfig, WASM_BINARY,
+	AccountId, AuraConfig, BalancesConfig, CouncilMembershipConfig, GenesisConfig, GrandpaConfig,
+	Signature, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -140,6 +140,7 @@ fn testnet_genesis(
 			// Configure endowed accounts with initial balance of 1 << 60.
 			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
 		},
+		scheduler: Default::default(),
 		aura: AuraConfig {
 			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
 		},
@@ -151,6 +152,25 @@ fn testnet_genesis(
 			key: root_key,
 		},
 		transaction_payment: Default::default(),
+		democracy: Default::default(),
 		council: Default::default(),
+		council_membership: CouncilMembershipConfig {
+			members: vec![
+				get_account_id_from_seed::<sr25519::Public>("Alice"),
+				get_account_id_from_seed::<sr25519::Public>("Bob"),
+				get_account_id_from_seed::<sr25519::Public>("Eve"),
+			],
+			phantom: Default::default(),
+		},
+		technical_committee: Default::default(),
+		technical_committee_membership: TechnicalCommitteeMembershipConfig {
+			members: vec![
+				get_account_id_from_seed::<sr25519::Public>("Alice"),
+				get_account_id_from_seed::<sr25519::Public>("Bob"),
+				get_account_id_from_seed::<sr25519::Public>("Eve"),
+			],
+			phantom: Default::default(),
+		},
+		treasury: Default::default(),
 	}
 }

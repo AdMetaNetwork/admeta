@@ -88,13 +88,31 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
+[dependencies.pallet-democracy]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
 [dependencies.pallet-grandpa]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
+[dependencies.pallet-membership]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
 [dependencies.pallet-randomness-collective-flip]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
+[dependencies.pallet-scheduler]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
@@ -119,6 +137,12 @@ tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
 [dependencies.pallet-transaction-payment-rpc-runtime-api]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
+[dependencies.pallet-treasury]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
@@ -203,10 +227,14 @@ runtime-benchmarks = [
   'frame-system-benchmarking',
   'frame-system/runtime-benchmarks',
   'hex-literal',
+  'pallet-ad/runtime-benchmarks',
   'pallet-balances/runtime-benchmarks',
   'pallet-collective/runtime-benchmarks',
-  'pallet-ad/runtime-benchmarks',
+  'pallet-democracy/runtime-benchmarks',
+  'pallet-membership/runtime-benchmarks',
+  'pallet-scheduler/runtime-benchmarks',
   'pallet-timestamp/runtime-benchmarks',
+  'pallet-treasury/runtime-benchmarks',
   'sp-runtime/runtime-benchmarks',
 ]
 std = [
@@ -216,16 +244,20 @@ std = [
   'frame-support/std',
   'frame-system-rpc-runtime-api/std',
   'frame-system/std',
+  'pallet-ad/std',
   'pallet-aura/std',
   'pallet-balances/std',
   'pallet-collective/std',
+  'pallet-democracy/std',
   'pallet-grandpa/std',
+  'pallet-membership/std',
   'pallet-randomness-collective-flip/std',
   'pallet-sudo/std',
-  'pallet-ad/std',
+  'pallet-scheduler/std',
   'pallet-timestamp/std',
   'pallet-transaction-payment-rpc-runtime-api/std',
   'pallet-transaction-payment/std',
+  'pallet-treasury/std',
   'sp-api/std',
   'sp-block-builder/std',
   'sp-consensus-aura/std',
