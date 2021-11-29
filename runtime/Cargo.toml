@@ -1,13 +1,13 @@
 [package]
-name = 'admeta-runtime'
-version = '4.0.0-dev'
-description = 'The AdMeta Substrate runtime'
 authors = ['AdMeta Network']
-homepage = 'https://admeta.network/'
+description = 'The AdMeta Substrate runtime'
 edition = '2021'
+homepage = 'https://admeta.network/'
 license = 'GPLv3'
+name = 'admeta-runtime'
 publish = false
 repository = 'https://github.com/AdMetaNetwork/admeta'
+version = '4.0.0-dev'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
@@ -77,6 +77,12 @@ tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
 [dependencies.pallet-balances]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-11-1'
+version = '4.0.0-dev'
+
+[dependencies.pallet-collective]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
@@ -192,41 +198,43 @@ version = '4.0.0-dev'
 [features]
 default = ['std']
 runtime-benchmarks = [
-    'frame-benchmarking',
-    'frame-support/runtime-benchmarks',
-    'frame-system-benchmarking',
-    'frame-system/runtime-benchmarks',
-    'hex-literal',
-    'pallet-balances/runtime-benchmarks',
-    'pallet-ad/runtime-benchmarks',
-    'pallet-timestamp/runtime-benchmarks',
-    'sp-runtime/runtime-benchmarks',
+  'frame-benchmarking',
+  'frame-support/runtime-benchmarks',
+  'frame-system-benchmarking',
+  'frame-system/runtime-benchmarks',
+  'hex-literal',
+  'pallet-balances/runtime-benchmarks',
+  'pallet-collective/runtime-benchmarks',
+  'pallet-ad/runtime-benchmarks',
+  'pallet-timestamp/runtime-benchmarks',
+  'sp-runtime/runtime-benchmarks',
 ]
 std = [
-    'codec/std',
-    'scale-info/std',
-    'frame-executive/std',
-    'frame-support/std',
-    'frame-system-rpc-runtime-api/std',
-    'frame-system/std',
-    'pallet-aura/std',
-    'pallet-balances/std',
-    'pallet-grandpa/std',
-    'pallet-randomness-collective-flip/std',
-    'pallet-sudo/std',
-    'pallet-ad/std',
-    'pallet-timestamp/std',
-    'pallet-transaction-payment-rpc-runtime-api/std',
-    'pallet-transaction-payment/std',
-    'sp-api/std',
-    'sp-block-builder/std',
-    'sp-consensus-aura/std',
-    'sp-core/std',
-    'sp-inherents/std',
-    'sp-offchain/std',
-    'sp-runtime/std',
-    'sp-session/std',
-    'sp-std/std',
-    'sp-transaction-pool/std',
-    'sp-version/std',
+  'codec/std',
+  'scale-info/std',
+  'frame-executive/std',
+  'frame-support/std',
+  'frame-system-rpc-runtime-api/std',
+  'frame-system/std',
+  'pallet-aura/std',
+  'pallet-balances/std',
+  'pallet-collective/std',
+  'pallet-grandpa/std',
+  'pallet-randomness-collective-flip/std',
+  'pallet-sudo/std',
+  'pallet-ad/std',
+  'pallet-timestamp/std',
+  'pallet-transaction-payment-rpc-runtime-api/std',
+  'pallet-transaction-payment/std',
+  'sp-api/std',
+  'sp-block-builder/std',
+  'sp-consensus-aura/std',
+  'sp-core/std',
+  'sp-inherents/std',
+  'sp-offchain/std',
+  'sp-runtime/std',
+  'sp-session/std',
+  'sp-std/std',
+  'sp-transaction-pool/std',
+  'sp-version/std',
 ]

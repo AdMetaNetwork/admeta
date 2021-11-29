@@ -11,15 +11,15 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use codec::{Codec, Decode, Encode};
+	use codec::{Decode, Encode};
 	use frame_support::{
 		dispatch::DispatchResult,
 		pallet_prelude::*,
-		traits::{Currency, ExistenceRequirement, Randomness, ReservableCurrency},
+		traits::{Currency, ReservableCurrency},
 	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
-	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating, StaticLookup};
+	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
 	use sp_std::prelude::*;
 
 	pub type Url = Vec<u8>;
@@ -86,14 +86,26 @@ pub mod pallet {
 			+ Copy
 			+ MaxEncodedLen
 			+ Default;
+
+		/// Origin from which approvals must come.
+		type ApproveOrigin: EnsureOrigin<Self::Origin>;
+
+		/// Origin from which rejections must come.
+		type RejectOrigin: EnsureOrigin<Self::Origin>;
+
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
+
 		/// Maximum acceptable Ad metadata length
+
 		#[pallet::constant]
 		type MaxAdDataLength: Get<u32>;
+
 		/// The base deposit amount of an ad proposal
 		#[pallet::constant]
 		type AdDepositBase: Get<BalanceOf<Self>>;
+
 		/// The deposit amount per byte of an ad's metadata
 		#[pallet::constant]
 		type AdDepositPerByte: Get<BalanceOf<Self>>;
@@ -129,7 +141,7 @@ pub mod pallet {
 
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(10_000)]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
 			ad_url: Url,
@@ -142,6 +154,10 @@ pub mod pallet {
 
 			Self::create_proposal(who, ad_url, cpi, amount, end_block, ad_preference)?;
 
+			Ok(())
+		}
+		#[pallet::weight(10_000)]
+		pub fn approve_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
 			Ok(())
 		}
 	}
@@ -159,6 +175,7 @@ pub mod pallet {
 				None => Ok(T::AdIndex::min_value().saturating_add(T::AdIndex::from(1u8))),
 			}
 		}
+		/// Create an ad proposal
 		fn create_proposal(
 			who: T::AccountId,
 			ad_url: Url,
@@ -191,7 +208,6 @@ pub mod pallet {
 			};
 
 			<ImpressionAds<T>>::insert(ad_index, ad);
-			//AdCount::<T>::put(ad_index.saturating_add(T::AdIndex::from(1u8)));
 
 			Self::deposit_event(Event::NewAdProposal(ad_index, who));
 
