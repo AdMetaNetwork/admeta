@@ -15,7 +15,7 @@ pub mod pallet {
 	use frame_support::{
 		dispatch::DispatchResult,
 		pallet_prelude::*,
-		traits::{Currency, ReservableCurrency},
+		traits::{Currency, OnUnbalanced, ReservableCurrency},
 	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
@@ -26,6 +26,9 @@ pub mod pallet {
 	pub type BlockNumberOf<T> = <T as frame_system::Config>::BlockNumber;
 	pub type BalanceOf<T> =
 		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+	pub type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<
+		<T as frame_system::Config>::AccountId,
+	>>::NegativeImbalance;
 
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
 	pub struct ValueRange {
@@ -93,6 +96,9 @@ pub mod pallet {
 		/// Origin from which rejections must come.
 		type RejectOrigin: EnsureOrigin<Self::Origin>;
 
+		/// Handler for the unbalanced decrease when slashing for a rejected proposal.
+		type OnSlash: OnUnbalanced<NegativeImbalanceOf<Self>>;
+
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
@@ -137,6 +143,7 @@ pub mod pallet {
 		AdCountOverflow,
 		AdDataTooLarge,
 		InsufficientProposalBalance,
+		InvalidAdIndex,
 	}
 
 	#[pallet::call]
@@ -158,6 +165,26 @@ pub mod pallet {
 		}
 		#[pallet::weight(10_000)]
 		pub fn approve_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+			T::ApproveOrigin::ensure_origin(origin)?;
+
+			ImpressionAds::<T>::mutate(ad_index, |ad_op| {
+				if let Some(ad) = ad_op {
+					ad.approved = true;
+				}
+			});
+
+			Ok(())
+		}
+		#[pallet::weight(10_000)]
+		pub fn reject_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+			T::RejectOrigin::ensure_origin(origin)?;
+
+			// Slash the bond to treasury
+			let ad = Self::impression_ads(ad_index).ok_or(Error::<T>::InvalidAdIndex)?;
+			let value = ad.bond;
+			let imbalance = T::Currency::slash_reserved(&ad.proposer, value).0;
+			T::OnSlash::on_unbalanced(imbalance);
+
 			Ok(())
 		}
 	}

@@ -511,6 +511,7 @@ impl pallet_ad::Config for Runtime {
 	type AdIndex = u32;
 	type ApproveOrigin = ApproveOrigin;
 	type RejectOrigin = RejectOrigin;
+	type OnSlash = ();
 	type Currency = Balances;
 	type MaxAdDataLength = MaxAdDataLength;
 	type AdDepositBase = AdDepositBase;
