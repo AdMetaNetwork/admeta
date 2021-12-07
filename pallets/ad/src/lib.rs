@@ -167,11 +167,15 @@ pub mod pallet {
 		pub fn approve_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
 			T::ApproveOrigin::ensure_origin(origin)?;
 
+			// Set approved to true
 			ImpressionAds::<T>::mutate(ad_index, |ad_op| {
 				if let Some(ad) = ad_op {
 					ad.approved = true;
+					Ok(())
+				} else {
+					Err(Error::<T>::InvalidAdIndex)
 				}
-			});
+			})?;
 
 			Ok(())
 		}
@@ -179,11 +183,14 @@ pub mod pallet {
 		pub fn reject_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
 			T::RejectOrigin::ensure_origin(origin)?;
 
-			// Slash the bond to treasury
+			// Slash the bond and unreserve the ad payment
 			let ad = Self::impression_ads(ad_index).ok_or(Error::<T>::InvalidAdIndex)?;
-			let value = ad.bond;
-			let imbalance = T::Currency::slash_reserved(&ad.proposer, value).0;
+			let imbalance = T::Currency::slash_reserved(&ad.proposer, ad.bond).0;
 			T::OnSlash::on_unbalanced(imbalance);
+			let ad_cost = ad.cpi * ad.amount.into();
+			T::Currency::unreserve(&ad.proposer, ad_cost);
+			// Remove this proposal
+			ImpressionAds::<T>::remove(ad_index);
 
 			Ok(())
 		}
