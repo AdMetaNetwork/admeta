@@ -15,10 +15,11 @@ pub mod pallet {
 	use frame_support::{
 		dispatch::DispatchResult,
 		pallet_prelude::*,
-		traits::{Currency, OnUnbalanced, ReservableCurrency},
+		traits::{Currency, OnUnbalanced, Randomness, ReservableCurrency},
 	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
+	use sp_io::hashing::blake2_128;
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
 	use sp_std::prelude::*;
 
@@ -56,6 +57,16 @@ pub mod pallet {
 		pub tags: Vec<TargetTag>,
 	}
 
+	/// This defines user
+	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+	#[scale_info(skip_type_params(T))]
+	pub struct User<T: Config> {
+		pub age: u8,
+		pub tag: TargetTag,
+		pub ad_display: bool,
+		pub matched_ads: Vec<T::AdIndex>,
+	}
+
 	/// This defines impression ads, which pays by CPI
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
 	#[scale_info(skip_type_params(T))]
@@ -78,7 +89,7 @@ pub mod pallet {
 		pub approved: bool,
 	}
 
-	// TODO ActionAd will be implemented
+	// TODO ClickAd, ActionAd will be implemented
 
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
@@ -102,6 +113,8 @@ pub mod pallet {
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
+
+		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
 
 		/// Maximum acceptable Ad metadata length
 
@@ -132,10 +145,19 @@ pub mod pallet {
 	pub type ImpressionAds<T: Config> =
 		StorageMap<_, Blake2_128Concat, T::AdIndex, ImpressionAd<T>, OptionQuery>;
 
+	#[pallet::storage]
+	#[pallet::getter(fn get_user)]
+	/// Impression ads storage
+	pub type Users<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, User<T>, OptionQuery>;
+
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		NewAdProposal(T::AdIndex, T::AccountId),
+		AdProposalApproved(T::AdIndex),
+		AdProposalRejected(T::AdIndex),
+		NewUserAdded(T::AccountId),
+		UserSetAdDisplay(T::AccountId, bool),
 	}
 
 	#[pallet::error]
@@ -144,6 +166,8 @@ pub mod pallet {
 		AdDataTooLarge,
 		InsufficientProposalBalance,
 		InvalidAdIndex,
+		UserAlreadyExists,
+		UserDoesNotExist,
 	}
 
 	#[pallet::call]
@@ -171,6 +195,7 @@ pub mod pallet {
 			ImpressionAds::<T>::mutate(ad_index, |ad_op| {
 				if let Some(ad) = ad_op {
 					ad.approved = true;
+					Self::deposit_event(Event::AdProposalApproved(ad_index));
 					Ok(())
 				} else {
 					Err(Error::<T>::InvalidAdIndex)
@@ -191,6 +216,38 @@ pub mod pallet {
 			T::Currency::unreserve(&ad.proposer, ad_cost);
 			// Remove this proposal
 			ImpressionAds::<T>::remove(ad_index);
+			Self::deposit_event(Event::AdProposalRejected(ad_index));
+
+			Ok(())
+		}
+		#[pallet::weight(10_000)]
+		pub fn add_profile(origin: OriginFor<T>, age: u8, tag: TargetTag) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			// Check if user exists
+			if Users::<T>::contains_key(&who) {
+				Err(Error::<T>::UserAlreadyExists.into())
+			} else {
+				let user = User::<T> { age, tag, ad_display: false, matched_ads: Vec::new() };
+				Users::<T>::insert(who.clone(), user);
+				Self::deposit_event(Event::NewUserAdded(who));
+				Ok(())
+			}
+		}
+		#[pallet::weight(10_000)]
+		pub fn set_ad_display(origin: OriginFor<T>, ad_display: bool) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			// Set ad_display
+			Users::<T>::mutate(who.clone(), |user_op| {
+				if let Some(user) = user_op {
+					user.ad_display = ad_display;
+					Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
+					Ok(())
+				} else {
+					Err(Error::<T>::UserDoesNotExist)
+				}
+			})?;
 
 			Ok(())
 		}
@@ -208,6 +265,15 @@ pub mod pallet {
 				// Start count from 1
 				None => Ok(T::AdIndex::min_value().saturating_add(T::AdIndex::from(1u8))),
 			}
+		}
+		/// Generate a random value
+		fn random_value(sender: &T::AccountId) -> [u8; 16] {
+			let payload = (
+				T::Randomness::random_seed(),
+				&sender,
+				<frame_system::Pallet<T>>::extrinsic_index(),
+			);
+			payload.using_encoded(blake2_128)
 		}
 		/// Create an ad proposal
 		fn create_proposal(
@@ -241,11 +307,21 @@ pub mod pallet {
 				approved: false,
 			};
 
-			<ImpressionAds<T>>::insert(ad_index, ad);
+			ImpressionAds::<T>::insert(ad_index, ad);
 
 			Self::deposit_event(Event::NewAdProposal(ad_index, who));
 
 			Ok(())
+		}
+		/// Do matching for users and ads
+		fn do_matching() {
+			for iter in Users::<T>::iter() {
+				// Start matching if there is no matched ads
+				if iter.1.matched_ads.is_empty() {
+				} else {
+					continue
+				}
+			}
 		}
 	}
 }

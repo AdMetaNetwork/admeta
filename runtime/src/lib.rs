@@ -512,6 +512,7 @@ impl pallet_ad::Config for Runtime {
 	type ApproveOrigin = ApproveOrigin;
 	type RejectOrigin = RejectOrigin;
 	type OnSlash = ();
+	type Randomness = RandomnessCollectiveFlip;
 	type Currency = Balances;
 	type MaxAdDataLength = MaxAdDataLength;
 	type AdDepositBase = AdDepositBase;
