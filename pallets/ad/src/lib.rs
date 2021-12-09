@@ -179,7 +179,7 @@ pub mod pallet {
 		/// Matching happens in every block's on_finalize() function
 		fn on_finalize(block_number: T::BlockNumber) {
 			log::info!("Finalizing Block #{:?}.", block_number);
-			Self::do_matching();
+			Self::do_matching(block_number);
 		}
 	}
 
@@ -365,17 +365,28 @@ pub mod pallet {
 			Ok(())
 		}
 		/// Do matching for users and ads
-		fn do_matching() {
-			for mut iter in Users::<T>::iter() {
+		fn do_matching(block_number: T::BlockNumber) {
+			for iter in Users::<T>::iter() {
 				// Start matching if there is no matched ads
 				if iter.1.matched_ads.is_empty() {
-					for mut ad in ImpressionAds::<T>::iter() {
+					for ad in ImpressionAds::<T>::iter() {
 						if ad.1.preference.age.is_in_range(iter.1.age) &&
 							ad.1.preference.tags.contains(&iter.1.tag) &&
-							ad.1.amount > 0
+							ad.1.amount > 0 && ad.1.approved &&
+							ad.1.end_block >= block_number
 						{
-							iter.1.matched_ads.push(ad.0);
-							ad.1.amount -= 1
+							// Push matched ad to user's matched_ad vector
+							Users::<T>::mutate(&iter.0, |user_op| {
+								if let Some(user) = user_op {
+									user.matched_ads.push(ad.0);
+								}
+							});
+							// Decrease the total amount of this ad by 1
+							ImpressionAds::<T>::mutate(&ad.0, |ad_op| {
+								if let Some(ad) = ad_op {
+									ad.amount -= 1;
+								}
+							});
 						}
 					}
 				} else {
