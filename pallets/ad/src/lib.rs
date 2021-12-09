@@ -264,7 +264,7 @@ pub mod pallet {
 
 			Ok(())
 		}
-		#[pallet::weight(10_000)]
+		#[pallet::weight(100)]
 		pub fn claim_reward(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
