@@ -19,7 +19,6 @@ pub mod pallet {
 	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
-	use sp_io::hashing::blake2_128;
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
 	use sp_std::prelude::*;
 
@@ -172,6 +171,16 @@ pub mod pallet {
 		UserAlreadyExists,
 		UserDoesNotExist,
 		AdNotForThisUser,
+		AdPaymentError,
+	}
+
+	#[pallet::hooks]
+	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+		/// Matching happens in every block's on_finalize() function
+		fn on_finalize(block_number: T::BlockNumber) {
+			log::info!("Finalizing Block #{:?}.", block_number);
+			Self::do_matching();
+		}
 	}
 
 	#[pallet::call]
@@ -283,7 +292,8 @@ pub mod pallet {
 								&who,
 								ad.cpi,
 								BalanceStatus::Free,
-							);
+							)
+							.map_err(|_| Error::<T>::AdPaymentError)?;
 							Self::deposit_event(Event::RewardClaimed(who, ad_index));
 							Ok(())
 						} else {
@@ -314,15 +324,6 @@ pub mod pallet {
 				// Start count from 1
 				None => Ok(T::AdIndex::min_value().saturating_add(T::AdIndex::from(1u8))),
 			}
-		}
-		/// Generate a random value
-		fn random_value(sender: &T::AccountId) -> [u8; 16] {
-			let payload = (
-				T::Randomness::random_seed(),
-				&sender,
-				<frame_system::Pallet<T>>::extrinsic_index(),
-			);
-			payload.using_encoded(blake2_128)
 		}
 		/// Create an ad proposal
 		fn create_proposal(
