@@ -15,7 +15,7 @@ pub mod pallet {
 	use frame_support::{
 		dispatch::DispatchResult,
 		pallet_prelude::*,
-		traits::{Currency, OnUnbalanced, Randomness, ReservableCurrency},
+		traits::{BalanceStatus, Currency, OnUnbalanced, Randomness, ReservableCurrency},
 	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
@@ -158,16 +158,20 @@ pub mod pallet {
 		AdProposalRejected(T::AdIndex),
 		NewUserAdded(T::AccountId),
 		UserSetAdDisplay(T::AccountId, bool),
+		RewardClaimed(T::AccountId, T::AdIndex),
+		RewardNotClaimed(T::AccountId, T::AdIndex),
 	}
 
 	#[pallet::error]
 	pub enum Error<T> {
+		AdDoesNotExist,
 		AdCountOverflow,
 		AdDataTooLarge,
 		InsufficientProposalBalance,
 		InvalidAdIndex,
 		UserAlreadyExists,
 		UserDoesNotExist,
+		AdNotForThisUser,
 	}
 
 	#[pallet::call]
@@ -251,6 +255,51 @@ pub mod pallet {
 
 			Ok(())
 		}
+		#[pallet::weight(10_000)]
+		pub fn claim_reward(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			Users::<T>::mutate(who.clone(), |user_op| {
+				if let Some(user) = user_op {
+					let mut ad_claimed = false;
+
+					// TODO Refactor this code, to find the id and remove it instead of iterating
+					// the whole vector
+					user.matched_ads.retain(|&ad_id| {
+						// Only the ad_id that equals to ad_index gets removed
+						if ad_id == ad_index {
+							ad_claimed = true;
+							false
+						} else {
+							true
+						}
+					});
+
+					if ad_claimed {
+						if let Some(ad) = Self::impression_ads(ad_index) {
+							let ad_proposer = ad.proposer;
+							T::Currency::repatriate_reserved(
+								&ad_proposer,
+								&who,
+								ad.cpi,
+								BalanceStatus::Free,
+							);
+							Self::deposit_event(Event::RewardClaimed(who, ad_index));
+							Ok(())
+						} else {
+							Err(Error::<T>::AdDoesNotExist)
+						}
+					} else {
+						Self::deposit_event(Event::RewardNotClaimed(who, ad_index));
+						Err(Error::<T>::AdNotForThisUser)
+					}
+				} else {
+					Err(Error::<T>::UserDoesNotExist)
+				}
+			})?;
+
+			Ok(())
+		}
 	}
 
 	impl<T: Config> Pallet<T> {
@@ -308,6 +357,7 @@ pub mod pallet {
 			};
 
 			ImpressionAds::<T>::insert(ad_index, ad);
+			AdCount::<T>::put(ad_index);
 
 			Self::deposit_event(Event::NewAdProposal(ad_index, who));
 
@@ -315,9 +365,18 @@ pub mod pallet {
 		}
 		/// Do matching for users and ads
 		fn do_matching() {
-			for iter in Users::<T>::iter() {
+			for mut iter in Users::<T>::iter() {
 				// Start matching if there is no matched ads
 				if iter.1.matched_ads.is_empty() {
+					for mut ad in ImpressionAds::<T>::iter() {
+						if ad.1.preference.age.is_in_range(iter.1.age) &&
+							ad.1.preference.tags.contains(&iter.1.tag) &&
+							ad.1.amount > 0
+						{
+							iter.1.matched_ads.push(ad.0);
+							ad.1.amount -= 1
+						}
+					}
 				} else {
 					continue
 				}
