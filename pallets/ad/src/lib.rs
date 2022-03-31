@@ -11,6 +11,7 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
+	use admeta_common::AdData;
 	use codec::{Decode, Encode};
 	use frame_support::{
 		dispatch::DispatchResult,
@@ -309,6 +310,17 @@ pub mod pallet {
 			})?;
 
 			Ok(())
+		}
+	}
+
+	impl<T: Config> AdData<T::AdIndex> for Pallet<T> {
+		fn decrease_ad_amount(ad: T::AdIndex) {
+			// Decrease the total amount of this ad by 1
+			ImpressionAds::<T>::mutate(ad, |ad_op| {
+				if let Some(ad) = ad_op {
+					ad.amount -= 1;
+				}
+			});
 		}
 	}
 

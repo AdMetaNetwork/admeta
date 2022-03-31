@@ -1,10 +1,10 @@
 [package]
 authors = ['AdMeta Network']
-description = 'The AdMeta pallet-ad.'
+description = 'The AdMeta admeta-common.'
 edition = '2021'
 homepage = 'https://admeta.network/'
 license = 'GPLv3'
-name = 'pallet-ad'
+name = 'admeta-common'
 publish = false
 repository = 'https://github.com/AdMetaNetwork/admeta'
 version = '4.0.0-dev'
@@ -70,11 +70,6 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-11-1'
 version = '4.0.0-dev'
 
-# AdMeta traits
-[dependencies.admeta-common]
-default-features = false
-path = '../common'
-package = 'admeta-common'
 
 [features]
 default = ['std']

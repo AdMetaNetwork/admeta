@@ -74,6 +74,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "admeta-common"
+version = "4.0.0-dev"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "admeta-runtime"
 version = "4.0.0-dev"
 dependencies = [
@@ -3726,6 +3742,7 @@ dependencies = [
 name = "pallet-ad"
 version = "4.0.0-dev"
 dependencies = [
+ "admeta-common",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
