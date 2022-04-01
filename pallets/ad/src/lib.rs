@@ -11,7 +11,7 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use admeta_common::{AdData, AdPreference, TargetTag, ValueRange};
+	use admeta_common::{AdData, AdPreference, TargetTag};
 	use codec::{Decode, Encode};
 	use frame_support::{
 		dispatch::DispatchResult,

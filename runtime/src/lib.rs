@@ -526,7 +526,6 @@ impl pallet_ad::Config for Runtime {
 impl pallet_user_mock::Config for Runtime {
 	type Event = Event;
 	type Randomness = RandomnessCollectiveFlip;
-	type Currency = Balances;
 	type AdData = Ad;
 	type AdIndex = AdIndexType;
 }

@@ -11,16 +11,12 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use admeta_common::{AdData, AdPreference, TargetTag, ValueRange};
+	use admeta_common::{AdData, TargetTag};
 	use codec::{Decode, Encode};
-	use frame_support::{
-		dispatch::DispatchResult,
-		pallet_prelude::*,
-		traits::{BalanceStatus, Currency, OnUnbalanced, Randomness, ReservableCurrency},
-	};
+	use frame_support::{dispatch::DispatchResult, pallet_prelude::*, traits::Randomness};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
-	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
+	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded};
 	use sp_std::prelude::*;
 
 	/// This defines user
@@ -36,7 +32,6 @@ pub mod pallet {
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
-		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
 		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
 		type AdData: AdData<Self::BlockNumber, Self::AdIndex, Self::AccountId>;
 		type AdIndex: Parameter
