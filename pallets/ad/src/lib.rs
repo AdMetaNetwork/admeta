@@ -11,7 +11,7 @@ mod tests;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use admeta_common::AdData;
+	use admeta_common::{AdData, AdPreference, TargetTag, ValueRange};
 	use codec::{Decode, Encode};
 	use frame_support::{
 		dispatch::DispatchResult,
@@ -30,42 +30,6 @@ pub mod pallet {
 	pub type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<
 		<T as frame_system::Config>::AccountId,
 	>>::NegativeImbalance;
-
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
-	pub struct ValueRange {
-		min: u8,
-		max: u8,
-	}
-
-	impl ValueRange {
-		fn is_in_range(&self, v: u8) -> bool {
-			v >= self.min && v <= self.max
-		}
-	}
-
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
-	pub enum TargetTag {
-		DeFi,
-		GameFi,
-		Metaverse,
-	}
-
-	/// This struct specifies what kinds of conditions the target group should fulfill
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
-	pub struct AdPreference {
-		pub age: ValueRange,
-		pub tags: Vec<TargetTag>,
-	}
-
-	/// This defines user
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
-	#[scale_info(skip_type_params(T))]
-	pub struct User<T: Config> {
-		pub age: u8,
-		pub tag: TargetTag,
-		pub ad_display: bool,
-		pub matched_ads: Vec<T::AdIndex>,
-	}
 
 	/// This defines impression ads, which pays by CPI
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
@@ -145,11 +109,6 @@ pub mod pallet {
 	pub type ImpressionAds<T: Config> =
 		StorageMap<_, Blake2_128Concat, T::AdIndex, ImpressionAd<T>, OptionQuery>;
 
-	#[pallet::storage]
-	#[pallet::getter(fn get_user)]
-	/// Impression ads storage
-	pub type Users<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, User<T>, OptionQuery>;
-
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
@@ -173,15 +132,6 @@ pub mod pallet {
 		UserDoesNotExist,
 		AdNotForThisUser,
 		AdPaymentError,
-	}
-
-	#[pallet::hooks]
-	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
-		/// Matching happens in every block's on_finalize() function
-		fn on_finalize(block_number: T::BlockNumber) {
-			log::info!("Finalizing Block #{:?}.", block_number);
-			Self::do_matching(block_number);
-		}
 	}
 
 	#[pallet::call]
@@ -231,83 +181,6 @@ pub mod pallet {
 			// Remove this proposal
 			ImpressionAds::<T>::remove(ad_index);
 			Self::deposit_event(Event::AdProposalRejected(ad_index));
-
-			Ok(())
-		}
-		#[pallet::weight(10_000)]
-		pub fn add_profile(origin: OriginFor<T>, age: u8, tag: TargetTag) -> DispatchResult {
-			let who = ensure_signed(origin)?;
-
-			// Check if user exists
-			if Users::<T>::contains_key(&who) {
-				Err(Error::<T>::UserAlreadyExists.into())
-			} else {
-				let user = User::<T> { age, tag, ad_display: false, matched_ads: Vec::new() };
-				Users::<T>::insert(who.clone(), user);
-				Self::deposit_event(Event::NewUserAdded(who));
-				Ok(())
-			}
-		}
-		#[pallet::weight(10_000)]
-		pub fn set_ad_display(origin: OriginFor<T>, ad_display: bool) -> DispatchResult {
-			let who = ensure_signed(origin)?;
-
-			// Set ad_display
-			Users::<T>::mutate(who.clone(), |user_op| {
-				if let Some(user) = user_op {
-					user.ad_display = ad_display;
-					Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
-					Ok(())
-				} else {
-					Err(Error::<T>::UserDoesNotExist)
-				}
-			})?;
-
-			Ok(())
-		}
-		#[pallet::weight(100)]
-		pub fn claim_reward(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
-			let who = ensure_signed(origin)?;
-
-			Users::<T>::mutate(who.clone(), |user_op| {
-				if let Some(user) = user_op {
-					let mut ad_claimed = false;
-
-					// TODO Refactor this code, to find the id and remove it instead of iterating
-					// the whole vector
-					user.matched_ads.retain(|&ad_id| {
-						// Only the ad_id that equals to ad_index gets removed
-						if ad_id == ad_index {
-							ad_claimed = true;
-							false
-						} else {
-							true
-						}
-					});
-
-					if ad_claimed {
-						if let Some(ad) = Self::impression_ads(ad_index) {
-							let ad_proposer = ad.proposer;
-							T::Currency::repatriate_reserved(
-								&ad_proposer,
-								&who,
-								ad.cpi,
-								BalanceStatus::Free,
-							)
-							.map_err(|_| Error::<T>::AdPaymentError)?;
-							Self::deposit_event(Event::RewardClaimed(who, ad_index));
-							Ok(())
-						} else {
-							Err(Error::<T>::AdDoesNotExist)
-						}
-					} else {
-						Self::deposit_event(Event::RewardNotClaimed(who, ad_index));
-						Err(Error::<T>::AdNotForThisUser)
-					}
-				} else {
-					Err(Error::<T>::UserDoesNotExist)
-				}
-			})?;
 
 			Ok(())
 		}
@@ -375,36 +248,6 @@ pub mod pallet {
 			Self::deposit_event(Event::NewAdProposal(ad_index, who));
 
 			Ok(())
-		}
-		/// Do matching for users and ads
-		fn do_matching(block_number: T::BlockNumber) {
-			for iter in Users::<T>::iter() {
-				// Start matching if there is no matched ads
-				if iter.1.matched_ads.is_empty() {
-					for ad in ImpressionAds::<T>::iter() {
-						if ad.1.preference.age.is_in_range(iter.1.age) &&
-							ad.1.preference.tags.contains(&iter.1.tag) &&
-							ad.1.amount > 0 && ad.1.approved &&
-							ad.1.end_block >= block_number
-						{
-							// Push matched ad to user's matched_ad vector
-							Users::<T>::mutate(&iter.0, |user_op| {
-								if let Some(user) = user_op {
-									user.matched_ads.push(ad.0);
-								}
-							});
-							// Decrease the total amount of this ad by 1
-							ImpressionAds::<T>::mutate(&ad.0, |ad_op| {
-								if let Some(ad) = ad_op {
-									ad.amount -= 1;
-								}
-							});
-						}
-					}
-				} else {
-					continue
-				}
-			}
 		}
 	}
 }
