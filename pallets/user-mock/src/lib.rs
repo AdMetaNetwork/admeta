@@ -38,7 +38,14 @@ pub mod pallet {
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
 		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
-		type AdData: AdData<Self::AdIndex>;
+		type AdData: AdData<Self::BlockNumber, Self::AdIndex, Self::AccountId>;
+		type AdIndex: Parameter
+			+ MaybeSerializeDeserialize
+			+ Bounded
+			+ AtLeast32BitUnsigned
+			+ Copy
+			+ MaxEncodedLen
+			+ Default;
 	}
 
 	#[pallet::pallet]
@@ -63,7 +70,7 @@ pub mod pallet {
 		UserAlreadyExists,
 		UserDoesNotExist,
 		AdNotForThisUser,
-		AdPaymentError,
+		RewardClaimPaymentError,
 	}
 
 	#[pallet::hooks]
@@ -129,20 +136,10 @@ pub mod pallet {
 					});
 
 					if ad_claimed {
-						if let Some(ad) = Self::impression_ads(ad_index) {
-							let ad_proposer = ad.proposer;
-							T::Currency::repatriate_reserved(
-								&ad_proposer,
-								&who,
-								ad.cpi,
-								BalanceStatus::Free,
-							)
-							.map_err(|_| Error::<T>::AdPaymentError)?;
-							Self::deposit_event(Event::RewardClaimed(who, ad_index));
-							Ok(())
-						} else {
-							Err(Error::<T>::AdDoesNotExist)
-						}
+						T::AdData::claim_reward_for_user(ad_index, who.clone())
+							.map_err(|_| Error::<T>::RewardClaimPaymentError)?;
+						Self::deposit_event(Event::RewardClaimed(who, ad_index));
+						Ok(())
 					} else {
 						Self::deposit_event(Event::RewardNotClaimed(who, ad_index));
 						Err(Error::<T>::AdNotForThisUser)
@@ -160,27 +157,17 @@ pub mod pallet {
 		/// Do matching for users and ads
 		fn do_matching(block_number: T::BlockNumber) {
 			for iter in Users::<T>::iter() {
-				// Start matching if there is no matched ads
-				if iter.1.matched_ads.is_empty() {
-					for ad in ImpressionAds::<T>::iter() {
-						if ad.1.preference.age.is_in_range(iter.1.age) &&
-							ad.1.preference.tags.contains(&iter.1.tag) &&
-							ad.1.amount > 0 && ad.1.approved &&
-							ad.1.end_block >= block_number
-						{
-							// Push matched ad to user's matched_ad vector
-							Users::<T>::mutate(&iter.0, |user_op| {
-								if let Some(user) = user_op {
-									user.matched_ads.push(ad.0);
-								}
-							});
-							// Decrease the total amount of this ad by 1
-							ImpressionAds::<T>::mutate(&ad.0, |ad_op| {
-								if let Some(ad) = ad_op {
-									ad.amount -= 1;
-								}
-							});
-						}
+				// Start matching if there is no matched ads and ad_display is true
+				if iter.1.matched_ads.is_empty() && iter.1.ad_display {
+					if let Some(ad_index) =
+						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number)
+					{
+						// Push matched ad to user's matched_ad vector
+						Users::<T>::mutate(&iter.0, |user_op| {
+							if let Some(user) = user_op {
+								user.matched_ads.push(ad_index);
+							}
+						});
 					}
 				} else {
 					continue

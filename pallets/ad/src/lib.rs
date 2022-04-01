@@ -105,6 +105,7 @@ pub mod pallet {
 
 	#[pallet::storage]
 	#[pallet::getter(fn impression_ads)]
+	// TODO Optimize the storage usage, as hashmap is not the optimal and scalable solution
 	/// Impression ads storage
 	pub type ImpressionAds<T: Config> =
 		StorageMap<_, Blake2_128Concat, T::AdIndex, ImpressionAd<T>, OptionQuery>;
@@ -186,14 +187,39 @@ pub mod pallet {
 		}
 	}
 
-	impl<T: Config> AdData<T::AdIndex> for Pallet<T> {
-		fn decrease_ad_amount(ad: T::AdIndex) {
-			// Decrease the total amount of this ad by 1
-			ImpressionAds::<T>::mutate(ad, |ad_op| {
-				if let Some(ad) = ad_op {
-					ad.amount -= 1;
+	impl<T: Config> AdData<T::BlockNumber, T::AdIndex, T::AccountId> for Pallet<T> {
+		fn match_ad_for_user(
+			age: u8,
+			tag: TargetTag,
+			block_number: T::BlockNumber,
+		) -> Option<T::AdIndex> {
+			for ad in ImpressionAds::<T>::iter() {
+				if ad.1.preference.age.is_in_range(age) &&
+					ad.1.preference.tags.contains(&tag) &&
+					ad.1.amount > 0 && ad.1.approved &&
+					ad.1.end_block >= block_number
+				{
+					// Decrease the total amount of this ad by 1
+					ImpressionAds::<T>::mutate(&ad.0, |ad_op| {
+						if let Some(ad) = ad_op {
+							ad.amount -= 1;
+						}
+					});
+					return Some(ad.0)
 				}
-			});
+			}
+			None
+		}
+
+		fn claim_reward_for_user(ad_index: T::AdIndex, user: T::AccountId) -> DispatchResult {
+			if let Some(ad) = Self::impression_ads(ad_index) {
+				let ad_proposer = ad.proposer;
+				T::Currency::repatriate_reserved(&ad_proposer, &user, ad.cpi, BalanceStatus::Free)
+					.map_err(|_| Error::<T>::AdPaymentError)?;
+				Ok(())
+			} else {
+				Err(Error::<T>::AdDoesNotExist)?
+			}
 		}
 	}
 

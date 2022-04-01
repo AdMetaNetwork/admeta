@@ -5,8 +5,13 @@ use frame_support::pallet_prelude::*;
 use scale_info::TypeInfo;
 use sp_std::prelude::*;
 
-pub trait AdData<AdIndexType> {
-	fn decrease_ad_amount(new_amount: AdIndexType);
+pub trait AdData<BlockNumberType, AdIndexType, AccountIdType> {
+	fn match_ad_for_user(
+		age: u8,
+		tag: TargetTag,
+		block_number: BlockNumberType,
+	) -> Option<AdIndexType>;
+	fn claim_reward_for_user(ad_index: AdIndexType, user: AccountIdType) -> DispatchResult;
 }
 
 #[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
@@ -16,7 +21,7 @@ pub struct ValueRange {
 }
 
 impl ValueRange {
-	fn is_in_range(&self, v: u8) -> bool {
+	pub fn is_in_range(&self, v: u8) -> bool {
 		v >= self.min && v <= self.max
 	}
 }

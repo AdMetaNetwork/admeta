@@ -48,8 +48,11 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
-/// Import the ad pallet.
+/// Import ad pallet.
 pub use pallet_ad;
+
+/// Import user-mock pallet.
+pub use pallet_user_mock;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -504,11 +507,12 @@ type RejectOrigin = EnsureOneOf<
 	EnsureRoot<AccountId>,
 	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 >;
+type AdIndexType = u32;
 
 /// Configure the pallet-ad in pallets/ad.
 impl pallet_ad::Config for Runtime {
 	type Event = Event;
-	type AdIndex = u32;
+	type AdIndex = AdIndexType;
 	type ApproveOrigin = ApproveOrigin;
 	type RejectOrigin = RejectOrigin;
 	type OnSlash = ();
@@ -517,6 +521,14 @@ impl pallet_ad::Config for Runtime {
 	type MaxAdDataLength = MaxAdDataLength;
 	type AdDepositBase = AdDepositBase;
 	type AdDepositPerByte = AdDepositPerByte;
+}
+
+impl pallet_user_mock::Config for Runtime {
+	type Event = Event;
+	type Randomness = RandomnessCollectiveFlip;
+	type Currency = Balances;
+	type AdData = Ad;
+	type AdIndex = AdIndexType;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -546,6 +558,7 @@ construct_runtime!(
 
 		// AdMeta pallets
 		Ad: pallet_ad,
+		User: pallet_user_mock,
 	}
 );
 
@@ -730,6 +743,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_membership, CouncilMembership);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
 			list_benchmark!(list, extra, pallet_ad, Ad);
+			list_benchmark!(list, extra, pallet_user_mock, User);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -773,6 +787,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_membership, CouncilMembership);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
 			add_benchmark!(params, batches, pallet_ad, Ad);
+			add_benchmark!(params, batches, pallet_user_mock, User);
 
 			Ok(batches)
 		}
