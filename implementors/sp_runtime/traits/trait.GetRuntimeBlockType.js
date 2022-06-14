@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["admeta_runtime"] = [{"text":"impl GetRuntimeBlockType for <a class=\"struct\" href=\"admeta_runtime/struct.Runtime.html\" title=\"struct admeta_runtime::Runtime\">Runtime</a>","synthetic":false,"types":["admeta_runtime::Runtime"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

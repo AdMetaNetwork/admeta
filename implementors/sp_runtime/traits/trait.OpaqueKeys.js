@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["admeta_runtime"] = [{"text":"impl OpaqueKeys for <a class=\"struct\" href=\"admeta_runtime/opaque/struct.SessionKeys.html\" title=\"struct admeta_runtime::opaque::SessionKeys\">SessionKeys</a>","synthetic":false,"types":["admeta_runtime::opaque::SessionKeys"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

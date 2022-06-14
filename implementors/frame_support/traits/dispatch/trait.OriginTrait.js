@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["admeta_runtime"] = [{"text":"impl OriginTrait for <a class=\"struct\" href=\"admeta_runtime/struct.Origin.html\" title=\"struct admeta_runtime::Origin\">Origin</a>","synthetic":false,"types":["admeta_runtime::Origin"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["pallet_ad"] = [{"text":"impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; GetCallName for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;","synthetic":false,"types":["pallet_ad::pallet::Call"]}];
+implementors["pallet_user_mock"] = [{"text":"impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user_mock/pallet/trait.Config.html\" title=\"trait pallet_user_mock::pallet::Config\">Config</a>&gt; GetCallName for <a class=\"enum\" href=\"pallet_user_mock/pallet/enum.Call.html\" title=\"enum pallet_user_mock::pallet::Call\">Call</a>&lt;T&gt;","synthetic":false,"types":["pallet_user_mock::pallet::Call"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

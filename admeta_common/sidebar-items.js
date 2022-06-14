@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TargetTag",""]],"struct":[["AdPreference","This struct specifies what kinds of conditions the target group should fulfill"],["ValueRange",""]],"trait":[["AdData",""]]});
