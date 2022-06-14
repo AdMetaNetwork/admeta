@@ -32,6 +32,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Add wasm toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable-2021-06-17
+        target: wasm32-unknown-unknown
+        override: true
     - name: Docs
       # Add --all-features option when benchmark works
       run: |
