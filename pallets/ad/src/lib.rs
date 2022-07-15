@@ -39,6 +39,8 @@ pub mod pallet {
 		pub proposer: T::AccountId,
 		// The URL where this ad's metadata stores
 		pub metadata: Url,
+		// The target URL where it redirects to when user clicks this ad
+		pub target: Url,
 		// The bond reserved for this ad
 		pub bond: BalanceOf<T>,
 		// The cost per impression (CPI)
@@ -148,6 +150,7 @@ pub mod pallet {
 		pub fn propose_ad(
 			origin: OriginFor<T>,
 			ad_url: Url,
+			target_url: Url,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
@@ -155,7 +158,7 @@ pub mod pallet {
 		) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
-			Self::create_proposal(who, ad_url, cpi, amount, end_block, ad_preference)?;
+			Self::create_proposal(who, ad_url, target_url, cpi, amount, end_block, ad_preference)?;
 
 			Ok(())
 		}
@@ -259,6 +262,7 @@ pub mod pallet {
 		fn create_proposal(
 			who: T::AccountId,
 			ad_url: Url,
+			target_url: Url,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
@@ -279,6 +283,7 @@ pub mod pallet {
 			let ad = ImpressionAd::<T> {
 				proposer: who.clone(),
 				metadata: ad_url,
+				target: target_url,
 				bond,
 				cpi,
 				amount,
