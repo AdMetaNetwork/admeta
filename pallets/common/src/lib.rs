@@ -11,7 +11,11 @@ pub trait AdData<BlockNumberType, AdIndexType, AccountIdType> {
 		tag: TargetTag,
 		block_number: BlockNumberType,
 	) -> Option<AdIndexType>;
-	fn claim_reward_for_user(ad_index: AdIndexType, user: AccountIdType) -> DispatchResult;
+	fn claim_reward_for_user(
+		proposer: AccountIdType,
+		ad_index: AdIndexType,
+		user: AccountIdType,
+	) -> DispatchResult;
 }
 
 #[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]

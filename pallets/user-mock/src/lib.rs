@@ -111,7 +111,11 @@ pub mod pallet {
 			Ok(())
 		}
 		#[pallet::weight(100)]
-		pub fn claim_reward(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+		pub fn claim_reward(
+			origin: OriginFor<T>,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
 			Users::<T>::mutate(who.clone(), |user_op| {
@@ -131,7 +135,7 @@ pub mod pallet {
 					});
 
 					if ad_claimed {
-						T::AdData::claim_reward_for_user(ad_index, who.clone())
+						T::AdData::claim_reward_for_user(proposer, ad_index, who.clone())
 							.map_err(|_| Error::<T>::RewardClaimPaymentError)?;
 						Self::deposit_event(Event::RewardClaimed(who, ad_index));
 						Ok(())

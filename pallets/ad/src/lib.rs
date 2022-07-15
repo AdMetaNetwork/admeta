@@ -107,15 +107,22 @@ pub mod pallet {
 	#[pallet::getter(fn impression_ads)]
 	// TODO Optimize the storage usage, as hashmap is not the optimal and scalable solution
 	/// Impression ads storage
-	pub type ImpressionAds<T: Config> =
-		StorageMap<_, Blake2_128Concat, T::AdIndex, ImpressionAd<T>, OptionQuery>;
+	pub type ImpressionAds<T: Config> = StorageDoubleMap<
+		_,
+		Blake2_128Concat,
+		T::AccountId,
+		Blake2_128Concat,
+		T::AdIndex,
+		ImpressionAd<T>,
+		OptionQuery,
+	>;
 
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
-		NewAdProposal(T::AdIndex, T::AccountId),
-		AdProposalApproved(T::AdIndex),
-		AdProposalRejected(T::AdIndex),
+		NewAdProposal(T::AccountId, T::AdIndex),
+		AdProposalApproved(T::AccountId, T::AdIndex),
+		AdProposalRejected(T::AccountId, T::AdIndex),
 		NewUserAdded(T::AccountId),
 		UserSetAdDisplay(T::AccountId, bool),
 		RewardClaimed(T::AccountId, T::AdIndex),
@@ -153,14 +160,18 @@ pub mod pallet {
 			Ok(())
 		}
 		#[pallet::weight(10_000)]
-		pub fn approve_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+		pub fn approve_ad(
+			origin: OriginFor<T>,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -> DispatchResult {
 			T::ApproveOrigin::ensure_origin(origin)?;
 
 			// Set approved to true
-			ImpressionAds::<T>::mutate(ad_index, |ad_op| {
+			ImpressionAds::<T>::mutate(proposer.clone(), ad_index, |ad_op| {
 				if let Some(ad) = ad_op {
 					ad.approved = true;
-					Self::deposit_event(Event::AdProposalApproved(ad_index));
+					Self::deposit_event(Event::AdProposalApproved(proposer, ad_index));
 					Ok(())
 				} else {
 					Err(Error::<T>::InvalidAdIndex)
@@ -170,18 +181,22 @@ pub mod pallet {
 			Ok(())
 		}
 		#[pallet::weight(10_000)]
-		pub fn reject_ad(origin: OriginFor<T>, ad_index: T::AdIndex) -> DispatchResult {
+		pub fn reject_ad(
+			origin: OriginFor<T>,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -> DispatchResult {
 			T::RejectOrigin::ensure_origin(origin)?;
 
 			// Slash the bond and unreserve the ad payment
-			let ad = Self::impression_ads(ad_index).ok_or(Error::<T>::InvalidAdIndex)?;
+			let ad = Self::impression_ads(&proposer, ad_index).ok_or(Error::<T>::InvalidAdIndex)?;
 			let imbalance = T::Currency::slash_reserved(&ad.proposer, ad.bond).0;
 			T::OnSlash::on_unbalanced(imbalance);
 			let ad_cost = ad.cpi * ad.amount.into();
 			T::Currency::unreserve(&ad.proposer, ad_cost);
 			// Remove this proposal
-			ImpressionAds::<T>::remove(ad_index);
-			Self::deposit_event(Event::AdProposalRejected(ad_index));
+			ImpressionAds::<T>::remove(&proposer, ad_index);
+			Self::deposit_event(Event::AdProposalRejected(proposer, ad_index));
 
 			Ok(())
 		}
@@ -194,25 +209,29 @@ pub mod pallet {
 			block_number: T::BlockNumber,
 		) -> Option<T::AdIndex> {
 			for ad in ImpressionAds::<T>::iter() {
-				if ad.1.preference.age.is_in_range(age) &&
-					ad.1.preference.tags.contains(&tag) &&
-					ad.1.amount > 0 && ad.1.approved &&
-					ad.1.end_block >= block_number
+				if ad.2.preference.age.is_in_range(age) &&
+					ad.2.preference.tags.contains(&tag) &&
+					ad.2.amount > 0 && ad.2.approved &&
+					ad.2.end_block >= block_number
 				{
 					// Decrease the total amount of this ad by 1
-					ImpressionAds::<T>::mutate(&ad.0, |ad_op| {
+					ImpressionAds::<T>::mutate(&ad.0, &ad.1, |ad_op| {
 						if let Some(ad) = ad_op {
 							ad.amount -= 1;
 						}
 					});
-					return Some(ad.0)
+					return Some(ad.1)
 				}
 			}
 			None
 		}
 
-		fn claim_reward_for_user(ad_index: T::AdIndex, user: T::AccountId) -> DispatchResult {
-			if let Some(ad) = Self::impression_ads(ad_index) {
+		fn claim_reward_for_user(
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+			user: T::AccountId,
+		) -> DispatchResult {
+			if let Some(ad) = Self::impression_ads(proposer, ad_index) {
 				let ad_proposer = ad.proposer;
 				T::Currency::repatriate_reserved(&ad_proposer, &user, ad.cpi, BalanceStatus::Free)
 					.map_err(|_| Error::<T>::AdPaymentError)?;
@@ -268,10 +287,10 @@ pub mod pallet {
 				approved: false,
 			};
 
-			ImpressionAds::<T>::insert(ad_index, ad);
+			ImpressionAds::<T>::insert(&who, ad_index, ad);
 			AdCount::<T>::put(ad_index);
 
-			Self::deposit_event(Event::NewAdProposal(ad_index, who));
+			Self::deposit_event(Event::NewAdProposal(who, ad_index));
 
 			Ok(())
 		}
