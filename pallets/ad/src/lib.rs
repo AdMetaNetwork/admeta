@@ -136,6 +136,7 @@ pub mod pallet {
 		AdDoesNotExist,
 		AdCountOverflow,
 		AdDataTooLarge,
+		InvalidAdPreference,
 		InsufficientProposalBalance,
 		InvalidAdIndex,
 		UserAlreadyExists,
@@ -269,6 +270,8 @@ pub mod pallet {
 			ad_preference: AdPreference,
 		) -> Result<(), Error<T>> {
 			ensure!(ad_url.len() <= T::MaxAdDataLength::get() as usize, Error::<T>::AdDataTooLarge);
+
+			ensure!(ad_preference.age.self_check(), Error::<T>::InvalidAdPreference);
 
 			let ad_index = Self::next_ad_id()?;
 

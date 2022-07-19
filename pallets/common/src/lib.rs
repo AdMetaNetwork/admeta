@@ -25,6 +25,11 @@ pub struct ValueRange {
 }
 
 impl ValueRange {
+	/// Check if min value is less or equal to max value
+	pub fn self_check(&self) -> bool {
+		self.min <= self.max
+	}
+	/// Check if the given value is in range
 	pub fn is_in_range(&self, v: u8) -> bool {
 		v >= self.min && v <= self.max
 	}
