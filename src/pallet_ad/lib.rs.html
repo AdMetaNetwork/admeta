@@ -307,6 +307,9 @@
 <span id="301">301</span>
 <span id="302">302</span>
 <span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 
@@ -445,6 +448,7 @@
 		<span class="ident">AdDoesNotExist</span>,
 		<span class="ident">AdCountOverflow</span>,
 		<span class="ident">AdDataTooLarge</span>,
+		<span class="ident">InvalidAdPreference</span>,
 		<span class="ident">InsufficientProposalBalance</span>,
 		<span class="ident">InvalidAdIndex</span>,
 		<span class="ident">UserAlreadyExists</span>,
@@ -579,6 +583,8 @@
 		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="macro">ensure!</span>(<span class="ident">ad_url</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">T::MaxAdDataLength::get</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdDataTooLarge</span>);
 
+			<span class="macro">ensure!</span>(<span class="ident">ad_preference</span>.<span class="ident">age</span>.<span class="ident">self_check</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidAdPreference</span>);
+
 			<span class="kw">let</span> <span class="ident">ad_index</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::next_ad_id</span>()<span class="question-mark">?</span>;
 
 			<span class="kw">let</span> <span class="ident">bond</span> <span class="op">=</span>
@@ -611,5 +617,5 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (d5e7f4782 2022-07-16)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (f8588549c 2022-07-18)" ></div>
 </body></html>
