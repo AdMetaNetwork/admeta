@@ -124,9 +124,9 @@ pub mod pallet {
 
 					// TODO Refactor this code, to find the id and remove it instead of iterating
 					// the whole vector
-					user.matched_ads.retain(|(&ad_proposer, &ad_id)| {
+					user.matched_ads.retain(|(ad_proposer, ad_id)| {
 						// Only the ad_id that equals to ad_index gets removed
-						if proposer == ad_proposer && ad_id == ad_index {
+						if *ad_proposer == proposer && *ad_id == ad_index {
 							ad_claimed = true;
 							false
 						} else {
