@@ -211,7 +211,7 @@ pub mod pallet {
 			age: u8,
 			tag: TargetTag,
 			block_number: T::BlockNumber,
-		) -> Option<T::AdIndex> {
+		) -> Option<(T::AccountId, T::AdIndex)> {
 			for ad in ImpressionAds::<T>::iter() {
 				if ad.2.preference.age.is_in_range(age) &&
 					ad.2.preference.tags.contains(&tag) &&
@@ -224,7 +224,7 @@ pub mod pallet {
 							ad.amount -= 1;
 						}
 					});
-					return Some(ad.1)
+					return Some((ad.0, ad.1))
 				}
 			}
 			None

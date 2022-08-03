@@ -26,7 +26,7 @@ pub mod pallet {
 		pub age: u8,
 		pub tag: TargetTag,
 		pub ad_display: bool,
-		pub matched_ads: Vec<T::AdIndex>,
+		pub matched_ads: Vec<(T::AccountId, T::AdIndex)>,
 	}
 
 	#[pallet::config]
@@ -124,9 +124,9 @@ pub mod pallet {
 
 					// TODO Refactor this code, to find the id and remove it instead of iterating
 					// the whole vector
-					user.matched_ads.retain(|&ad_id| {
+					user.matched_ads.retain(|(&ad_proposer, &ad_id)| {
 						// Only the ad_id that equals to ad_index gets removed
-						if ad_id == ad_index {
+						if proposer == ad_proposer && ad_id == ad_index {
 							ad_claimed = true;
 							false
 						} else {
@@ -158,13 +158,13 @@ pub mod pallet {
 			for iter in Users::<T>::iter() {
 				// Start matching if there is no matched ads and ad_display is true
 				if iter.1.matched_ads.is_empty() && iter.1.ad_display {
-					if let Some(ad_index) =
+					if let Some((ad_proposer, ad_index)) =
 						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number)
 					{
 						// Push matched ad to user's matched_ad vector
 						Users::<T>::mutate(&iter.0, |user_op| {
 							if let Some(user) = user_op {
-								user.matched_ads.push(ad_index);
+								user.matched_ads.push((ad_proposer, ad_index));
 							}
 						});
 					}
