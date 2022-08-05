@@ -80,10 +80,12 @@ pub mod pallet {
 
 	#[pallet::hooks]
 	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
-		/// Matching happens in every block's on_finalize() function
-		fn on_finalize(block_number: T::BlockNumber) {
-			log::info!("Finalizing Block #{:?}.", block_number);
+		/// Matching happens in every block's on_idle() function, to avoid congestion
+		fn on_idle(block_number: T::BlockNumber, remaining_weight: Weight) -> Weight {
+			log::info!("on_idle #{:?}, {:?})", block_number, remaining_weight);
 			Self::do_matching(block_number);
+			// TODO calculate the actual consumed weights
+			300
 		}
 	}
 
