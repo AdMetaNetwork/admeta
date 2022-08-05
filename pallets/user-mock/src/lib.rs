@@ -72,7 +72,6 @@ pub mod pallet {
 		UserDoesNotExist,
 		AdNotForThisUser,
 		RewardClaimPaymentError,
-		MatchedAdsBoundaryExceeded,
 	}
 
 	#[pallet::hooks]
@@ -89,17 +88,34 @@ pub mod pallet {
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
 		#[pallet::weight(10_000)]
-		pub fn add_profile(origin: OriginFor<T>, age: u8, tag: TargetTag) -> DispatchResult {
+		pub fn add_profile(
+			origin: OriginFor<T>,
+			age: u8,
+			tag: TargetTag,
+			ad_display: bool,
+		) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
 			// Check if user exists
 			if Users::<T>::contains_key(&who) {
-				Err(Error::<T>::UserAlreadyExists.into())
+				// Update user profile if user already exists
+				Users::<T>::mutate(who.clone(), |user_op| {
+					if let Some(user) = user_op {
+						user.age = age;
+						user.tag = tag;
+						user.ad_display = ad_display;
+						Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
+						Ok(())
+					} else {
+						Err(Error::<T>::UserDoesNotExist)
+					}
+				})?;
+				Ok(())
 			} else {
 				let user = User::<T> {
 					age,
 					tag,
-					ad_display: false,
+					ad_display,
 					// try_into() should be always successful
 					matched_ads: Vec::new().try_into().unwrap(),
 				};
@@ -108,23 +124,7 @@ pub mod pallet {
 				Ok(())
 			}
 		}
-		#[pallet::weight(10_000)]
-		pub fn set_ad_display(origin: OriginFor<T>, ad_display: bool) -> DispatchResult {
-			let who = ensure_signed(origin)?;
 
-			// Set ad_display
-			Users::<T>::mutate(who.clone(), |user_op| {
-				if let Some(user) = user_op {
-					user.ad_display = ad_display;
-					Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
-					Ok(())
-				} else {
-					Err(Error::<T>::UserDoesNotExist)
-				}
-			})?;
-
-			Ok(())
-		}
 		#[pallet::weight(100)]
 		pub fn claim_reward(
 			origin: OriginFor<T>,
