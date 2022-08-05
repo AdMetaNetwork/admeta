@@ -13,7 +13,9 @@ mod tests;
 pub mod pallet {
 	use admeta_common::{AdData, TargetTag};
 	use codec::{Decode, Encode};
-	use frame_support::{dispatch::DispatchResult, pallet_prelude::*, traits::Randomness};
+	use frame_support::{
+		dispatch::DispatchResult, pallet_prelude::*, traits::Randomness, BoundedVec,
+	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded};
@@ -26,7 +28,7 @@ pub mod pallet {
 		pub age: u8,
 		pub tag: TargetTag,
 		pub ad_display: bool,
-		pub matched_ads: Vec<(T::AccountId, T::AdIndex)>,
+		pub matched_ads: BoundedVec<(T::AccountId, T::AdIndex), T::MaxMatchedAds>,
 	}
 
 	#[pallet::config]
@@ -41,10 +43,17 @@ pub mod pallet {
 			+ Copy
 			+ MaxEncodedLen
 			+ Default;
+
+		/// Maximum number of matched ads per user
+		#[pallet::constant]
+		type MaxMatchedAds: Get<u32>;
 	}
 
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
+	// TODO This works only with solo chain, and all Vec in storage should be replaced by BoundVec
+	//      before parachain onboard. See: https://substrate.stackexchange.com/a/546/2962
+	#[pallet::without_storage_info]
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
@@ -66,6 +75,7 @@ pub mod pallet {
 		UserDoesNotExist,
 		AdNotForThisUser,
 		RewardClaimPaymentError,
+		MatchedAdsBoundaryExceeded,
 	}
 
 	#[pallet::hooks]
@@ -87,7 +97,13 @@ pub mod pallet {
 			if Users::<T>::contains_key(&who) {
 				Err(Error::<T>::UserAlreadyExists.into())
 			} else {
-				let user = User::<T> { age, tag, ad_display: false, matched_ads: Vec::new() };
+				let user = User::<T> {
+					age,
+					tag,
+					ad_display: false,
+					// try_into() should be always successful
+					matched_ads: Vec::new().try_into().unwrap(),
+				};
 				Users::<T>::insert(who.clone(), user);
 				Self::deposit_event(Event::NewUserAdded(who));
 				Ok(())
@@ -164,7 +180,9 @@ pub mod pallet {
 						// Push matched ad to user's matched_ad vector
 						Users::<T>::mutate(&iter.0, |user_op| {
 							if let Some(user) = user_op {
-								user.matched_ads.push((ad_proposer, ad_index));
+								user.matched_ads
+									.try_push((ad_proposer, ad_index))
+									.map_err(|_| Error::<T>::MatchedAdsBoundaryExceeded);
 							}
 						});
 					}

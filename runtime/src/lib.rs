@@ -9,17 +9,13 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 pub mod constants;
 pub use constants::currency::*;
 
-use frame_system::{EnsureOneOf, EnsureRoot};
+use frame_system::EnsureRoot;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList,
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use sp_core::{
-	crypto::KeyTypeId,
-	u32_trait::{_1, _2, _3, _4, _5},
-	OpaqueMetadata,
-};
+use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{
 	create_runtime_str, generic, impl_opaque_keys,
 	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
@@ -34,13 +30,14 @@ use sp_version::RuntimeVersion;
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
 	construct_runtime, parameter_types,
-	traits::{KeyOwnerProofSystem, PrivilegeCmp, Randomness, StorageInfo},
+	traits::{EitherOfDiverse, KeyOwnerProofSystem, PrivilegeCmp, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		IdentityFee, Weight,
+		ConstantMultiplier, IdentityFee, Weight,
 	},
 	PalletId, RuntimeDebug, StorageValue,
 };
+pub use frame_system::Call as SystemCall;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::CurrencyAdapter;
@@ -113,6 +110,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
+	state_version: 1,
 };
 
 /// This determines the average expected block time that we are targeting.
@@ -202,6 +200,7 @@ impl frame_system::Config for Runtime {
 	type SS58Prefix = SS58Prefix;
 	/// The set code logic, just the default since we're not a parachain.
 	type OnSetCode = ();
+	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
@@ -269,42 +268,45 @@ impl pallet_balances::Config for Runtime {
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
-	pub const ProposalBondMinimum: Balance = 1 * DOLLARS;
+	pub const ProposalBondMinimum: Balance = 100 * DOLLARS;
+	pub const ProposalBondMaximum: Balance = 500 * DOLLARS;
 	pub const SpendPeriod: BlockNumber = 7 * DAYS;
 	pub const Burn: Permill = Permill::from_percent(0);
 	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
+
 	pub const MaxApprovals: u32 = 100;
 }
 
 impl pallet_treasury::Config for Runtime {
 	type PalletId = TreasuryPalletId;
 	type Currency = Balances;
-	type ApproveOrigin = EnsureOneOf<
-		AccountId,
+	type ApproveOrigin = EitherOfDiverse<
 		EnsureRoot<AccountId>,
-		pallet_collective::EnsureProportionAtLeast<_3, _5, AccountId, CouncilCollective>,
+		pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 3, 5>,
 	>;
-	type RejectOrigin = EnsureOneOf<
-		AccountId,
+	type RejectOrigin = EitherOfDiverse<
 		EnsureRoot<AccountId>,
-		pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+		pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 	>;
 	type Event = Event;
 	type OnSlash = ();
 	type ProposalBond = ProposalBond;
 	type ProposalBondMinimum = ProposalBondMinimum;
+	type ProposalBondMaximum = ProposalBondMaximum;
 	type SpendPeriod = SpendPeriod;
 	type Burn = Burn;
 	type BurnDestination = ();
 	type SpendFunds = ();
 	type WeightInfo = pallet_treasury::weights::SubstrateWeight<Runtime>;
 	type MaxApprovals = MaxApprovals;
+	type SpendOrigin = frame_support::traits::NeverEnsureOrigin<Balance>;
 }
 
 parameter_types! {
 	pub MaximumSchedulerWeight: Weight = Perbill::from_percent(80) *
 		BlockWeights::get().max_block;
 	pub const MaxScheduledPerBlock: u32 = 50;
+	pub const NoPreimagePostponement: Option<u32> = Some(10);
 }
 
 /// Used the compare the privilege of an origin inside the scheduler.
@@ -340,6 +342,24 @@ impl pallet_scheduler::Config for Runtime {
 	type MaxScheduledPerBlock = MaxScheduledPerBlock;
 	type WeightInfo = pallet_scheduler::weights::SubstrateWeight<Runtime>;
 	type OriginPrivilegeCmp = OriginPrivilegeCmp;
+	type PreimageProvider = Preimage;
+	type NoPreimagePostponement = NoPreimagePostponement;
+}
+
+parameter_types! {
+	pub const PreimageMaxSize: u32 = 4096 * 1024;
+	pub const PreimageBaseDeposit: Balance = deposit(2, 64);
+	pub const PreimageByteDeposit: Balance = deposit(0, 1);
+}
+
+impl pallet_preimage::Config for Runtime {
+	type WeightInfo = pallet_preimage::weights::SubstrateWeight<Runtime>;
+	type Event = Event;
+	type Currency = Balances;
+	type ManagerOrigin = EnsureRoot<AccountId>;
+	type MaxSize = PreimageMaxSize;
+	type BaseDeposit = PreimageBaseDeposit;
+	type ByteDeposit = PreimageByteDeposit;
 }
 
 parameter_types! {
@@ -350,7 +370,6 @@ parameter_types! {
 	pub const MinimumDeposit: Balance = 100 * DOLLARS;
 	pub const EnactmentPeriod: BlockNumber = 2 * DAYS;
 	pub const CooloffPeriod: BlockNumber = 7 * DAYS;
-	pub const PreimageByteDeposit: Balance = deposit(0, 1);
 	pub const MaxVotes: u32 = 100;
 	pub const MaxProposals: u32 = 100;
 }
@@ -366,31 +385,30 @@ impl pallet_democracy::Config for Runtime {
 	type MinimumDeposit = MinimumDeposit;
 	/// A straight majority of the council can decide what their next motion is.
 	type ExternalOrigin =
-		pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 1, 2>;
 	/// A super-majority can have the next scheduled referendum be a straight majority-carries vote.
 	type ExternalMajorityOrigin =
-		pallet_collective::EnsureProportionAtLeast<_3, _4, AccountId, CouncilCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 3, 4>;
 	/// A unanimous council can have the next scheduled referendum be a straight default-carries
 	/// (NTB) vote.
 	type ExternalDefaultOrigin =
-		pallet_collective::EnsureProportionAtLeast<_1, _1, AccountId, CouncilCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 1, 1>;
 	/// Two thirds of the technical committee can have an ExternalMajority/ExternalDefault vote
 	/// be tabled immediately and with a shorter voting/enactment period.
 	type FastTrackOrigin =
-		pallet_collective::EnsureProportionAtLeast<_2, _3, AccountId, TechnicalCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, TechnicalCollective, 2, 3>;
 	type InstantOrigin =
-		pallet_collective::EnsureProportionAtLeast<_1, _1, AccountId, TechnicalCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, TechnicalCollective, 1, 1>;
 	type InstantAllowed = InstantAllowed;
 	type FastTrackVotingPeriod = FastTrackVotingPeriod;
 	// To cancel a proposal which has been passed, 2/3 of the council must agree to it.
 	type CancellationOrigin =
-		pallet_collective::EnsureProportionAtLeast<_2, _3, AccountId, CouncilCollective>;
+		pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 2, 3>;
 	// To cancel a proposal before it has been passed, the technical committee must be unanimous or
 	// Root must agree.
-	type CancelProposalOrigin = EnsureOneOf<
-		AccountId,
+	type CancelProposalOrigin = EitherOfDiverse<
 		EnsureRoot<AccountId>,
-		pallet_collective::EnsureProportionAtLeast<_1, _1, AccountId, TechnicalCollective>,
+		pallet_collective::EnsureProportionAtLeast<AccountId, TechnicalCollective, 1, 1>,
 	>;
 	type BlacklistOrigin = EnsureRoot<AccountId>;
 	// Any single technical committee member may veto a coming council proposal, however they can
@@ -424,10 +442,9 @@ impl pallet_collective::Config<CouncilCollective> for Runtime {
 	type DefaultVote = pallet_collective::PrimeDefaultVote;
 	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
 }
-type EnsureRootOrHalfCouncil = EnsureOneOf<
-	AccountId,
+type EnsureRootOrHalfCouncil = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 >;
 impl pallet_membership::Config<pallet_membership::Instance1> for Runtime {
 	type Event = Event;
@@ -479,10 +496,11 @@ parameter_types! {
 }
 
 impl pallet_transaction_payment::Config for Runtime {
+	type Event = Event;
 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-	type TransactionByteFee = TransactionByteFee;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
 	type WeightToFee = IdentityFee<Balance>;
+	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
 	type FeeMultiplierUpdate = ();
 }
 
@@ -493,19 +511,19 @@ impl pallet_sudo::Config for Runtime {
 
 parameter_types! {
 	pub const MaxAdDataLength: u32 = 10000;
+	pub const MaxAdTags: u32 = 5;
+	pub const MaxMatchedAds: u32 = 3;
 	pub const AdDepositBase: Balance = 1 * DOLLARS;
 	pub const AdDepositPerByte: Balance = 1 * CENTS;
 }
 
-type ApproveOrigin = EnsureOneOf<
-	AccountId,
+type ApproveOrigin = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionAtLeast<_3, _5, AccountId, CouncilCollective>,
+	pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 3, 5>,
 >;
-type RejectOrigin = EnsureOneOf<
-	AccountId,
+type RejectOrigin = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 >;
 type AdIndexType = u32;
 
@@ -521,6 +539,7 @@ impl pallet_ad::Config for Runtime {
 	type MaxAdDataLength = MaxAdDataLength;
 	type AdDepositBase = AdDepositBase;
 	type AdDepositPerByte = AdDepositPerByte;
+	type MaxAdTags = MaxAdTags;
 }
 
 impl pallet_user_mock::Config for Runtime {
@@ -528,6 +547,7 @@ impl pallet_user_mock::Config for Runtime {
 	type Randomness = RandomnessCollectiveFlip;
 	type AdData = Ad;
 	type AdIndex = AdIndexType;
+	type MaxMatchedAds = MaxMatchedAds;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -545,6 +565,8 @@ construct_runtime!(
 		Balances: pallet_balances,
 		Treasury: pallet_treasury,
 		Scheduler: pallet_scheduler,
+		Preimage: pallet_preimage,
+
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
 
@@ -569,6 +591,7 @@ pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
+	frame_system::CheckNonZeroSender<Runtime>,
 	frame_system::CheckSpecVersion<Runtime>,
 	frame_system::CheckTxVersion<Runtime>,
 	frame_system::CheckGenesis<Runtime>,
@@ -579,13 +602,16 @@ pub type SignedExtra = (
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
+/// The payload being signed in transactions.
+pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
 /// Executive: handles dispatch to the various modules.
 pub type Executive = frame_executive::Executive<
 	Runtime,
 	Block,
 	frame_system::ChainContext<Runtime>,
 	Runtime,
-	AllPallets,
+	AllPalletsWithSystem,
+	(),
 >;
 
 impl_runtime_apis! {
@@ -737,6 +763,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_treasury, Treasury);
 			list_benchmark!(list, extra, pallet_scheduler, Scheduler);
+			list_benchmark!(list, extra, pallet_preimage, Preimage);
 			list_benchmark!(list, extra, pallet_democracy, Democracy);
 			list_benchmark!(list, extra, pallet_collective, Council);
 			list_benchmark!(list, extra, pallet_membership, CouncilMembership);
@@ -781,6 +808,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_treasury, Treasury);
 			add_benchmark!(params, batches, pallet_scheduler, Scheduler);
+			add_benchmark!(params, batches, pallet_preimage, Preimage);
 			add_benchmark!(params, batches, pallet_democracy, Democracy);
 			add_benchmark!(params, batches, pallet_collective, Council);
 			add_benchmark!(params, batches, pallet_membership, CouncilMembership);
