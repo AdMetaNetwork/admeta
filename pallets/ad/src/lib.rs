@@ -23,13 +23,14 @@ pub mod pallet {
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
 	use sp_std::prelude::*;
 
-	pub type Url<T: Config> = BoundedVec<u8, T::MaxAdDataLength>;
 	pub type BlockNumberOf<T> = <T as frame_system::Config>::BlockNumber;
 	pub type BalanceOf<T> =
 		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
 	pub type NegativeImbalanceOf<T> = <<T as Config>::Currency as Currency<
 		<T as frame_system::Config>::AccountId,
 	>>::NegativeImbalance;
+
+	pub type Url<T> = BoundedVec<u8, <T as Config>::MaxAdDataLength>;
 
 	/// This defines impression ads, which pays by CPI
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]

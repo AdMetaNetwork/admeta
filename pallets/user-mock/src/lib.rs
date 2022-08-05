@@ -173,16 +173,16 @@ pub mod pallet {
 		fn do_matching(block_number: T::BlockNumber) {
 			for iter in Users::<T>::iter() {
 				// Start matching if there is no matched ads and ad_display is true
-				if iter.1.matched_ads.is_empty() && iter.1.ad_display {
+				if (iter.1.matched_ads.len() as u32) < T::MaxMatchedAds::get() && iter.1.ad_display
+				{
 					if let Some((ad_proposer, ad_index)) =
 						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number)
 					{
 						// Push matched ad to user's matched_ad vector
 						Users::<T>::mutate(&iter.0, |user_op| {
 							if let Some(user) = user_op {
-								user.matched_ads
-									.try_push((ad_proposer, ad_index))
-									.map_err(|_| Error::<T>::MatchedAdsBoundaryExceeded);
+								// Err should never thrown here
+								let _ = user.matched_ads.try_push((ad_proposer, ad_index));
 							}
 						});
 					}
