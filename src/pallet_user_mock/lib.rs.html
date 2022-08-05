@@ -175,6 +175,23 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 
@@ -190,20 +207,22 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pallet</span> {
 	<span class="kw">use</span> <span class="ident">admeta_common</span>::{<span class="ident">AdData</span>, <span class="ident">TargetTag</span>};
 	<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">dispatch::DispatchResult</span>, <span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>, <span class="ident">traits::Randomness</span>};
+	<span class="kw">use</span> <span class="ident">frame_support</span>::{
+		<span class="ident">dispatch::DispatchResult</span>, <span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>, <span class="ident">traits::Randomness</span>, <span class="ident">BoundedVec</span>,
+	};
 	<span class="kw">use</span> <span class="ident">frame_system::pallet_prelude</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 	<span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AtLeast32BitUnsigned</span>, <span class="ident">Bounded</span>};
 	<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
 
 	<span class="doccomment">/// This defines user</span>
-	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
+	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>, <span class="ident">MaxEncodedLen</span>)]</span>
 	<span class="attribute">#[<span class="ident">scale_info</span>(<span class="ident">skip_type_params</span>(<span class="ident">T</span>))]</span>
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">User</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
 		<span class="kw">pub</span> <span class="ident">age</span>: <span class="ident">u8</span>,
 		<span class="kw">pub</span> <span class="ident">tag</span>: <span class="ident">TargetTag</span>,
 		<span class="kw">pub</span> <span class="ident">ad_display</span>: <span class="ident">bool</span>,
-		<span class="kw">pub</span> <span class="ident">matched_ads</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>)<span class="op">&gt;</span>,
+		<span class="kw">pub</span> <span class="ident">matched_ads</span>: <span class="ident">BoundedVec</span><span class="op">&lt;</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>), <span class="ident">T::MaxMatchedAds</span><span class="op">&gt;</span>,
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::config</span>]</span>
@@ -218,6 +237,10 @@
 			<span class="op">+</span> <span class="ident">Copy</span>
 			<span class="op">+</span> <span class="ident">MaxEncodedLen</span>
 			<span class="op">+</span> <span class="ident">Default</span>;
+
+		<span class="doccomment">/// Maximum number of matched ads per user</span>
+		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
+		<span class="kw">type</span> <span class="ident">MaxMatchedAds</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>
@@ -247,46 +270,55 @@
 
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="doccomment">/// Matching happens in every block&#39;s on_finalize() function</span>
-		<span class="kw">fn</span> <span class="ident">on_finalize</span>(<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>) {
-			<span class="macro">log::info!</span>(<span class="string">&quot;Finalizing Block #{:?}.&quot;</span>, <span class="ident">block_number</span>);
+		<span class="doccomment">/// Matching happens in every block&#39;s on_idle() function, to avoid congestion</span>
+		<span class="kw">fn</span> <span class="ident">on_idle</span>(<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>, <span class="ident">remaining_weight</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">Weight</span> {
+			<span class="macro">log::info!</span>(<span class="string">&quot;on_idle #{:?}, {:?})&quot;</span>, <span class="ident">block_number</span>, <span class="ident">remaining_weight</span>);
 			<span class="ident"><span class="self">Self</span>::do_matching</span>(<span class="ident">block_number</span>);
+			<span class="comment">// TODO calculate the actual consumed weights</span>
+			<span class="number">300</span>
 		}
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::call</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_profile</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">age</span>: <span class="ident">u8</span>, <span class="ident">tag</span>: <span class="ident">TargetTag</span>) -&gt; <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_profile</span>(
+			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">age</span>: <span class="ident">u8</span>,
+			<span class="ident">tag</span>: <span class="ident">TargetTag</span>,
+			<span class="ident">ad_display</span>: <span class="ident">bool</span>,
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="comment">// Check if user exists</span>
 			<span class="kw">if</span> <span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>) {
-				<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::UserAlreadyExists</span>.<span class="ident">into</span>())
+				<span class="comment">// Update user profile if user already exists</span>
+				<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
+					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
+						<span class="ident">user</span>.<span class="ident">age</span> <span class="op">=</span> <span class="ident">age</span>;
+						<span class="ident">user</span>.<span class="ident">tag</span> <span class="op">=</span> <span class="ident">tag</span>;
+						<span class="ident">user</span>.<span class="ident">ad_display</span> <span class="op">=</span> <span class="ident">ad_display</span>;
+						<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::UserSetAdDisplay</span>(<span class="ident">who</span>, <span class="ident">ad_display</span>));
+						<span class="prelude-val">Ok</span>(())
+					} <span class="kw">else</span> {
+						<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::UserDoesNotExist</span>)
+					}
+				})<span class="question-mark">?</span>;
+				<span class="prelude-val">Ok</span>(())
 			} <span class="kw">else</span> {
-				<span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">User</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> { <span class="ident">age</span>, <span class="ident">tag</span>, <span class="ident">ad_display</span>: <span class="bool-val">false</span>, <span class="ident">matched_ads</span>: <span class="ident">Vec::new</span>() };
+				<span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">User</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+					<span class="ident">age</span>,
+					<span class="ident">tag</span>,
+					<span class="ident">ad_display</span>,
+					<span class="comment">// try_into() should be always successful</span>
+					<span class="ident">matched_ads</span>: <span class="ident">Vec::new</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+				};
 				<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="ident">user</span>);
 				<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::NewUserAdded</span>(<span class="ident">who</span>));
 				<span class="prelude-val">Ok</span>(())
 			}
 		}
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ad_display</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">ad_display</span>: <span class="ident">bool</span>) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
-			<span class="comment">// Set ad_display</span>
-			<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
-				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
-					<span class="ident">user</span>.<span class="ident">ad_display</span> <span class="op">=</span> <span class="ident">ad_display</span>;
-					<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::UserSetAdDisplay</span>(<span class="ident">who</span>, <span class="ident">ad_display</span>));
-					<span class="prelude-val">Ok</span>(())
-				} <span class="kw">else</span> {
-					<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::UserDoesNotExist</span>)
-				}
-			})<span class="question-mark">?</span>;
-
-			<span class="prelude-val">Ok</span>(())
-		}
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100</span>)]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">claim_reward</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
@@ -334,14 +366,16 @@
 		<span class="kw">fn</span> <span class="ident">do_matching</span>(<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>) {
 			<span class="kw">for</span> <span class="ident">iter</span> <span class="kw">in</span> <span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::iter</span>() {
 				<span class="comment">// Start matching if there is no matched ads and ad_display is true</span>
-				<span class="kw">if</span> <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">matched_ads</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">ad_display</span> {
+				<span class="kw">if</span> (<span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">matched_ads</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span> <span class="ident">T::MaxMatchedAds::get</span>() <span class="op">&amp;&amp;</span> <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">ad_display</span>
+				{
 					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">ad_proposer</span>, <span class="ident">ad_index</span>)) <span class="op">=</span>
 						<span class="ident">T::AdData::match_ad_for_user</span>(<span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">age</span>, <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">tag</span>, <span class="ident">block_number</span>)
 					{
 						<span class="comment">// Push matched ad to user&#39;s matched_ad vector</span>
 						<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="kw-2">&amp;</span><span class="ident">iter</span>.<span class="number">0</span>, <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
 							<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
-								<span class="ident">user</span>.<span class="ident">matched_ads</span>.<span class="ident">push</span>((<span class="ident">ad_proposer</span>, <span class="ident">ad_index</span>));
+								<span class="comment">// Err should never thrown here</span>
+								<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">matched_ads</span>.<span class="ident">try_push</span>((<span class="ident">ad_proposer</span>, <span class="ident">ad_index</span>));
 							}
 						});
 					}
@@ -353,4 +387,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_user_mock" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (4493a0f47 2022-08-02)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_user_mock" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (f6f9d5e73 2022-08-04)" ></div></body></html>

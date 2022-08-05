@@ -174,6 +174,9 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">admeta_runtime</span>::{
 	<span class="ident">AccountId</span>, <span class="ident">AuraConfig</span>, <span class="ident">BalancesConfig</span>, <span class="ident">CouncilMembershipConfig</span>, <span class="ident">GenesisConfig</span>, <span class="ident">GrandpaConfig</span>,
 	<span class="ident">Signature</span>, <span class="ident">SudoConfig</span>, <span class="ident">SystemConfig</span>, <span class="ident">TechnicalCommitteeMembershipConfig</span>, <span class="ident">WASM_BINARY</span>,
@@ -182,7 +185,10 @@
 <span class="kw">use</span> <span class="ident">sp_consensus_aura::sr25519::AuthorityId</span> <span class="kw">as</span> <span class="ident">AuraId</span>;
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">sr25519</span>, <span class="ident">Pair</span>, <span class="ident">Public</span>};
 <span class="kw">use</span> <span class="ident">sp_finality_grandpa::AuthorityId</span> <span class="kw">as</span> <span class="ident">GrandpaId</span>;
-<span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">IdentifyAccount</span>, <span class="ident">Verify</span>};
+<span class="kw">use</span> <span class="ident">sp_runtime</span>::{
+	<span class="ident">bounded_vec</span>,
+	<span class="ident">traits</span>::{<span class="ident">IdentifyAccount</span>, <span class="ident">Verify</span>},
+};
 
 <span class="comment">// The URL for the telemetry server.</span>
 <span class="comment">// const STAGING_TELEMETRY_URL: &amp;str = &quot;wss://telemetry.polkadot.io/submit/&quot;;</span>
@@ -244,6 +250,7 @@
 		<span class="prelude-val">None</span>,
 		<span class="comment">// Protocol ID</span>
 		<span class="prelude-val">None</span>,
+		<span class="prelude-val">None</span>,
 		<span class="comment">// Properties</span>
 		<span class="prelude-val">None</span>,
 		<span class="comment">// Extensions</span>
@@ -293,6 +300,7 @@
 		<span class="prelude-val">None</span>,
 		<span class="comment">// Properties</span>
 		<span class="prelude-val">None</span>,
+		<span class="prelude-val">None</span>,
 		<span class="comment">// Extensions</span>
 		<span class="prelude-val">None</span>,
 	))
@@ -310,13 +318,11 @@
 		<span class="ident">system</span>: <span class="ident">SystemConfig</span> {
 			<span class="comment">// Add Wasm runtime to storage.</span>
 			<span class="ident">code</span>: <span class="ident">wasm_binary</span>.<span class="ident">to_vec</span>(),
-			<span class="ident">changes_trie_config</span>: <span class="ident">Default::default</span>(),
 		},
 		<span class="ident">balances</span>: <span class="ident">BalancesConfig</span> {
 			<span class="comment">// Configure endowed accounts with initial balance of 1 &lt;&lt; 60.</span>
 			<span class="ident">balances</span>: <span class="ident">endowed_accounts</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> (<span class="ident">k</span>, <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">60</span>)).<span class="ident">collect</span>(),
 		},
-		<span class="ident">scheduler</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">aura</span>: <span class="ident">AuraConfig</span> {
 			<span class="ident">authorities</span>: <span class="ident">initial_authorities</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="ident">x</span>.<span class="number">0</span>.<span class="ident">clone</span>())).<span class="ident">collect</span>(),
 		},
@@ -325,13 +331,13 @@
 		},
 		<span class="ident">sudo</span>: <span class="ident">SudoConfig</span> {
 			<span class="comment">// Assign network admin rights.</span>
-			<span class="ident">key</span>: <span class="ident">root_key</span>,
+			<span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>),
 		},
 		<span class="ident">transaction_payment</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">democracy</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">council</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">council_membership</span>: <span class="ident">CouncilMembershipConfig</span> {
-			<span class="ident">members</span>: <span class="macro">vec!</span>[
+			<span class="ident">members</span>: <span class="macro">bounded_vec!</span>[
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Eve&quot;</span>),
@@ -340,7 +346,7 @@
 		},
 		<span class="ident">technical_committee</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">technical_committee_membership</span>: <span class="ident">TechnicalCommitteeMembershipConfig</span> {
-			<span class="ident">members</span>: <span class="macro">vec!</span>[
+			<span class="ident">members</span>: <span class="macro">bounded_vec!</span>[
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
 				<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Eve&quot;</span>),
@@ -351,4 +357,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="admeta" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (4493a0f47 2022-08-02)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="admeta" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (f6f9d5e73 2022-08-04)" ></div></body></html>

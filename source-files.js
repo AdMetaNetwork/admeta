@@ -1,7 +1,8 @@
-var sourcesIndex = {};
-sourcesIndex["admeta"] = {"name":"","files":["chain_spec.rs","lib.rs","rpc.rs","service.rs"]};
-sourcesIndex["admeta_common"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["admeta_runtime"] = {"name":"","files":["constants.rs","lib.rs"]};
-sourcesIndex["pallet_ad"] = {"name":"","files":["lib.rs"]};
-sourcesIndex["pallet_user_mock"] = {"name":"","files":["lib.rs"]};
+var sourcesIndex = JSON.parse('{\
+"admeta":["",[],["chain_spec.rs","lib.rs","rpc.rs","service.rs"]],\
+"admeta_common":["",[],["lib.rs"]],\
+"admeta_runtime":["",[],["constants.rs","lib.rs"]],\
+"pallet_ad":["",[],["lib.rs"]],\
+"pallet_user_mock":["",[],["lib.rs"]]\
+}');
 createSourceSidebar();
