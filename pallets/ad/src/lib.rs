@@ -102,9 +102,6 @@ pub mod pallet {
 
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
-	// TODO This works only with solo chain, and all Vec in storage should be replaced by BoundVec
-	//      before parachain onboard. See: https://substrate.stackexchange.com/a/546/2962
-	#[pallet::without_storage_info]
 	pub struct Pallet<T>(_);
 
 	/// Number of ad proposals that have been made.

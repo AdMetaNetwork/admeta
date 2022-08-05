@@ -22,7 +22,7 @@ pub mod pallet {
 	use sp_std::prelude::*;
 
 	/// This defines user
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	pub struct User<T: Config> {
 		pub age: u8,
@@ -51,9 +51,6 @@ pub mod pallet {
 
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
-	// TODO This works only with solo chain, and all Vec in storage should be replaced by BoundVec
-	//      before parachain onboard. See: https://substrate.stackexchange.com/a/546/2962
-	#[pallet::without_storage_info]
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
