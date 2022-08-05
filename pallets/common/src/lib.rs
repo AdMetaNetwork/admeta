@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-use codec::{Decode, Encode};
-use frame_support::pallet_prelude::*;
+use codec::{Decode, Encode, MaxEncodedLen};
+use frame_support::{pallet_prelude::*, traits::ConstU32, BoundedVec};
 use scale_info::TypeInfo;
 use sp_std::prelude::*;
 
@@ -18,7 +18,7 @@ pub trait AdData<BlockNumberType, AdIndexType, AccountIdType> {
 	) -> DispatchResult;
 }
 
-#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 pub struct ValueRange {
 	min: u8,
 	max: u8,
@@ -35,7 +35,7 @@ impl ValueRange {
 	}
 }
 
-#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 pub enum TargetTag {
 	DeFi,
 	GameFi,
@@ -43,8 +43,8 @@ pub enum TargetTag {
 }
 
 /// This struct specifies what kinds of conditions the target group should fulfill
-#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 pub struct AdPreference {
 	pub age: ValueRange,
-	pub tags: Vec<TargetTag>,
+	pub tags: BoundedVec<TargetTag, ConstU32<4>>, // Max 4 tags bounded
 }

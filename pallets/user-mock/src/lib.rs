@@ -13,20 +13,22 @@ mod tests;
 pub mod pallet {
 	use admeta_common::{AdData, TargetTag};
 	use codec::{Decode, Encode};
-	use frame_support::{dispatch::DispatchResult, pallet_prelude::*, traits::Randomness};
+	use frame_support::{
+		dispatch::DispatchResult, pallet_prelude::*, traits::Randomness, BoundedVec,
+	};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded};
 	use sp_std::prelude::*;
 
 	/// This defines user
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	pub struct User<T: Config> {
 		pub age: u8,
 		pub tag: TargetTag,
 		pub ad_display: bool,
-		pub matched_ads: Vec<(T::AccountId, T::AdIndex)>,
+		pub matched_ads: BoundedVec<(T::AccountId, T::AdIndex), T::MaxMatchedAds>,
 	}
 
 	#[pallet::config]
@@ -41,6 +43,10 @@ pub mod pallet {
 			+ Copy
 			+ MaxEncodedLen
 			+ Default;
+
+		/// Maximum number of matched ads per user
+		#[pallet::constant]
+		type MaxMatchedAds: Get<u32>;
 	}
 
 	#[pallet::pallet]
@@ -66,14 +72,17 @@ pub mod pallet {
 		UserDoesNotExist,
 		AdNotForThisUser,
 		RewardClaimPaymentError,
+		MatchedAdsBoundaryExceeded,
 	}
 
 	#[pallet::hooks]
 	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
-		/// Matching happens in every block's on_finalize() function
-		fn on_finalize(block_number: T::BlockNumber) {
-			log::info!("Finalizing Block #{:?}.", block_number);
+		/// Matching happens in every block's on_idle() function, to avoid congestion
+		fn on_idle(block_number: T::BlockNumber, remaining_weight: Weight) -> Weight {
+			log::info!("on_idle #{:?}, {:?})", block_number, remaining_weight);
 			Self::do_matching(block_number);
+			// TODO calculate the actual consumed weights
+			300
 		}
 	}
 
@@ -87,7 +96,13 @@ pub mod pallet {
 			if Users::<T>::contains_key(&who) {
 				Err(Error::<T>::UserAlreadyExists.into())
 			} else {
-				let user = User::<T> { age, tag, ad_display: false, matched_ads: Vec::new() };
+				let user = User::<T> {
+					age,
+					tag,
+					ad_display: false,
+					// try_into() should be always successful
+					matched_ads: Vec::new().try_into().unwrap(),
+				};
 				Users::<T>::insert(who.clone(), user);
 				Self::deposit_event(Event::NewUserAdded(who));
 				Ok(())
@@ -157,14 +172,16 @@ pub mod pallet {
 		fn do_matching(block_number: T::BlockNumber) {
 			for iter in Users::<T>::iter() {
 				// Start matching if there is no matched ads and ad_display is true
-				if iter.1.matched_ads.is_empty() && iter.1.ad_display {
+				if (iter.1.matched_ads.len() as u32) < T::MaxMatchedAds::get() && iter.1.ad_display
+				{
 					if let Some((ad_proposer, ad_index)) =
 						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number)
 					{
 						// Push matched ad to user's matched_ad vector
 						Users::<T>::mutate(&iter.0, |user_op| {
 							if let Some(user) = user_op {
-								user.matched_ads.push((ad_proposer, ad_index));
+								// Err should never thrown here
+								let _ = user.matched_ads.try_push((ad_proposer, ad_index));
 							}
 						});
 					}

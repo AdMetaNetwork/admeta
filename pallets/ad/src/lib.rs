@@ -12,7 +12,7 @@ mod tests;
 #[frame_support::pallet]
 pub mod pallet {
 	use admeta_common::{AdData, AdPreference, TargetTag};
-	use codec::{Decode, Encode};
+	use codec::{Decode, Encode, MaxEncodedLen};
 	use frame_support::{
 		dispatch::DispatchResult,
 		pallet_prelude::*,
@@ -23,7 +23,6 @@ pub mod pallet {
 	use sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
 	use sp_std::prelude::*;
 
-	pub type Url = Vec<u8>;
 	pub type BlockNumberOf<T> = <T as frame_system::Config>::BlockNumber;
 	pub type BalanceOf<T> =
 		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
@@ -31,16 +30,18 @@ pub mod pallet {
 		<T as frame_system::Config>::AccountId,
 	>>::NegativeImbalance;
 
+	pub type Url<T> = BoundedVec<u8, <T as Config>::MaxAdDataLength>;
+
 	/// This defines impression ads, which pays by CPI
-	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo)]
+	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	pub struct ImpressionAd<T: Config> {
 		// The account who proposed this ad
 		pub proposer: T::AccountId,
 		// The URL where this ad's metadata stores
-		pub metadata: Url,
+		pub metadata: Url<T>,
 		// The target URL where it redirects to when user clicks this ad
-		pub target: Url,
+		pub target: Url<T>,
 		// The bond reserved for this ad
 		pub bond: BalanceOf<T>,
 		// The cost per impression (CPI)
@@ -83,9 +84,12 @@ pub mod pallet {
 		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
 
 		/// Maximum acceptable Ad metadata length
-
 		#[pallet::constant]
 		type MaxAdDataLength: Get<u32>;
+
+		/// Maximum num of tags per Ad
+		#[pallet::constant]
+		type MaxAdTags: Get<u32>;
 
 		/// The base deposit amount of an ad proposal
 		#[pallet::constant]
@@ -150,8 +154,8 @@ pub mod pallet {
 		#[pallet::weight(10_000)]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
-			ad_url: Url,
-			target_url: Url,
+			ad_url: Url<T>,
+			target_url: Url<T>,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
@@ -262,8 +266,8 @@ pub mod pallet {
 		/// Create an ad proposal
 		fn create_proposal(
 			who: T::AccountId,
-			ad_url: Url,
-			target_url: Url,
+			ad_url: Url<T>,
+			target_url: Url<T>,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
