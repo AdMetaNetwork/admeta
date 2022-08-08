@@ -30,7 +30,7 @@ pub mod pallet {
 		<T as frame_system::Config>::AccountId,
 	>>::NegativeImbalance;
 
-	pub type Url<T> = BoundedVec<u8, <T as Config>::MaxAdDataLength>;
+	pub type GeneralData<T> = BoundedVec<u8, <T as Config>::MaxAdDataLength>;
 
 	/// This defines impression ads, which pays by CPI
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
@@ -39,9 +39,11 @@ pub mod pallet {
 		// The account who proposed this ad
 		pub proposer: T::AccountId,
 		// The URL where this ad's metadata stores
-		pub metadata: Url<T>,
+		pub metadata: GeneralData<T>,
 		// The target URL where it redirects to when user clicks this ad
-		pub target: Url<T>,
+		pub target: GeneralData<T>,
+		// The title of this ad
+		pub title: GeneralData<T>,
 		// The bond reserved for this ad
 		pub bond: BalanceOf<T>,
 		// The cost per impression (CPI)
@@ -154,8 +156,9 @@ pub mod pallet {
 		#[pallet::weight(10_000)]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
-			ad_url: Url<T>,
-			target_url: Url<T>,
+			ad_url: GeneralData<T>,
+			target_url: GeneralData<T>,
+			title: GeneralData<T>,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
@@ -163,7 +166,16 @@ pub mod pallet {
 		) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
-			Self::create_proposal(who, ad_url, target_url, cpi, amount, end_block, ad_preference)?;
+			Self::create_proposal(
+				who,
+				ad_url,
+				target_url,
+				title,
+				cpi,
+				amount,
+				end_block,
+				ad_preference,
+			)?;
 
 			Ok(())
 		}
@@ -266,8 +278,9 @@ pub mod pallet {
 		/// Create an ad proposal
 		fn create_proposal(
 			who: T::AccountId,
-			ad_url: Url<T>,
-			target_url: Url<T>,
+			ad_url: GeneralData<T>,
+			target_url: GeneralData<T>,
+			title: GeneralData<T>,
 			cpi: BalanceOf<T>,
 			amount: u32,
 			end_block: BlockNumberOf<T>,
@@ -291,6 +304,7 @@ pub mod pallet {
 				proposer: who.clone(),
 				metadata: ad_url,
 				target: target_url,
+				title,
 				bond,
 				cpi,
 				amount,
