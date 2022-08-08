@@ -510,7 +510,7 @@ impl pallet_sudo::Config for Runtime {
 }
 
 parameter_types! {
-	pub const MaxAdDataLength: u32 = 10000;
+	pub const MaxAdDataLength: u32 = 200;
 	pub const MaxAdTags: u32 = 5;
 	pub const MaxMatchedAds: u32 = 3;
 	pub const AdDepositBase: Balance = 1 * DOLLARS;
