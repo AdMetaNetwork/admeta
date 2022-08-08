@@ -308,6 +308,20 @@
 <span id="308">308</span>
 <span id="309">309</span>
 <span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 
@@ -340,7 +354,7 @@
 		<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::AccountId</span>,
 	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::NegativeImbalance</span>;
 
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BoundedVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::MaxAdDataLength</span><span class="op">&gt;</span>;
+	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BoundedVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::MaxAdDataLength</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// This defines impression ads, which pays by CPI</span>
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>, <span class="ident">MaxEncodedLen</span>)]</span>
@@ -349,9 +363,11 @@
 		<span class="comment">// The account who proposed this ad</span>
 		<span class="kw">pub</span> <span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
 		<span class="comment">// The URL where this ad&#39;s metadata stores</span>
-		<span class="kw">pub</span> <span class="ident">metadata</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+		<span class="kw">pub</span> <span class="ident">metadata</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 		<span class="comment">// The target URL where it redirects to when user clicks this ad</span>
-		<span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+		<span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+		<span class="comment">// The title of this ad</span>
+		<span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 		<span class="comment">// The bond reserved for this ad</span>
 		<span class="kw">pub</span> <span class="ident">bond</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 		<span class="comment">// The cost per impression (CPI)</span>
@@ -464,8 +480,9 @@
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">propose_ad</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">ad_url</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">target_url</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">ad_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">target_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">cpi</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">amount</span>: <span class="ident">u32</span>,
 			<span class="ident">end_block</span>: <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
@@ -473,7 +490,16 @@
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
-			<span class="ident"><span class="self">Self</span>::create_proposal</span>(<span class="ident">who</span>, <span class="ident">ad_url</span>, <span class="ident">target_url</span>, <span class="ident">cpi</span>, <span class="ident">amount</span>, <span class="ident">end_block</span>, <span class="ident">ad_preference</span>)<span class="question-mark">?</span>;
+			<span class="ident"><span class="self">Self</span>::create_proposal</span>(
+				<span class="ident">who</span>,
+				<span class="ident">ad_url</span>,
+				<span class="ident">target_url</span>,
+				<span class="ident">title</span>,
+				<span class="ident">cpi</span>,
+				<span class="ident">amount</span>,
+				<span class="ident">end_block</span>,
+				<span class="ident">ad_preference</span>,
+			)<span class="question-mark">?</span>;
 
 			<span class="prelude-val">Ok</span>(())
 		}
@@ -576,8 +602,9 @@
 		<span class="doccomment">/// Create an ad proposal</span>
 		<span class="kw">fn</span> <span class="ident">create_proposal</span>(
 			<span class="ident">who</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_url</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">target_url</span>: <span class="ident">Url</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">ad_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">target_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">cpi</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">amount</span>: <span class="ident">u32</span>,
 			<span class="ident">end_block</span>: <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
@@ -601,6 +628,7 @@
 				<span class="ident">proposer</span>: <span class="ident">who</span>.<span class="ident">clone</span>(),
 				<span class="ident">metadata</span>: <span class="ident">ad_url</span>,
 				<span class="ident">target</span>: <span class="ident">target_url</span>,
+				<span class="ident">title</span>,
 				<span class="ident">bond</span>,
 				<span class="ident">cpi</span>,
 				<span class="ident">amount</span>,
@@ -619,4 +647,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (f6f9d5e73 2022-08-04)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (d394408fb 2022-08-07)" ></div></body></html>
