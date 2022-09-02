@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["admeta_runtime"] = [{"text":"impl <a class=\"trait\" href=\"admeta_runtime/trait.PrivilegeCmp.html\" title=\"trait admeta_runtime::PrivilegeCmp\">PrivilegeCmp</a>&lt;<a class=\"enum\" href=\"admeta_runtime/enum.OriginCaller.html\" title=\"enum admeta_runtime::OriginCaller\">OriginCaller</a>&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.OriginPrivilegeCmp.html\" title=\"struct admeta_runtime::OriginPrivilegeCmp\">OriginPrivilegeCmp</a>","synthetic":false,"types":["admeta_runtime::OriginPrivilegeCmp"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"admeta_runtime":[["impl <a class=\"trait\" href=\"admeta_runtime/trait.PrivilegeCmp.html\" title=\"trait admeta_runtime::PrivilegeCmp\">PrivilegeCmp</a>&lt;<a class=\"enum\" href=\"admeta_runtime/enum.OriginCaller.html\" title=\"enum admeta_runtime::OriginCaller\">OriginCaller</a>&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.OriginPrivilegeCmp.html\" title=\"struct admeta_runtime::OriginPrivilegeCmp\">OriginPrivilegeCmp</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

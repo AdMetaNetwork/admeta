@@ -1,5 +1,5 @@
-(function() {var implementors = {};
-implementors["admeta_runtime"] = [{"text":"impl GetDispatchInfo for <a class=\"enum\" href=\"admeta_runtime/enum.Call.html\" title=\"enum admeta_runtime::Call\">Call</a>","synthetic":false,"types":["admeta_runtime::Call"]}];
-implementors["pallet_ad"] = [{"text":"impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; GetDispatchInfo for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;","synthetic":false,"types":["pallet_ad::pallet::Call"]}];
-implementors["pallet_user_mock"] = [{"text":"impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user_mock/pallet/trait.Config.html\" title=\"trait pallet_user_mock::pallet::Config\">Config</a>&gt; GetDispatchInfo for <a class=\"enum\" href=\"pallet_user_mock/pallet/enum.Call.html\" title=\"enum pallet_user_mock::pallet::Call\">Call</a>&lt;T&gt;","synthetic":false,"types":["pallet_user_mock::pallet::Call"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"admeta_runtime":[["impl GetDispatchInfo for <a class=\"enum\" href=\"admeta_runtime/enum.Call.html\" title=\"enum admeta_runtime::Call\">Call</a>"]],
+"pallet_ad":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; GetDispatchInfo for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;"]],
+"pallet_user_mock":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user_mock/pallet/trait.Config.html\" title=\"trait pallet_user_mock::pallet::Config\">Config</a>&gt; GetDispatchInfo for <a class=\"enum\" href=\"pallet_user_mock/pallet/enum.Call.html\" title=\"enum pallet_user_mock::pallet::Call\">Call</a>&lt;T&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

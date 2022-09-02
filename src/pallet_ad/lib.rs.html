@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/ad/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../pallet_ad/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../pallet_ad/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pallet_ad/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/ad/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../pallet_ad/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../pallet_ad/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pallet_ad/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -322,329 +322,329 @@
 <span id="322">322</span>
 <span id="323">323</span>
 <span id="324">324</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
+</pre><pre class="rust"><code><span class="attribute">#![cfg_attr(not(feature = <span class="string">&quot;std&quot;</span>), no_std)]
+</span><span class="kw">pub use </span>pallet::<span class="kw-2">*</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">mock</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>mock;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">benchmarking</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;runtime-benchmarks&quot;</span>)]
+</span><span class="kw">mod </span>benchmarking;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests;
 
-<span class="attribute">#[<span class="ident">frame_support::pallet</span>]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pallet</span> {
-	<span class="kw">use</span> <span class="ident">admeta_common</span>::{<span class="ident">AdData</span>, <span class="ident">AdPreference</span>, <span class="ident">TargetTag</span>};
-	<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">MaxEncodedLen</span>};
-	<span class="kw">use</span> <span class="ident">frame_support</span>::{
-		<span class="ident">dispatch::DispatchResult</span>,
-		<span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>,
-		<span class="ident">traits</span>::{<span class="ident">BalanceStatus</span>, <span class="ident">Currency</span>, <span class="ident">OnUnbalanced</span>, <span class="ident">Randomness</span>, <span class="ident">ReservableCurrency</span>},
+<span class="attribute">#[frame_support::pallet]
+</span><span class="kw">pub mod </span>pallet {
+	<span class="kw">use </span>admeta_common::{AdData, AdPreference, TargetTag};
+	<span class="kw">use </span>codec::{Decode, Encode, MaxEncodedLen};
+	<span class="kw">use </span>frame_support::{
+		dispatch::DispatchResult,
+		pallet_prelude::<span class="kw-2">*</span>,
+		traits::{BalanceStatus, Currency, OnUnbalanced, Randomness, ReservableCurrency},
 	};
-	<span class="kw">use</span> <span class="ident">frame_system::pallet_prelude</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
-	<span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AtLeast32BitUnsigned</span>, <span class="ident">Bounded</span>, <span class="ident">Saturating</span>};
-	<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
+	<span class="kw">use </span>frame_system::pallet_prelude::<span class="kw-2">*</span>;
+	<span class="kw">use </span>scale_info::TypeInfo;
+	<span class="kw">use </span>sp_runtime::traits::{AtLeast32BitUnsigned, Bounded, Saturating};
+	<span class="kw">use </span>sp_std::prelude::<span class="kw-2">*</span>;
 
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::BlockNumber</span>;
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span>
-		<span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency</span> <span class="kw">as</span> <span class="ident">Currency</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Balance</span>;
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">NegativeImbalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency</span> <span class="kw">as</span> <span class="ident">Currency</span><span class="op">&lt;</span>
-		<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::AccountId</span>,
-	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::NegativeImbalance</span>;
+	<span class="kw">pub type </span>BlockNumberOf&lt;T&gt; = &lt;T <span class="kw">as </span>frame_system::Config&gt;::BlockNumber;
+	<span class="kw">pub type </span>BalanceOf&lt;T&gt; =
+		&lt;&lt;T <span class="kw">as </span>Config&gt;::Currency <span class="kw">as </span>Currency&lt;&lt;T <span class="kw">as </span>frame_system::Config&gt;::AccountId&gt;&gt;::Balance;
+	<span class="kw">pub type </span>NegativeImbalanceOf&lt;T&gt; = &lt;&lt;T <span class="kw">as </span>Config&gt;::Currency <span class="kw">as </span>Currency&lt;
+		&lt;T <span class="kw">as </span>frame_system::Config&gt;::AccountId,
+	&gt;&gt;::NegativeImbalance;
 
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BoundedVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::MaxAdDataLength</span><span class="op">&gt;</span>;
+	<span class="kw">pub type </span>GeneralData&lt;T&gt; = BoundedVec&lt;u8, &lt;T <span class="kw">as </span>Config&gt;::MaxAdDataLength&gt;;
 
-	<span class="doccomment">/// This defines impression ads, which pays by CPI</span>
-	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>, <span class="ident">MaxEncodedLen</span>)]</span>
-	<span class="attribute">#[<span class="ident">scale_info</span>(<span class="ident">skip_type_params</span>(<span class="ident">T</span>))]</span>
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImpressionAd</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
-		<span class="comment">// The account who proposed this ad</span>
-		<span class="kw">pub</span> <span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
-		<span class="comment">// The URL where this ad&#39;s metadata stores</span>
-		<span class="kw">pub</span> <span class="ident">metadata</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The target URL where it redirects to when user clicks this ad</span>
-		<span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The title of this ad</span>
-		<span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The bond reserved for this ad</span>
-		<span class="kw">pub</span> <span class="ident">bond</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The cost per impression (CPI)</span>
-		<span class="kw">pub</span> <span class="ident">cpi</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The total number of impressions in this ad</span>
-		<span class="kw">pub</span> <span class="ident">amount</span>: <span class="ident">u32</span>,
-		<span class="comment">// The end block of this ad</span>
-		<span class="kw">pub</span> <span class="ident">end_block</span>: <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="comment">// The preference of target group</span>
-		<span class="kw">pub</span> <span class="ident">preference</span>: <span class="ident">AdPreference</span>,
-		<span class="comment">// The approval status</span>
-		<span class="kw">pub</span> <span class="ident">approved</span>: <span class="ident">bool</span>,
+	<span class="doccomment">/// This defines impression ads, which pays by CPI
+	</span><span class="attribute">#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
+	#[scale_info(skip_type_params(T))]
+	</span><span class="kw">pub struct </span>ImpressionAd&lt;T: Config&gt; {
+		<span class="comment">// The account who proposed this ad
+		</span><span class="kw">pub </span>proposer: T::AccountId,
+		<span class="comment">// The URL where this ad&#39;s metadata stores
+		</span><span class="kw">pub </span>metadata: GeneralData&lt;T&gt;,
+		<span class="comment">// The target URL where it redirects to when user clicks this ad
+		</span><span class="kw">pub </span>target: GeneralData&lt;T&gt;,
+		<span class="comment">// The title of this ad
+		</span><span class="kw">pub </span>title: GeneralData&lt;T&gt;,
+		<span class="comment">// The bond reserved for this ad
+		</span><span class="kw">pub </span>bond: BalanceOf&lt;T&gt;,
+		<span class="comment">// The cost per impression (CPI)
+		</span><span class="kw">pub </span>cpi: BalanceOf&lt;T&gt;,
+		<span class="comment">// The total number of impressions in this ad
+		</span><span class="kw">pub </span>amount: u32,
+		<span class="comment">// The end block of this ad
+		</span><span class="kw">pub </span>end_block: BlockNumberOf&lt;T&gt;,
+		<span class="comment">// The preference of target group
+		</span><span class="kw">pub </span>preference: AdPreference,
+		<span class="comment">// The approval status
+		</span><span class="kw">pub </span>approved: bool,
 	}
 
-	<span class="comment">// TODO ClickAd, ActionAd will be implemented</span>
+	<span class="comment">// TODO ClickAd, ActionAd will be implemented
 
-	<span class="attribute">#[<span class="ident">pallet::config</span>]</span>
-	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Config</span>: <span class="ident">frame_system::Config</span> {
-		<span class="kw">type</span> <span class="ident">AdIndex</span>: <span class="ident">Parameter</span>
-			<span class="op">+</span> <span class="ident">MaybeSerializeDeserialize</span>
-			<span class="op">+</span> <span class="ident">Bounded</span>
-			<span class="op">+</span> <span class="ident">AtLeast32BitUnsigned</span>
-			<span class="op">+</span> <span class="ident">Copy</span>
-			<span class="op">+</span> <span class="ident">MaxEncodedLen</span>
-			<span class="op">+</span> <span class="ident">Default</span>;
+	</span><span class="attribute">#[pallet::config]
+	</span><span class="kw">pub trait </span>Config: frame_system::Config {
+		<span class="kw">type </span>AdIndex: Parameter
+			+ MaybeSerializeDeserialize
+			+ Bounded
+			+ AtLeast32BitUnsigned
+			+ Copy
+			+ MaxEncodedLen
+			+ Default;
 
-		<span class="doccomment">/// Origin from which approvals must come.</span>
-		<span class="kw">type</span> <span class="ident">ApproveOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Origin</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Origin from which approvals must come.
+		</span><span class="kw">type </span>ApproveOrigin: EnsureOrigin&lt;<span class="self">Self</span>::Origin&gt;;
 
-		<span class="doccomment">/// Origin from which rejections must come.</span>
-		<span class="kw">type</span> <span class="ident">RejectOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Origin</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Origin from which rejections must come.
+		</span><span class="kw">type </span>RejectOrigin: EnsureOrigin&lt;<span class="self">Self</span>::Origin&gt;;
 
-		<span class="doccomment">/// Handler for the unbalanced decrease when slashing for a rejected proposal.</span>
-		<span class="kw">type</span> <span class="ident">OnSlash</span>: <span class="ident">OnUnbalanced</span><span class="op">&lt;</span><span class="ident">NegativeImbalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Handler for the unbalanced decrease when slashing for a rejected proposal.
+		</span><span class="kw">type </span>OnSlash: OnUnbalanced&lt;NegativeImbalanceOf&lt;<span class="self">Self</span>&gt;&gt;;
 
-		<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
+		<span class="kw">type </span>Event: From&lt;Event&lt;<span class="self">Self</span>&gt;&gt; + IsType&lt;&lt;<span class="self">Self </span><span class="kw">as </span>frame_system::Config&gt;::Event&gt;;
 
-		<span class="kw">type</span> <span class="ident">Currency</span>: <span class="ident">Currency</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">ReservableCurrency</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span>;
+		<span class="kw">type </span>Currency: Currency&lt;<span class="self">Self</span>::AccountId&gt; + ReservableCurrency&lt;<span class="self">Self</span>::AccountId&gt;;
 
-		<span class="kw">type</span> <span class="ident">Randomness</span>: <span class="ident">Randomness</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Hash</span>, <span class="ident"><span class="self">Self</span>::BlockNumber</span><span class="op">&gt;</span>;
+		<span class="kw">type </span>Randomness: Randomness&lt;<span class="self">Self</span>::Hash, <span class="self">Self</span>::BlockNumber&gt;;
 
-		<span class="doccomment">/// Maximum acceptable Ad metadata length</span>
-		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">MaxAdDataLength</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Maximum acceptable Ad metadata length
+		</span><span class="attribute">#[pallet::constant]
+		</span><span class="kw">type </span>MaxAdDataLength: Get&lt;u32&gt;;
 
-		<span class="doccomment">/// Maximum num of tags per Ad</span>
-		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">MaxAdTags</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Maximum num of tags per Ad
+		</span><span class="attribute">#[pallet::constant]
+		</span><span class="kw">type </span>MaxAdTags: Get&lt;u32&gt;;
 
-		<span class="doccomment">/// The base deposit amount of an ad proposal</span>
-		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">AdDepositBase</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// The base deposit amount of an ad proposal
+		</span><span class="attribute">#[pallet::constant]
+		</span><span class="kw">type </span>AdDepositBase: Get&lt;BalanceOf&lt;<span class="self">Self</span>&gt;&gt;;
 
-		<span class="doccomment">/// The deposit amount per byte of an ad&#39;s metadata</span>
-		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">AdDepositPerByte</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// The deposit amount per byte of an ad&#39;s metadata
+		</span><span class="attribute">#[pallet::constant]
+		</span><span class="kw">type </span>AdDepositPerByte: Get&lt;BalanceOf&lt;<span class="self">Self</span>&gt;&gt;;
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::generate_store</span>(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait</span> <span class="ident">Store</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">_</span>);
+	<span class="attribute">#[pallet::pallet]
+	#[pallet::generate_store(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait </span>Store)]
+	</span><span class="kw">pub struct </span>Pallet&lt;T&gt;(<span class="kw">_</span>);
 
-	<span class="doccomment">/// Number of ad proposals that have been made.</span>
-	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">ad_count</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdCount</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">T::AdIndex</span>, <span class="ident">OptionQuery</span><span class="op">&gt;</span>;
+	<span class="doccomment">/// Number of ad proposals that have been made.
+	</span><span class="attribute">#[pallet::storage]
+	#[pallet::getter(<span class="kw">fn </span>ad_count)]
+	</span><span class="kw">pub type </span>AdCount&lt;T: Config&gt; = StorageValue&lt;<span class="kw">_</span>, T::AdIndex, OptionQuery&gt;;
 
-	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">impression_ads</span>)]</span>
-	<span class="comment">// TODO Optimize the storage usage, as hashmap is not the optimal and scalable solution</span>
-	<span class="doccomment">/// Impression ads storage</span>
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ImpressionAds</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageDoubleMap</span><span class="op">&lt;</span>
+	<span class="attribute">#[pallet::storage]
+	#[pallet::getter(<span class="kw">fn </span>impression_ads)]
+	</span><span class="comment">// TODO Optimize the storage usage, as hashmap is not the optimal and scalable solution
+	</span><span class="doccomment">/// Impression ads storage
+	</span><span class="kw">pub type </span>ImpressionAds&lt;T: Config&gt; = StorageDoubleMap&lt;
 		<span class="kw">_</span>,
-		<span class="ident">Blake2_128Concat</span>,
-		<span class="ident">T::AccountId</span>,
-		<span class="ident">Blake2_128Concat</span>,
-		<span class="ident">T::AdIndex</span>,
-		<span class="ident">ImpressionAd</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-		<span class="ident">OptionQuery</span>,
-	<span class="op">&gt;</span>;
+		Blake2_128Concat,
+		T::AccountId,
+		Blake2_128Concat,
+		T::AdIndex,
+		ImpressionAd&lt;T&gt;,
+		OptionQuery,
+	&gt;;
 
-	<span class="attribute">#[<span class="ident">pallet::event</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::generate_deposit</span>(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">deposit_event</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
-		<span class="ident">NewAdProposal</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
-		<span class="ident">AdProposalApproved</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
-		<span class="ident">AdProposalRejected</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
-		<span class="ident">NewUserAdded</span>(<span class="ident">T::AccountId</span>),
-		<span class="ident">UserSetAdDisplay</span>(<span class="ident">T::AccountId</span>, <span class="ident">bool</span>),
-		<span class="ident">RewardClaimed</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
-		<span class="ident">RewardNotClaimed</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
+	<span class="attribute">#[pallet::event]
+	#[pallet::generate_deposit(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>deposit_event)]
+	</span><span class="kw">pub enum </span>Event&lt;T: Config&gt; {
+		NewAdProposal(T::AccountId, T::AdIndex),
+		AdProposalApproved(T::AccountId, T::AdIndex),
+		AdProposalRejected(T::AccountId, T::AdIndex),
+		NewUserAdded(T::AccountId),
+		UserSetAdDisplay(T::AccountId, bool),
+		RewardClaimed(T::AccountId, T::AdIndex),
+		RewardNotClaimed(T::AccountId, T::AdIndex),
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::error</span>]</span>
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="ident">AdDoesNotExist</span>,
-		<span class="ident">AdCountOverflow</span>,
-		<span class="ident">AdDataTooLarge</span>,
-		<span class="ident">InvalidAdPreference</span>,
-		<span class="ident">InsufficientProposalBalance</span>,
-		<span class="ident">InvalidAdIndex</span>,
-		<span class="ident">UserAlreadyExists</span>,
-		<span class="ident">UserDoesNotExist</span>,
-		<span class="ident">AdNotForThisUser</span>,
-		<span class="ident">AdPaymentError</span>,
+	<span class="attribute">#[pallet::error]
+	</span><span class="kw">pub enum </span>Error&lt;T&gt; {
+		AdDoesNotExist,
+		AdCountOverflow,
+		AdDataTooLarge,
+		InvalidAdPreference,
+		InsufficientProposalBalance,
+		InvalidAdIndex,
+		UserAlreadyExists,
+		UserDoesNotExist,
+		AdNotForThisUser,
+		AdPaymentError,
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::call</span>]</span>
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">propose_ad</span>(
-			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">ad_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">target_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">cpi</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">amount</span>: <span class="ident">u32</span>,
-			<span class="ident">end_block</span>: <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">ad_preference</span>: <span class="ident">AdPreference</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+	<span class="attribute">#[pallet::call]
+	</span><span class="kw">impl</span>&lt;T: Config&gt; Pallet&lt;T&gt; {
+		<span class="attribute">#[pallet::weight(<span class="number">10_000</span>)]
+		</span><span class="kw">pub fn </span>propose_ad(
+			origin: OriginFor&lt;T&gt;,
+			ad_url: GeneralData&lt;T&gt;,
+			target_url: GeneralData&lt;T&gt;,
+			title: GeneralData&lt;T&gt;,
+			cpi: BalanceOf&lt;T&gt;,
+			amount: u32,
+			end_block: BlockNumberOf&lt;T&gt;,
+			ad_preference: AdPreference,
+		) -&gt; DispatchResult {
+			<span class="kw">let </span>who = ensure_signed(origin)<span class="question-mark">?</span>;
 
-			<span class="ident"><span class="self">Self</span>::create_proposal</span>(
-				<span class="ident">who</span>,
-				<span class="ident">ad_url</span>,
-				<span class="ident">target_url</span>,
-				<span class="ident">title</span>,
-				<span class="ident">cpi</span>,
-				<span class="ident">amount</span>,
-				<span class="ident">end_block</span>,
-				<span class="ident">ad_preference</span>,
+			<span class="self">Self</span>::create_proposal(
+				who,
+				ad_url,
+				target_url,
+				title,
+				cpi,
+				amount,
+				end_block,
+				ad_preference,
 			)<span class="question-mark">?</span>;
 
 			<span class="prelude-val">Ok</span>(())
 		}
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">approve_ad</span>(
-			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_index</span>: <span class="ident">T::AdIndex</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="ident">T::ApproveOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+		<span class="attribute">#[pallet::weight(<span class="number">10_000</span>)]
+		</span><span class="kw">pub fn </span>approve_ad(
+			origin: OriginFor&lt;T&gt;,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -&gt; DispatchResult {
+			T::ApproveOrigin::ensure_origin(origin)<span class="question-mark">?</span>;
 
-			<span class="comment">// Set approved to true</span>
-			<span class="ident">ImpressionAds</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">proposer</span>.<span class="ident">clone</span>(), <span class="ident">ad_index</span>, <span class="op">|</span><span class="ident">ad_op</span><span class="op">|</span> {
-				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ad</span>) <span class="op">=</span> <span class="ident">ad_op</span> {
-					<span class="ident">ad</span>.<span class="ident">approved</span> <span class="op">=</span> <span class="bool-val">true</span>;
-					<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::AdProposalApproved</span>(<span class="ident">proposer</span>, <span class="ident">ad_index</span>));
+			<span class="comment">// Set approved to true
+			</span>ImpressionAds::&lt;T&gt;::mutate(proposer.clone(), ad_index, |ad_op| {
+				<span class="kw">if let </span><span class="prelude-val">Some</span>(ad) = ad_op {
+					ad.approved = <span class="bool-val">true</span>;
+					<span class="self">Self</span>::deposit_event(Event::AdProposalApproved(proposer, ad_index));
 					<span class="prelude-val">Ok</span>(())
-				} <span class="kw">else</span> {
-					<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidAdIndex</span>)
+				} <span class="kw">else </span>{
+					<span class="prelude-val">Err</span>(Error::&lt;T&gt;::InvalidAdIndex)
 				}
 			})<span class="question-mark">?</span>;
 
 			<span class="prelude-val">Ok</span>(())
 		}
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reject_ad</span>(
-			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_index</span>: <span class="ident">T::AdIndex</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="ident">T::RejectOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+		<span class="attribute">#[pallet::weight(<span class="number">10_000</span>)]
+		</span><span class="kw">pub fn </span>reject_ad(
+			origin: OriginFor&lt;T&gt;,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -&gt; DispatchResult {
+			T::RejectOrigin::ensure_origin(origin)<span class="question-mark">?</span>;
 
-			<span class="comment">// Slash the bond and unreserve the ad payment</span>
-			<span class="kw">let</span> <span class="ident">ad</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::impression_ads</span>(<span class="kw-2">&amp;</span><span class="ident">proposer</span>, <span class="ident">ad_index</span>).<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidAdIndex</span>)<span class="question-mark">?</span>;
-			<span class="kw">let</span> <span class="ident">imbalance</span> <span class="op">=</span> <span class="ident">T::Currency::slash_reserved</span>(<span class="kw-2">&amp;</span><span class="ident">ad</span>.<span class="ident">proposer</span>, <span class="ident">ad</span>.<span class="ident">bond</span>).<span class="number">0</span>;
-			<span class="ident">T::OnSlash::on_unbalanced</span>(<span class="ident">imbalance</span>);
-			<span class="kw">let</span> <span class="ident">ad_cost</span> <span class="op">=</span> <span class="ident">ad</span>.<span class="ident">cpi</span> <span class="op">*</span> <span class="ident">ad</span>.<span class="ident">amount</span>.<span class="ident">into</span>();
-			<span class="ident">T::Currency::unreserve</span>(<span class="kw-2">&amp;</span><span class="ident">ad</span>.<span class="ident">proposer</span>, <span class="ident">ad_cost</span>);
-			<span class="comment">// Remove this proposal</span>
-			<span class="ident">ImpressionAds</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="kw-2">&amp;</span><span class="ident">proposer</span>, <span class="ident">ad_index</span>);
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::AdProposalRejected</span>(<span class="ident">proposer</span>, <span class="ident">ad_index</span>));
+			<span class="comment">// Slash the bond and unreserve the ad payment
+			</span><span class="kw">let </span>ad = <span class="self">Self</span>::impression_ads(<span class="kw-2">&amp;</span>proposer, ad_index).ok_or(Error::&lt;T&gt;::InvalidAdIndex)<span class="question-mark">?</span>;
+			<span class="kw">let </span>imbalance = T::Currency::slash_reserved(<span class="kw-2">&amp;</span>ad.proposer, ad.bond).<span class="number">0</span>;
+			T::OnSlash::on_unbalanced(imbalance);
+			<span class="kw">let </span>ad_cost = ad.cpi * ad.amount.into();
+			T::Currency::unreserve(<span class="kw-2">&amp;</span>ad.proposer, ad_cost);
+			<span class="comment">// Remove this proposal
+			</span>ImpressionAds::&lt;T&gt;::remove(<span class="kw-2">&amp;</span>proposer, ad_index);
+			<span class="self">Self</span>::deposit_event(Event::AdProposalRejected(proposer, ad_index));
 
 			<span class="prelude-val">Ok</span>(())
 		}
 	}
 
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">AdData</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span>, <span class="ident">T::AdIndex</span>, <span class="ident">T::AccountId</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">match_ad_for_user</span>(
-			<span class="ident">age</span>: <span class="ident">u8</span>,
-			<span class="ident">tag</span>: <span class="ident">TargetTag</span>,
-			<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>,
-		) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>)<span class="op">&gt;</span> {
-			<span class="kw">for</span> <span class="ident">ad</span> <span class="kw">in</span> <span class="ident">ImpressionAds</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::iter</span>() {
-				<span class="kw">if</span> <span class="ident">ad</span>.<span class="number">2</span>.<span class="ident">preference</span>.<span class="ident">age</span>.<span class="ident">is_in_range</span>(<span class="ident">age</span>) <span class="op">&amp;&amp;</span>
-					<span class="ident">ad</span>.<span class="number">2</span>.<span class="ident">preference</span>.<span class="ident">tags</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tag</span>) <span class="op">&amp;&amp;</span>
-					<span class="ident">ad</span>.<span class="number">2</span>.<span class="ident">amount</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">ad</span>.<span class="number">2</span>.<span class="ident">approved</span> <span class="op">&amp;&amp;</span>
-					<span class="ident">ad</span>.<span class="number">2</span>.<span class="ident">end_block</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">block_number</span>
+	<span class="kw">impl</span>&lt;T: Config&gt; AdData&lt;T::BlockNumber, T::AdIndex, T::AccountId&gt; <span class="kw">for </span>Pallet&lt;T&gt; {
+		<span class="kw">fn </span>match_ad_for_user(
+			age: u8,
+			tag: TargetTag,
+			block_number: T::BlockNumber,
+		) -&gt; <span class="prelude-ty">Option</span>&lt;(T::AccountId, T::AdIndex)&gt; {
+			<span class="kw">for </span>ad <span class="kw">in </span>ImpressionAds::&lt;T&gt;::iter() {
+				<span class="kw">if </span>ad.<span class="number">2</span>.preference.age.is_in_range(age) &amp;&amp;
+					ad.<span class="number">2</span>.preference.tags.contains(<span class="kw-2">&amp;</span>tag) &amp;&amp;
+					ad.<span class="number">2</span>.amount &gt; <span class="number">0 </span>&amp;&amp; ad.<span class="number">2</span>.approved &amp;&amp;
+					ad.<span class="number">2</span>.end_block &gt;= block_number
 				{
-					<span class="comment">// Decrease the total amount of this ad by 1</span>
-					<span class="ident">ImpressionAds</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="kw-2">&amp;</span><span class="ident">ad</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">ad</span>.<span class="number">1</span>, <span class="op">|</span><span class="ident">ad_op</span><span class="op">|</span> {
-						<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ad</span>) <span class="op">=</span> <span class="ident">ad_op</span> {
-							<span class="ident">ad</span>.<span class="ident">amount</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
+					<span class="comment">// Decrease the total amount of this ad by 1
+					</span>ImpressionAds::&lt;T&gt;::mutate(<span class="kw-2">&amp;</span>ad.<span class="number">0</span>, <span class="kw-2">&amp;</span>ad.<span class="number">1</span>, |ad_op| {
+						<span class="kw">if let </span><span class="prelude-val">Some</span>(ad) = ad_op {
+							ad.amount -= <span class="number">1</span>;
 						}
 					});
-					<span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">ad</span>.<span class="number">0</span>, <span class="ident">ad</span>.<span class="number">1</span>))
+					<span class="kw">return </span><span class="prelude-val">Some</span>((ad.<span class="number">0</span>, ad.<span class="number">1</span>))
 				}
 			}
-			<span class="prelude-val">None</span>
-		}
+			<span class="prelude-val">None
+		</span>}
 
-		<span class="kw">fn</span> <span class="ident">claim_reward_for_user</span>(
-			<span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_index</span>: <span class="ident">T::AdIndex</span>,
-			<span class="ident">user</span>: <span class="ident">T::AccountId</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ad</span>) <span class="op">=</span> <span class="ident"><span class="self">Self</span>::impression_ads</span>(<span class="ident">proposer</span>, <span class="ident">ad_index</span>) {
-				<span class="kw">let</span> <span class="ident">ad_proposer</span> <span class="op">=</span> <span class="ident">ad</span>.<span class="ident">proposer</span>;
-				<span class="ident">T::Currency::repatriate_reserved</span>(<span class="kw-2">&amp;</span><span class="ident">ad_proposer</span>, <span class="kw-2">&amp;</span><span class="ident">user</span>, <span class="ident">ad</span>.<span class="ident">cpi</span>, <span class="ident">BalanceStatus::Free</span>)
-					.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdPaymentError</span>)<span class="question-mark">?</span>;
+		<span class="kw">fn </span>claim_reward_for_user(
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+			user: T::AccountId,
+		) -&gt; DispatchResult {
+			<span class="kw">if let </span><span class="prelude-val">Some</span>(ad) = <span class="self">Self</span>::impression_ads(proposer, ad_index) {
+				<span class="kw">let </span>ad_proposer = ad.proposer;
+				T::Currency::repatriate_reserved(<span class="kw-2">&amp;</span>ad_proposer, <span class="kw-2">&amp;</span>user, ad.cpi, BalanceStatus::Free)
+					.map_err(|<span class="kw">_</span>| Error::&lt;T&gt;::AdPaymentError)<span class="question-mark">?</span>;
 				<span class="prelude-val">Ok</span>(())
-			} <span class="kw">else</span> {
-				<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdDoesNotExist</span>)<span class="question-mark">?</span>
-			}
+			} <span class="kw">else </span>{
+				<span class="prelude-val">Err</span>(Error::&lt;T&gt;::AdDoesNotExist)<span class="question-mark">?
+			</span>}
 		}
 	}
 
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="doccomment">/// Calculate the next ad index</span>
-		<span class="kw">fn</span> <span class="ident">next_ad_id</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T::AdIndex</span>, <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-			<span class="kw">match</span> <span class="ident"><span class="self">Self</span>::ad_count</span>() {
-				<span class="prelude-val">Some</span>(<span class="ident">id</span>) =&gt; {
-					<span class="comment">// Ensure id won&#39;t overflow</span>
-					<span class="macro">ensure!</span>(<span class="ident">id</span> <span class="op">&lt;</span> <span class="ident">T::AdIndex::max_value</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdCountOverflow</span>);
-					<span class="prelude-val">Ok</span>(<span class="ident">id</span>.<span class="ident">saturating_add</span>(<span class="ident">T::AdIndex::from</span>(<span class="number">1u8</span>)))
+	<span class="kw">impl</span>&lt;T: Config&gt; Pallet&lt;T&gt; {
+		<span class="doccomment">/// Calculate the next ad index
+		</span><span class="kw">fn </span>next_ad_id() -&gt; <span class="prelude-ty">Result</span>&lt;T::AdIndex, Error&lt;T&gt;&gt; {
+			<span class="kw">match </span><span class="self">Self</span>::ad_count() {
+				<span class="prelude-val">Some</span>(id) =&gt; {
+					<span class="comment">// Ensure id won&#39;t overflow
+					</span><span class="macro">ensure!</span>(id &lt; T::AdIndex::max_value(), Error::&lt;T&gt;::AdCountOverflow);
+					<span class="prelude-val">Ok</span>(id.saturating_add(T::AdIndex::from(<span class="number">1u8</span>)))
 				},
-				<span class="comment">// Start count from 1</span>
-				<span class="prelude-val">None</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">T::AdIndex::min_value</span>().<span class="ident">saturating_add</span>(<span class="ident">T::AdIndex::from</span>(<span class="number">1u8</span>))),
+				<span class="comment">// Start count from 1
+				</span><span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(T::AdIndex::min_value().saturating_add(T::AdIndex::from(<span class="number">1u8</span>))),
 			}
 		}
-		<span class="doccomment">/// Create an ad proposal</span>
-		<span class="kw">fn</span> <span class="ident">create_proposal</span>(
-			<span class="ident">who</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">target_url</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">title</span>: <span class="ident">GeneralData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">cpi</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">amount</span>: <span class="ident">u32</span>,
-			<span class="ident">end_block</span>: <span class="ident">BlockNumberOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">ad_preference</span>: <span class="ident">AdPreference</span>,
-		) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-			<span class="macro">ensure!</span>(<span class="ident">ad_url</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">T::MaxAdDataLength::get</span>() <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdDataTooLarge</span>);
+		<span class="doccomment">/// Create an ad proposal
+		</span><span class="kw">fn </span>create_proposal(
+			who: T::AccountId,
+			ad_url: GeneralData&lt;T&gt;,
+			target_url: GeneralData&lt;T&gt;,
+			title: GeneralData&lt;T&gt;,
+			cpi: BalanceOf&lt;T&gt;,
+			amount: u32,
+			end_block: BlockNumberOf&lt;T&gt;,
+			ad_preference: AdPreference,
+		) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&lt;T&gt;&gt; {
+			<span class="macro">ensure!</span>(ad_url.len() &lt;= T::MaxAdDataLength::get() <span class="kw">as </span>usize, Error::&lt;T&gt;::AdDataTooLarge);
 
-			<span class="macro">ensure!</span>(<span class="ident">ad_preference</span>.<span class="ident">age</span>.<span class="ident">self_check</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidAdPreference</span>);
+			<span class="macro">ensure!</span>(ad_preference.age.self_check(), Error::&lt;T&gt;::InvalidAdPreference);
 
-			<span class="kw">let</span> <span class="ident">ad_index</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::next_ad_id</span>()<span class="question-mark">?</span>;
+			<span class="kw">let </span>ad_index = <span class="self">Self</span>::next_ad_id()<span class="question-mark">?</span>;
 
-			<span class="kw">let</span> <span class="ident">bond</span> <span class="op">=</span>
-				<span class="ident">T::AdDepositBase::get</span>() <span class="op">+</span> <span class="ident">T::AdDepositPerByte::get</span>() <span class="op">*</span> (<span class="ident">ad_url</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">into</span>();
+			<span class="kw">let </span>bond =
+				T::AdDepositBase::get() + T::AdDepositPerByte::get() * (ad_url.len() <span class="kw">as </span>u32).into();
 
-			<span class="kw">let</span> <span class="ident">ad_cost</span> <span class="op">=</span> <span class="ident">cpi</span> <span class="op">*</span> <span class="ident">amount</span>.<span class="ident">into</span>();
+			<span class="kw">let </span>ad_cost = cpi * amount.into();
 
-			<span class="ident">T::Currency::reserve</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>, <span class="ident">bond</span> <span class="op">+</span> <span class="ident">ad_cost</span>)
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InsufficientProposalBalance</span>)<span class="question-mark">?</span>;
+			T::Currency::reserve(<span class="kw-2">&amp;</span>who, bond + ad_cost)
+				.map_err(|<span class="kw">_</span>| Error::&lt;T&gt;::InsufficientProposalBalance)<span class="question-mark">?</span>;
 
-			<span class="kw">let</span> <span class="ident">ad</span> <span class="op">=</span> <span class="ident">ImpressionAd</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-				<span class="ident">proposer</span>: <span class="ident">who</span>.<span class="ident">clone</span>(),
-				<span class="ident">metadata</span>: <span class="ident">ad_url</span>,
-				<span class="ident">target</span>: <span class="ident">target_url</span>,
-				<span class="ident">title</span>,
-				<span class="ident">bond</span>,
-				<span class="ident">cpi</span>,
-				<span class="ident">amount</span>,
-				<span class="ident">end_block</span>,
-				<span class="ident">preference</span>: <span class="ident">ad_preference</span>,
-				<span class="ident">approved</span>: <span class="bool-val">false</span>,
+			<span class="kw">let </span>ad = ImpressionAd::&lt;T&gt; {
+				proposer: who.clone(),
+				metadata: ad_url,
+				target: target_url,
+				title,
+				bond,
+				cpi,
+				amount,
+				end_block,
+				preference: ad_preference,
+				approved: <span class="bool-val">false</span>,
 			};
 
-			<span class="ident">ImpressionAds</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>, <span class="ident">ad_index</span>, <span class="ident">ad</span>);
-			<span class="ident">AdCount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">ad_index</span>);
+			ImpressionAds::&lt;T&gt;::insert(<span class="kw-2">&amp;</span>who, ad_index, ad);
+			AdCount::&lt;T&gt;::put(ad_index);
 
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::NewAdProposal</span>(<span class="ident">who</span>, <span class="ident">ad_index</span>));
+			<span class="self">Self</span>::deposit_event(Event::NewAdProposal(who, ad_index));
 
 			<span class="prelude-val">Ok</span>(())
 		}
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (d394408fb 2022-08-07)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_ad" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (2e35f954a 2022-09-01)" ></div></body></html>

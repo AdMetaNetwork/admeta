@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/user-mock/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../pallet_user_mock/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../pallet_user_mock/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pallet_user_mock/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/user-mock/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../pallet_user_mock/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../pallet_user_mock/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pallet_user_mock/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -192,168 +192,168 @@
 <span id="192">192</span>
 <span id="193">193</span>
 <span id="194">194</span>
-</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
+</pre><pre class="rust"><code><span class="attribute">#![cfg_attr(not(feature = <span class="string">&quot;std&quot;</span>), no_std)]
+</span><span class="kw">pub use </span>pallet::<span class="kw-2">*</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">mock</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>mock;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">benchmarking</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
+<span class="attribute">#[cfg(feature = <span class="string">&quot;runtime-benchmarks&quot;</span>)]
+</span><span class="kw">mod </span>benchmarking;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests;
 
-<span class="attribute">#[<span class="ident">frame_support::pallet</span>]</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pallet</span> {
-	<span class="kw">use</span> <span class="ident">admeta_common</span>::{<span class="ident">AdData</span>, <span class="ident">TargetTag</span>};
-	<span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-	<span class="kw">use</span> <span class="ident">frame_support</span>::{
-		<span class="ident">dispatch::DispatchResult</span>, <span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>, <span class="ident">traits::Randomness</span>, <span class="ident">BoundedVec</span>,
+<span class="attribute">#[frame_support::pallet]
+</span><span class="kw">pub mod </span>pallet {
+	<span class="kw">use </span>admeta_common::{AdData, TargetTag};
+	<span class="kw">use </span>codec::{Decode, Encode};
+	<span class="kw">use </span>frame_support::{
+		dispatch::DispatchResult, pallet_prelude::<span class="kw-2">*</span>, traits::Randomness, BoundedVec,
 	};
-	<span class="kw">use</span> <span class="ident">frame_system::pallet_prelude</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
-	<span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">AtLeast32BitUnsigned</span>, <span class="ident">Bounded</span>};
-	<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
+	<span class="kw">use </span>frame_system::pallet_prelude::<span class="kw-2">*</span>;
+	<span class="kw">use </span>scale_info::TypeInfo;
+	<span class="kw">use </span>sp_runtime::traits::{AtLeast32BitUnsigned, Bounded};
+	<span class="kw">use </span>sp_std::prelude::<span class="kw-2">*</span>;
 
-	<span class="doccomment">/// This defines user</span>
-	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>, <span class="ident">MaxEncodedLen</span>)]</span>
-	<span class="attribute">#[<span class="ident">scale_info</span>(<span class="ident">skip_type_params</span>(<span class="ident">T</span>))]</span>
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">User</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
-		<span class="kw">pub</span> <span class="ident">age</span>: <span class="ident">u8</span>,
-		<span class="kw">pub</span> <span class="ident">tag</span>: <span class="ident">TargetTag</span>,
-		<span class="kw">pub</span> <span class="ident">ad_display</span>: <span class="ident">bool</span>,
-		<span class="kw">pub</span> <span class="ident">matched_ads</span>: <span class="ident">BoundedVec</span><span class="op">&lt;</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>), <span class="ident">T::MaxMatchedAds</span><span class="op">&gt;</span>,
+	<span class="doccomment">/// This defines user
+	</span><span class="attribute">#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
+	#[scale_info(skip_type_params(T))]
+	</span><span class="kw">pub struct </span>User&lt;T: Config&gt; {
+		<span class="kw">pub </span>age: u8,
+		<span class="kw">pub </span>tag: TargetTag,
+		<span class="kw">pub </span>ad_display: bool,
+		<span class="kw">pub </span>matched_ads: BoundedVec&lt;(T::AccountId, T::AdIndex), T::MaxMatchedAds&gt;,
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::config</span>]</span>
-	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Config</span>: <span class="ident">frame_system::Config</span> {
-		<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
-		<span class="kw">type</span> <span class="ident">Randomness</span>: <span class="ident">Randomness</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Hash</span>, <span class="ident"><span class="self">Self</span>::BlockNumber</span><span class="op">&gt;</span>;
-		<span class="kw">type</span> <span class="ident">AdData</span>: <span class="ident">AdData</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::BlockNumber</span>, <span class="ident"><span class="self">Self</span>::AdIndex</span>, <span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span>;
-		<span class="kw">type</span> <span class="ident">AdIndex</span>: <span class="ident">Parameter</span>
-			<span class="op">+</span> <span class="ident">MaybeSerializeDeserialize</span>
-			<span class="op">+</span> <span class="ident">Bounded</span>
-			<span class="op">+</span> <span class="ident">AtLeast32BitUnsigned</span>
-			<span class="op">+</span> <span class="ident">Copy</span>
-			<span class="op">+</span> <span class="ident">MaxEncodedLen</span>
-			<span class="op">+</span> <span class="ident">Default</span>;
+	<span class="attribute">#[pallet::config]
+	</span><span class="kw">pub trait </span>Config: frame_system::Config {
+		<span class="kw">type </span>Event: From&lt;Event&lt;<span class="self">Self</span>&gt;&gt; + IsType&lt;&lt;<span class="self">Self </span><span class="kw">as </span>frame_system::Config&gt;::Event&gt;;
+		<span class="kw">type </span>Randomness: Randomness&lt;<span class="self">Self</span>::Hash, <span class="self">Self</span>::BlockNumber&gt;;
+		<span class="kw">type </span>AdData: AdData&lt;<span class="self">Self</span>::BlockNumber, <span class="self">Self</span>::AdIndex, <span class="self">Self</span>::AccountId&gt;;
+		<span class="kw">type </span>AdIndex: Parameter
+			+ MaybeSerializeDeserialize
+			+ Bounded
+			+ AtLeast32BitUnsigned
+			+ Copy
+			+ MaxEncodedLen
+			+ Default;
 
-		<span class="doccomment">/// Maximum number of matched ads per user</span>
-		<span class="attribute">#[<span class="ident">pallet::constant</span>]</span>
-		<span class="kw">type</span> <span class="ident">MaxMatchedAds</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
+		<span class="doccomment">/// Maximum number of matched ads per user
+		</span><span class="attribute">#[pallet::constant]
+		</span><span class="kw">type </span>MaxMatchedAds: Get&lt;u32&gt;;
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::generate_store</span>(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait</span> <span class="ident">Store</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">_</span>);
+	<span class="attribute">#[pallet::pallet]
+	#[pallet::generate_store(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait </span>Store)]
+	</span><span class="kw">pub struct </span>Pallet&lt;T&gt;(<span class="kw">_</span>);
 
-	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">get_user</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Users</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Blake2_128Concat</span>, <span class="ident">T::AccountId</span>, <span class="ident">User</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">OptionQuery</span><span class="op">&gt;</span>;
+	<span class="attribute">#[pallet::storage]
+	#[pallet::getter(<span class="kw">fn </span>get_user)]
+	</span><span class="kw">pub type </span>Users&lt;T: Config&gt; = StorageMap&lt;<span class="kw">_</span>, Blake2_128Concat, T::AccountId, User&lt;T&gt;, OptionQuery&gt;;
 
-	<span class="attribute">#[<span class="ident">pallet::event</span>]</span>
-	<span class="attribute">#[<span class="ident">pallet::generate_deposit</span>(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">deposit_event</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
-		<span class="ident">NewUserAdded</span>(<span class="ident">T::AccountId</span>),
-		<span class="ident">UserSetAdDisplay</span>(<span class="ident">T::AccountId</span>, <span class="ident">bool</span>),
-		<span class="ident">RewardClaimed</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
-		<span class="ident">RewardNotClaimed</span>(<span class="ident">T::AccountId</span>, <span class="ident">T::AdIndex</span>),
+	<span class="attribute">#[pallet::event]
+	#[pallet::generate_deposit(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>deposit_event)]
+	</span><span class="kw">pub enum </span>Event&lt;T: Config&gt; {
+		NewUserAdded(T::AccountId),
+		UserSetAdDisplay(T::AccountId, bool),
+		RewardClaimed(T::AccountId, T::AdIndex),
+		RewardNotClaimed(T::AccountId, T::AdIndex),
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::error</span>]</span>
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="ident">UserAlreadyExists</span>,
-		<span class="ident">UserDoesNotExist</span>,
-		<span class="ident">AdNotForThisUser</span>,
-		<span class="ident">RewardClaimPaymentError</span>,
+	<span class="attribute">#[pallet::error]
+	</span><span class="kw">pub enum </span>Error&lt;T&gt; {
+		UserAlreadyExists,
+		UserDoesNotExist,
+		AdNotForThisUser,
+		RewardClaimPaymentError,
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="doccomment">/// Matching happens in every block&#39;s on_idle() function, to avoid congestion</span>
-		<span class="kw">fn</span> <span class="ident">on_idle</span>(<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>, <span class="ident">remaining_weight</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">Weight</span> {
-			<span class="macro">log::info!</span>(<span class="string">&quot;on_idle #{:?}, {:?})&quot;</span>, <span class="ident">block_number</span>, <span class="ident">remaining_weight</span>);
-			<span class="ident"><span class="self">Self</span>::do_matching</span>(<span class="ident">block_number</span>);
-			<span class="comment">// TODO calculate the actual consumed weights</span>
-			<span class="number">300</span>
-		}
+	<span class="attribute">#[pallet::hooks]
+	</span><span class="kw">impl</span>&lt;T: Config&gt; Hooks&lt;BlockNumberFor&lt;T&gt;&gt; <span class="kw">for </span>Pallet&lt;T&gt; {
+		<span class="doccomment">/// Matching happens in every block&#39;s on_idle() function, to avoid congestion
+		</span><span class="kw">fn </span>on_idle(block_number: T::BlockNumber, remaining_weight: Weight) -&gt; Weight {
+			<span class="macro">log::info!</span>(<span class="string">&quot;on_idle #{:?}, {:?})&quot;</span>, block_number, remaining_weight);
+			<span class="self">Self</span>::do_matching(block_number);
+			<span class="comment">// TODO calculate the actual consumed weights
+			</span><span class="number">300
+		</span>}
 	}
 
-	<span class="attribute">#[<span class="ident">pallet::call</span>]</span>
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">10_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_profile</span>(
-			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">age</span>: <span class="ident">u8</span>,
-			<span class="ident">tag</span>: <span class="ident">TargetTag</span>,
-			<span class="ident">ad_display</span>: <span class="ident">bool</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+	<span class="attribute">#[pallet::call]
+	</span><span class="kw">impl</span>&lt;T: Config&gt; Pallet&lt;T&gt; {
+		<span class="attribute">#[pallet::weight(<span class="number">10_000</span>)]
+		</span><span class="kw">pub fn </span>add_profile(
+			origin: OriginFor&lt;T&gt;,
+			age: u8,
+			tag: TargetTag,
+			ad_display: bool,
+		) -&gt; DispatchResult {
+			<span class="kw">let </span>who = ensure_signed(origin)<span class="question-mark">?</span>;
 
-			<span class="comment">// Check if user exists</span>
-			<span class="kw">if</span> <span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>) {
-				<span class="comment">// Update user profile if user already exists</span>
-				<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
-					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
-						<span class="ident">user</span>.<span class="ident">age</span> <span class="op">=</span> <span class="ident">age</span>;
-						<span class="ident">user</span>.<span class="ident">tag</span> <span class="op">=</span> <span class="ident">tag</span>;
-						<span class="ident">user</span>.<span class="ident">ad_display</span> <span class="op">=</span> <span class="ident">ad_display</span>;
-						<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::UserSetAdDisplay</span>(<span class="ident">who</span>, <span class="ident">ad_display</span>));
+			<span class="comment">// Check if user exists
+			</span><span class="kw">if </span>Users::&lt;T&gt;::contains_key(<span class="kw-2">&amp;</span>who) {
+				<span class="comment">// Update user profile if user already exists
+				</span>Users::&lt;T&gt;::mutate(who.clone(), |user_op| {
+					<span class="kw">if let </span><span class="prelude-val">Some</span>(user) = user_op {
+						user.age = age;
+						user.tag = tag;
+						user.ad_display = ad_display;
+						<span class="self">Self</span>::deposit_event(Event::UserSetAdDisplay(who, ad_display));
 						<span class="prelude-val">Ok</span>(())
-					} <span class="kw">else</span> {
-						<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::UserDoesNotExist</span>)
+					} <span class="kw">else </span>{
+						<span class="prelude-val">Err</span>(Error::&lt;T&gt;::UserDoesNotExist)
 					}
 				})<span class="question-mark">?</span>;
 				<span class="prelude-val">Ok</span>(())
-			} <span class="kw">else</span> {
-				<span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">User</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-					<span class="ident">age</span>,
-					<span class="ident">tag</span>,
-					<span class="ident">ad_display</span>,
-					<span class="comment">// try_into() should be always successful</span>
-					<span class="ident">matched_ads</span>: <span class="ident">Vec::new</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>(),
+			} <span class="kw">else </span>{
+				<span class="kw">let </span>user = User::&lt;T&gt; {
+					age,
+					tag,
+					ad_display,
+					<span class="comment">// try_into() should be always successful
+					</span>matched_ads: Vec::new().try_into().unwrap(),
 				};
-				<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="ident">user</span>);
-				<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::NewUserAdded</span>(<span class="ident">who</span>));
+				Users::&lt;T&gt;::insert(who.clone(), user);
+				<span class="self">Self</span>::deposit_event(Event::NewUserAdded(who));
 				<span class="prelude-val">Ok</span>(())
 			}
 		}
 
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">claim_reward</span>(
-			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-			<span class="ident">proposer</span>: <span class="ident">T::AccountId</span>,
-			<span class="ident">ad_index</span>: <span class="ident">T::AdIndex</span>,
-		) -&gt; <span class="ident">DispatchResult</span> {
-			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+		<span class="attribute">#[pallet::weight(<span class="number">100</span>)]
+		</span><span class="kw">pub fn </span>claim_reward(
+			origin: OriginFor&lt;T&gt;,
+			proposer: T::AccountId,
+			ad_index: T::AdIndex,
+		) -&gt; DispatchResult {
+			<span class="kw">let </span>who = ensure_signed(origin)<span class="question-mark">?</span>;
 
-			<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="ident">who</span>.<span class="ident">clone</span>(), <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
-				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
-					<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ad_claimed</span> <span class="op">=</span> <span class="bool-val">false</span>;
+			Users::&lt;T&gt;::mutate(who.clone(), |user_op| {
+				<span class="kw">if let </span><span class="prelude-val">Some</span>(user) = user_op {
+					<span class="kw">let </span><span class="kw-2">mut </span>ad_claimed = <span class="bool-val">false</span>;
 
-					<span class="comment">// TODO Refactor this code, to find the id and remove it instead of iterating</span>
-					<span class="comment">// the whole vector</span>
-					<span class="ident">user</span>.<span class="ident">matched_ads</span>.<span class="ident">retain</span>(<span class="op">|</span>(<span class="ident">ad_proposer</span>, <span class="ident">ad_id</span>)<span class="op">|</span> {
-						<span class="comment">// Only the ad_id that equals to ad_index gets removed</span>
-						<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">ad_proposer</span> <span class="op">==</span> <span class="ident">proposer</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">ad_id</span> <span class="op">==</span> <span class="ident">ad_index</span> {
-							<span class="ident">ad_claimed</span> <span class="op">=</span> <span class="bool-val">true</span>;
-							<span class="bool-val">false</span>
-						} <span class="kw">else</span> {
-							<span class="bool-val">true</span>
-						}
+					<span class="comment">// TODO Refactor this code, to find the id and remove it instead of iterating
+					// the whole vector
+					</span>user.matched_ads.retain(|(ad_proposer, ad_id)| {
+						<span class="comment">// Only the ad_id that equals to ad_index gets removed
+						</span><span class="kw">if </span><span class="kw-2">*</span>ad_proposer == proposer &amp;&amp; <span class="kw-2">*</span>ad_id == ad_index {
+							ad_claimed = <span class="bool-val">true</span>;
+							<span class="bool-val">false
+						</span>} <span class="kw">else </span>{
+							<span class="bool-val">true
+						</span>}
 					});
 
-					<span class="kw">if</span> <span class="ident">ad_claimed</span> {
-						<span class="ident">T::AdData::claim_reward_for_user</span>(<span class="ident">proposer</span>, <span class="ident">ad_index</span>, <span class="ident">who</span>.<span class="ident">clone</span>())
-							.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::RewardClaimPaymentError</span>)<span class="question-mark">?</span>;
-						<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::RewardClaimed</span>(<span class="ident">who</span>, <span class="ident">ad_index</span>));
+					<span class="kw">if </span>ad_claimed {
+						T::AdData::claim_reward_for_user(proposer, ad_index, who.clone())
+							.map_err(|<span class="kw">_</span>| Error::&lt;T&gt;::RewardClaimPaymentError)<span class="question-mark">?</span>;
+						<span class="self">Self</span>::deposit_event(Event::RewardClaimed(who, ad_index));
 						<span class="prelude-val">Ok</span>(())
-					} <span class="kw">else</span> {
-						<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::RewardNotClaimed</span>(<span class="ident">who</span>, <span class="ident">ad_index</span>));
-						<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AdNotForThisUser</span>)
+					} <span class="kw">else </span>{
+						<span class="self">Self</span>::deposit_event(Event::RewardNotClaimed(who, ad_index));
+						<span class="prelude-val">Err</span>(Error::&lt;T&gt;::AdNotForThisUser)
 					}
-				} <span class="kw">else</span> {
-					<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::UserDoesNotExist</span>)
+				} <span class="kw">else </span>{
+					<span class="prelude-val">Err</span>(Error::&lt;T&gt;::UserDoesNotExist)
 				}
 			})<span class="question-mark">?</span>;
 
@@ -361,30 +361,30 @@
 		}
 	}
 
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="doccomment">/// Do matching for users and ads</span>
-		<span class="kw">fn</span> <span class="ident">do_matching</span>(<span class="ident">block_number</span>: <span class="ident">T::BlockNumber</span>) {
-			<span class="kw">for</span> <span class="ident">iter</span> <span class="kw">in</span> <span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::iter</span>() {
-				<span class="comment">// Start matching if there is no matched ads and ad_display is true</span>
-				<span class="kw">if</span> (<span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">matched_ads</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&lt;</span> <span class="ident">T::MaxMatchedAds::get</span>() <span class="op">&amp;&amp;</span> <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">ad_display</span>
+	<span class="kw">impl</span>&lt;T: Config&gt; Pallet&lt;T&gt; {
+		<span class="doccomment">/// Do matching for users and ads
+		</span><span class="kw">fn </span>do_matching(block_number: T::BlockNumber) {
+			<span class="kw">for </span>iter <span class="kw">in </span>Users::&lt;T&gt;::iter() {
+				<span class="comment">// Start matching if there is no matched ads and ad_display is true
+				</span><span class="kw">if </span>(iter.<span class="number">1</span>.matched_ads.len() <span class="kw">as </span>u32) &lt; T::MaxMatchedAds::get() &amp;&amp; iter.<span class="number">1</span>.ad_display
 				{
-					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">ad_proposer</span>, <span class="ident">ad_index</span>)) <span class="op">=</span>
-						<span class="ident">T::AdData::match_ad_for_user</span>(<span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">age</span>, <span class="ident">iter</span>.<span class="number">1</span>.<span class="ident">tag</span>, <span class="ident">block_number</span>)
+					<span class="kw">if let </span><span class="prelude-val">Some</span>((ad_proposer, ad_index)) =
+						T::AdData::match_ad_for_user(iter.<span class="number">1</span>.age, iter.<span class="number">1</span>.tag, block_number)
 					{
-						<span class="comment">// Push matched ad to user&#39;s matched_ad vector</span>
-						<span class="ident">Users</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="kw-2">&amp;</span><span class="ident">iter</span>.<span class="number">0</span>, <span class="op">|</span><span class="ident">user_op</span><span class="op">|</span> {
-							<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">user</span>) <span class="op">=</span> <span class="ident">user_op</span> {
-								<span class="comment">// Err should never thrown here</span>
-								<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">matched_ads</span>.<span class="ident">try_push</span>((<span class="ident">ad_proposer</span>, <span class="ident">ad_index</span>));
+						<span class="comment">// Push matched ad to user&#39;s matched_ad vector
+						</span>Users::&lt;T&gt;::mutate(<span class="kw-2">&amp;</span>iter.<span class="number">0</span>, |user_op| {
+							<span class="kw">if let </span><span class="prelude-val">Some</span>(user) = user_op {
+								<span class="comment">// Err should never thrown here
+								</span><span class="kw">let _ </span>= user.matched_ads.try_push((ad_proposer, ad_index));
 							}
 						});
 					}
-				} <span class="kw">else</span> {
-					<span class="kw">continue</span>
-				}
+				} <span class="kw">else </span>{
+					<span class="kw">continue
+				</span>}
 			}
 		}
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_user_mock" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (d394408fb 2022-08-07)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pallet_user_mock" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0-nightly (2e35f954a 2022-09-01)" ></div></body></html>
