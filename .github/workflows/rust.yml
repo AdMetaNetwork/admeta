@@ -22,7 +22,7 @@ jobs:
           target: wasm32-unknown-unknown
           override: true
       - name: Install Protobuf
-        run: sudo apt-get install -y proto
+        run: sudo apt-get install -y protobuf3-compiler
       - name: Build AdMeta
         run: cargo build --release
 
