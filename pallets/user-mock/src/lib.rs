@@ -33,7 +33,8 @@ pub mod pallet {
 
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
-		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+		/// Because this pallet emits events, it depends on the runtime's definition of an event.
+		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
 		type AdData: AdData<Self::BlockNumber, Self::AdIndex, Self::AccountId>;
 		type AdIndex: Parameter
@@ -81,7 +82,7 @@ pub mod pallet {
 			log::info!("on_idle #{:?}, {:?})", block_number, remaining_weight);
 			Self::do_matching(block_number);
 			// TODO calculate the actual consumed weights
-			300
+			Weight::from_ref_time(300 as u64)
 		}
 	}
 

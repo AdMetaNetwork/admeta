@@ -71,15 +71,16 @@ pub mod pallet {
 			+ Default;
 
 		/// Origin from which approvals must come.
-		type ApproveOrigin: EnsureOrigin<Self::Origin>;
+		type ApproveOrigin: EnsureOrigin<Self::RuntimeOrigin>;
 
 		/// Origin from which rejections must come.
-		type RejectOrigin: EnsureOrigin<Self::Origin>;
+		type RejectOrigin: EnsureOrigin<Self::RuntimeOrigin>;
 
 		/// Handler for the unbalanced decrease when slashing for a rejected proposal.
 		type OnSlash: OnUnbalanced<NegativeImbalanceOf<Self>>;
 
-		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+		/// Because this pallet emits events, it depends on the runtime's definition of an event.
+		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
 
