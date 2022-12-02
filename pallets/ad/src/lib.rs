@@ -36,25 +36,25 @@ pub mod pallet {
 	#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	pub struct ImpressionAd<T: Config> {
-		// The account who proposed this ad
+		/// The account who proposed this ad
 		pub proposer: T::AccountId,
-		// The URL where this ad's metadata stores
+		/// The URL where this ad's metadata stores
 		pub metadata: GeneralData<T>,
-		// The target URL where it redirects to when user clicks this ad
+		/// The target URL where it redirects to when user clicks this ad
 		pub target: GeneralData<T>,
-		// The title of this ad
+		/// The title of this ad
 		pub title: GeneralData<T>,
-		// The bond reserved for this ad
+		/// The bond reserved for this ad
 		pub bond: BalanceOf<T>,
-		// The cost per impression (CPI)
+		/// The cost per impression (CPI)
 		pub cpi: BalanceOf<T>,
-		// The total number of impressions in this ad
+		/// The total number of impressions in this ad
 		pub amount: u32,
-		// The end block of this ad
+		/// The end block of this ad
 		pub end_block: BlockNumberOf<T>,
-		// The preference of target group
+		/// The preference of target group
 		pub preference: AdPreference,
-		// The approval status
+		/// The approval status
 		pub approved: bool,
 	}
 
@@ -82,6 +82,7 @@ pub mod pallet {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 
+		/// Currency for balance reserving and unreserving operations
 		type Currency: Currency<Self::AccountId> + ReservableCurrency<Self::AccountId>;
 
 		type Randomness: Randomness<Self::Hash, Self::BlockNumber>;
@@ -129,12 +130,25 @@ pub mod pallet {
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
+		/// New advertising proposal created
 		NewAdProposal(T::AccountId, T::AdIndex),
+
+		/// Ad proposal approved
 		AdProposalApproved(T::AccountId, T::AdIndex),
+
+		/// Ad proposal rejected
 		AdProposalRejected(T::AccountId, T::AdIndex),
+
+		/// New user added
 		NewUserAdded(T::AccountId),
+
+		/// Ad display enabled/disabled by users
 		UserSetAdDisplay(T::AccountId, bool),
+
+		/// Ad reward claimed
 		RewardClaimed(T::AccountId, T::AdIndex),
+
+		/// Ad reward not claimed
 		RewardNotClaimed(T::AccountId, T::AdIndex),
 	}
 
@@ -142,7 +156,6 @@ pub mod pallet {
 	pub enum Error<T> {
 		AdDoesNotExist,
 		AdCountOverflow,
-		AdDataTooLarge,
 		InvalidAdPreference,
 		InsufficientProposalBalance,
 		InvalidAdIndex,
@@ -287,8 +300,6 @@ pub mod pallet {
 			end_block: BlockNumberOf<T>,
 			ad_preference: AdPreference,
 		) -> Result<(), Error<T>> {
-			ensure!(ad_url.len() <= T::MaxAdDataLength::get() as usize, Error::<T>::AdDataTooLarge);
-
 			ensure!(ad_preference.age.self_check(), Error::<T>::InvalidAdPreference);
 
 			let ad_index = Self::next_ad_id()?;
