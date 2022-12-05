@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/ad/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-3dd8914bdd6e2ce5.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-1469fca9efc07bcb.css"><link rel="stylesheet" disabled href="../../static.files/dark-e9b7e5d8ba0dc980.css"><link rel="stylesheet" disabled href="../../static.files/ayu-0c1cf144240c9f40.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-799a64abec831f72.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../pallet_ad/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pallets/ad/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e963ab4a0d0c903e.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-046227e470cd3629.css"><link rel="stylesheet" disabled href="../../static.files/dark-800f2ee593c8e6f7.css"><link rel="stylesheet" disabled href="../../static.files/ayu-9edae3c387f5a5b3.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-287cecec4dbb45b0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../pallet_ad/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -323,6 +323,17 @@
 <a href="#323" id="323">323</a>
 <a href="#324" id="324">324</a>
 <a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
 </pre><pre class="rust"><code><span class="attr">#![cfg_attr(not(feature = <span class="string">&quot;std&quot;</span>), no_std)]
 </span><span class="kw">pub use </span>pallet::<span class="kw-2">*</span>;
 
@@ -361,25 +372,25 @@
 	</span><span class="attr">#[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	</span><span class="kw">pub struct </span>ImpressionAd&lt;T: Config&gt; {
-		<span class="comment">// The account who proposed this ad
+		<span class="doccomment">/// The account who proposed this ad
 		</span><span class="kw">pub </span>proposer: T::AccountId,
-		<span class="comment">// The URL where this ad&#39;s metadata stores
+		<span class="doccomment">/// The URL where this ad&#39;s metadata stores
 		</span><span class="kw">pub </span>metadata: GeneralData&lt;T&gt;,
-		<span class="comment">// The target URL where it redirects to when user clicks this ad
+		<span class="doccomment">/// The target URL where it redirects to when user clicks this ad
 		</span><span class="kw">pub </span>target: GeneralData&lt;T&gt;,
-		<span class="comment">// The title of this ad
+		<span class="doccomment">/// The title of this ad
 		</span><span class="kw">pub </span>title: GeneralData&lt;T&gt;,
-		<span class="comment">// The bond reserved for this ad
+		<span class="doccomment">/// The bond reserved for this ad
 		</span><span class="kw">pub </span>bond: BalanceOf&lt;T&gt;,
-		<span class="comment">// The cost per impression (CPI)
+		<span class="doccomment">/// The cost per impression (CPI)
 		</span><span class="kw">pub </span>cpi: BalanceOf&lt;T&gt;,
-		<span class="comment">// The total number of impressions in this ad
+		<span class="doccomment">/// The total number of impressions in this ad
 		</span><span class="kw">pub </span>amount: u32,
-		<span class="comment">// The end block of this ad
+		<span class="doccomment">/// The end block of this ad
 		</span><span class="kw">pub </span>end_block: BlockNumberOf&lt;T&gt;,
-		<span class="comment">// The preference of target group
+		<span class="doccomment">/// The preference of target group
 		</span><span class="kw">pub </span>preference: AdPreference,
-		<span class="comment">// The approval status
+		<span class="doccomment">/// The approval status
 		</span><span class="kw">pub </span>approved: bool,
 	}
 
@@ -407,7 +418,8 @@
 		<span class="doccomment">/// Because this pallet emits events, it depends on the runtime&#39;s definition of an event.
 		</span><span class="kw">type </span>RuntimeEvent: From&lt;Event&lt;<span class="self">Self</span>&gt;&gt; + IsType&lt;&lt;<span class="self">Self </span><span class="kw">as </span>frame_system::Config&gt;::RuntimeEvent&gt;;
 
-		<span class="kw">type </span>Currency: Currency&lt;<span class="self">Self</span>::AccountId&gt; + ReservableCurrency&lt;<span class="self">Self</span>::AccountId&gt;;
+		<span class="doccomment">/// Currency for balance reserving and unreserving operations
+		</span><span class="kw">type </span>Currency: Currency&lt;<span class="self">Self</span>::AccountId&gt; + ReservableCurrency&lt;<span class="self">Self</span>::AccountId&gt;;
 
 		<span class="kw">type </span>Randomness: Randomness&lt;<span class="self">Self</span>::Hash, <span class="self">Self</span>::BlockNumber&gt;;
 
@@ -454,20 +466,32 @@
 	<span class="attr">#[pallet::event]
 	#[pallet::generate_deposit(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>deposit_event)]
 	</span><span class="kw">pub enum </span>Event&lt;T: Config&gt; {
-		NewAdProposal(T::AccountId, T::AdIndex),
-		AdProposalApproved(T::AccountId, T::AdIndex),
-		AdProposalRejected(T::AccountId, T::AdIndex),
-		NewUserAdded(T::AccountId),
-		UserSetAdDisplay(T::AccountId, bool),
-		RewardClaimed(T::AccountId, T::AdIndex),
-		RewardNotClaimed(T::AccountId, T::AdIndex),
+		<span class="doccomment">/// New advertising proposal created
+		</span>NewAdProposal(T::AccountId, T::AdIndex),
+
+		<span class="doccomment">/// Ad proposal approved
+		</span>AdProposalApproved(T::AccountId, T::AdIndex),
+
+		<span class="doccomment">/// Ad proposal rejected
+		</span>AdProposalRejected(T::AccountId, T::AdIndex),
+
+		<span class="doccomment">/// New user added
+		</span>NewUserAdded(T::AccountId),
+
+		<span class="doccomment">/// Ad display enabled/disabled by users
+		</span>UserSetAdDisplay(T::AccountId, bool),
+
+		<span class="doccomment">/// Ad reward claimed
+		</span>RewardClaimed(T::AccountId, T::AdIndex),
+
+		<span class="doccomment">/// Ad reward not claimed
+		</span>RewardNotClaimed(T::AccountId, T::AdIndex),
 	}
 
 	<span class="attr">#[pallet::error]
 	</span><span class="kw">pub enum </span>Error&lt;T&gt; {
 		AdDoesNotExist,
 		AdCountOverflow,
-		AdDataTooLarge,
 		InvalidAdPreference,
 		InsufficientProposalBalance,
 		InvalidAdIndex,
@@ -612,8 +636,6 @@
 			end_block: BlockNumberOf&lt;T&gt;,
 			ad_preference: AdPreference,
 		) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&lt;T&gt;&gt; {
-			<span class="macro">ensure!</span>(ad_url.len() &lt;= T::MaxAdDataLength::get() <span class="kw">as </span>usize, Error::&lt;T&gt;::AdDataTooLarge);
-
 			<span class="macro">ensure!</span>(ad_preference.age.self_check(), Error::&lt;T&gt;::InvalidAdPreference);
 
 			<span class="kw">let </span>ad_index = <span class="self">Self</span>::next_ad_id()<span class="question-mark">?</span>;
@@ -649,4 +671,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pallet_ad" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (a00f8ba7f 2022-11-15)" data-search-js="search-df80cc3cb87b6482.js" data-settings-js="settings-7873449fa8c00e11.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pallet_ad" data-themes="" data-resource-suffix="" data-rustdoc-version="1.67.0-nightly (53e4b9dd7 2022-12-04)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
