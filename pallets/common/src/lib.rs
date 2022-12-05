@@ -20,8 +20,8 @@ pub trait AdData<BlockNumberType, AdIndexType, AccountIdType> {
 
 #[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
 pub struct ValueRange {
-	min: u8,
-	max: u8,
+	pub min: u8,
+	pub max: u8,
 }
 
 impl ValueRange {
