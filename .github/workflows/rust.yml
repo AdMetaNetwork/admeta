@@ -25,6 +25,8 @@ jobs:
         run: sudo apt install -y protobuf-compiler
       - name: Build AdMeta
         run: cargo build --release
+      - name: Run unit test
+        run: cargo test
 
   deploy:
     runs-on: ubuntu-latest
