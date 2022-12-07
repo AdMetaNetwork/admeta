@@ -1,20 +1,11 @@
 use crate::{mock::*, Error};
+use admeta_common::TargetTag;
 use frame_support::{assert_noop, assert_ok};
 
 #[test]
-fn it_works_for_default_value() {
+fn add_profile_succeeds() {
 	new_test_ext().execute_with(|| {
-		// Dispatch a signed extrinsic.
-		assert_ok!(TemplateModule::do_something(Origin::signed(1), 42));
-		// Read pallet storage and assert an expected result.
-		assert_eq!(TemplateModule::something(), Some(42));
-	});
-}
-
-#[test]
-fn correct_error_for_none_value() {
-	new_test_ext().execute_with(|| {
-		// Ensure the expected error is thrown when no value is present.
-		assert_noop!(TemplateModule::cause_error(Origin::signed(1)), Error::<Test>::NoneValue);
+		assert_ok!(User::add_profile(RuntimeOrigin::signed(1), 20, TargetTag::DeFi, true));
+		assert_eq!(User::get_user(1).is_some(), true);
 	});
 }
