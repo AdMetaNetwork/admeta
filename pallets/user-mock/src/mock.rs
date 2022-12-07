@@ -1,7 +1,8 @@
 use crate as pallet_user_mock;
 use frame_support::{
 	parameter_types,
-	traits::{ConstU128, ConstU16, ConstU32, ConstU64, Contains, Everything, GenesisBuild},
+	traits::{ConstU32, ConstU64, OnFinalize, OnIdle, OnInitialize},
+	weights::Weight,
 };
 use frame_support_test::TestRandomness;
 use frame_system as system;
@@ -109,4 +110,20 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
 	.assimilate_storage(&mut t)
 	.unwrap();
 	t.into()
+}
+
+pub fn run_to_block(n: u64) {
+	while System::block_number() < n {
+		if System::block_number() > 1 {
+			Ad::on_finalize(System::block_number());
+			User::on_finalize(System::block_number());
+			System::on_finalize(System::block_number());
+		}
+		System::set_block_number(System::block_number() + 1);
+		System::on_initialize(System::block_number());
+		User::on_initialize(System::block_number());
+		User::on_idle(System::block_number(), Weight::from_ref_time(10_000_000 as u64));
+		Ad::on_initialize(System::block_number());
+		Ad::on_idle(System::block_number(), Weight::from_ref_time(10_000_000 as u64));
+	}
 }
