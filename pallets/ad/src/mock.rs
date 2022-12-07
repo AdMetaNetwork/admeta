@@ -1,7 +1,7 @@
 use crate as pallet_ad;
 use frame_support::{
 	parameter_types,
-	traits::{ConstU128, ConstU16, ConstU32, ConstU64, Contains, Everything, GenesisBuild},
+	traits::{ConstU32, ConstU64},
 };
 use frame_support_test::TestRandomness;
 use frame_system as system;
