@@ -10,7 +10,7 @@ pub trait AdData<BlockNumberType, AdIndexType, AccountIdType> {
 		age: u8,
 		tag: TargetTag,
 		block_number: BlockNumberType,
-	) -> Option<(AccountIdType, AdIndexType)>;
+	) -> Vec<(AccountIdType, AdIndexType)>;
 	fn claim_reward_for_user(
 		proposer: AccountIdType,
 		ad_index: AdIndexType,

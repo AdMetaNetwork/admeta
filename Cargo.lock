@@ -112,7 +112,7 @@ dependencies = [
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-treasury",
- "pallet-user-mock",
+ "pallet-user",
  "parity-scale-codec",
  "scale-info",
  "sp-api",
@@ -4264,14 +4264,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-user-mock"
+name = "pallet-user"
 version = "0.1.0"
 dependencies = [
  "admeta-common",
  "frame-benchmarking",
  "frame-support",
+ "frame-support-test",
  "frame-system",
  "log",
+ "pallet-ad",
+ "pallet-balances",
  "parity-scale-codec",
  "scale-info",
  "sp-core",

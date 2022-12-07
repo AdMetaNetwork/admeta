@@ -241,7 +241,8 @@ pub mod pallet {
 			age: u8,
 			tag: TargetTag,
 			block_number: T::BlockNumber,
-		) -> Option<(T::AccountId, T::AdIndex)> {
+		) -> Vec<(T::AccountId, T::AdIndex)> {
+			let mut matched_vec = Vec::new();
 			for ad in ImpressionAds::<T>::iter() {
 				if ad.2.preference.age.is_in_range(age) &&
 					ad.2.preference.tags.contains(&tag) &&
@@ -254,10 +255,10 @@ pub mod pallet {
 							ad.amount -= 1;
 						}
 					});
-					return Some((ad.0, ad.1))
+					matched_vec.push((ad.0, ad.1));
 				}
 			}
-			None
+			matched_vec
 		}
 
 		fn claim_reward_for_user(

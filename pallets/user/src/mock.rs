@@ -1,7 +1,8 @@
-use crate as pallet_ad;
+use crate as pallet_user;
 use frame_support::{
 	parameter_types,
-	traits::{ConstU32, ConstU64},
+	traits::{ConstU32, ConstU64, OnFinalize, OnIdle, OnInitialize},
+	weights::Weight,
 };
 use frame_support_test::TestRandomness;
 use frame_system as system;
@@ -28,6 +29,7 @@ frame_support::construct_runtime!(
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Ad: pallet_ad::{Pallet, Call, Storage, Event<T>},
+		User: pallet_user::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
@@ -62,7 +64,6 @@ impl system::Config for Test {
 	type OnSetCode = ();
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
-
 parameter_types! {
 	pub const ExistentialDeposit: u64 = 1;
 }
@@ -91,6 +92,13 @@ impl pallet_ad::Config for Test {
 	type AdDepositPerByte = ConstU64<1>;
 	type MaxAdTags = ConstU32<2>;
 }
+impl pallet_user::Config for Test {
+	type RuntimeEvent = RuntimeEvent;
+	type AdData = Ad;
+	type AdIndex = AdIndexType;
+	type Randomness = TestRandomness<Self>;
+	type MaxMatchedAds = ConstU32<2>;
+}
 
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext() -> sp_io::TestExternalities {
@@ -104,18 +112,18 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
 	t.into()
 }
 
-// TODO According to substrate source, most events are not checked in unit tests.
-//      Will leave it here till it's really necessary
-// Checks events against the latest. A contiguous set of events must be provided. They must
-// include the most recent event, but do not have to include every past event.
-//pub fn assert_events(mut expected: Vec<RuntimeEvent>) {
-//	let mut actual: Vec<RuntimeEvent> =
-//		system::Pallet::<Test>::events().iter().map(|e| e.event.clone()).collect();
-//
-//	expected.reverse();
-//
-//	for evt in expected {
-//		let next = actual.pop().expect("event expected");
-//		assert_eq!(next, evt, "Events don't match (actual,expected)");
-//	}
-//}
+pub fn run_to_block(n: u64) {
+	while System::block_number() < n {
+		if System::block_number() > 1 {
+			Ad::on_finalize(System::block_number());
+			User::on_finalize(System::block_number());
+			System::on_finalize(System::block_number());
+		}
+		System::set_block_number(System::block_number() + 1);
+		System::on_initialize(System::block_number());
+		User::on_initialize(System::block_number());
+		User::on_idle(System::block_number(), Weight::from_ref_time(10_000_000 as u64));
+		Ad::on_initialize(System::block_number());
+		Ad::on_idle(System::block_number(), Weight::from_ref_time(10_000_000 as u64));
+	}
+}

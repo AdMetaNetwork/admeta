@@ -108,6 +108,7 @@ pub mod pallet {
 						Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
 						Ok(())
 					} else {
+						// Here shall never be reached as user profile is proven existing
 						Err(Error::<T>::UserDoesNotExist)
 					}
 				})?;
@@ -175,17 +176,25 @@ pub mod pallet {
 				// Start matching if there is no matched ads and ad_display is true
 				if (iter.1.matched_ads.len() as u32) < T::MaxMatchedAds::get() && iter.1.ad_display
 				{
-					if let Some((ad_proposer, ad_index)) =
-						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number)
-					{
-						// Push matched ad to user's matched_ad vector
-						Users::<T>::mutate(&iter.0, |user_op| {
-							if let Some(user) = user_op {
-								// Err should never thrown here
-								let _ = user.matched_ads.try_push((ad_proposer, ad_index));
+					let matched_vec =
+						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number);
+
+					// Push matched ads to user's matched_ad vector
+					Users::<T>::mutate(&iter.0, |user_op| {
+						if let Some(user) = user_op {
+							for ad in matched_vec {
+								if user.matched_ads.contains(&ad) {
+									continue
+								} else {
+									// Err should never thrown here
+									let _ = user.matched_ads.try_push(ad);
+								}
+								if (iter.1.matched_ads.len() as u32) >= T::MaxMatchedAds::get() {
+									break
+								}
 							}
-						});
-					}
+						}
+					});
 				} else {
 					continue
 				}
