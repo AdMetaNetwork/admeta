@@ -1,10 +1,10 @@
 [package]
 authors = ['AdMeta Network']
-description = 'The AdMeta pallet-user-mock.'
+description = 'The AdMeta pallet-user.'
 edition = '2021'
 homepage = 'https://admeta.network/'
 license = 'GPLv3'
-name = 'pallet-user-mock'
+name = 'pallet-user'
 publish = false
 repository = 'https://github.com/AdMetaNetwork/admeta'
 version = '0.1.0'

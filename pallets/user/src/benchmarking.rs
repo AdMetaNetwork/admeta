@@ -1,4 +1,4 @@
-//! Benchmarking setup for pallet-user-mock
+//! Benchmarking setup for pallet-user
 
 use super::*;
 

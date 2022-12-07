@@ -51,8 +51,8 @@ pub use sp_runtime::{Perbill, Permill};
 /// Import ad pallet.
 pub use pallet_ad;
 
-/// Import user-mock pallet.
-pub use pallet_user_mock;
+/// Import user pallet.
+pub use pallet_user;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -540,7 +540,7 @@ impl pallet_ad::Config for Runtime {
 	type MaxAdTags = MaxAdTags;
 }
 
-impl pallet_user_mock::Config for Runtime {
+impl pallet_user::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Randomness = RandomnessCollectiveFlip;
 	type AdData = Ad;
@@ -577,7 +577,7 @@ construct_runtime!(
 
 		// AdMeta pallets
 		Ad: pallet_ad,
-		User: pallet_user_mock,
+		User: pallet_user,
 	}
 );
 
@@ -768,7 +768,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_membership, CouncilMembership);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
 			list_benchmark!(list, extra, pallet_ad, Ad);
-			list_benchmark!(list, extra, pallet_user_mock, User);
+			list_benchmark!(list, extra, pallet_user, User);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -813,7 +813,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_membership, CouncilMembership);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
 			add_benchmark!(params, batches, pallet_ad, Ad);
-			add_benchmark!(params, batches, pallet_user_mock, User);
+			add_benchmark!(params, batches, pallet_user, User);
 
 			Ok(batches)
 		}

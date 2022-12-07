@@ -1,4 +1,4 @@
-use crate as pallet_user_mock;
+use crate as pallet_user;
 use frame_support::{
 	parameter_types,
 	traits::{ConstU32, ConstU64, OnFinalize, OnIdle, OnInitialize},
@@ -29,7 +29,7 @@ frame_support::construct_runtime!(
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Ad: pallet_ad::{Pallet, Call, Storage, Event<T>},
-		User: pallet_user_mock::{Pallet, Call, Storage, Event<T>},
+		User: pallet_user::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
@@ -92,7 +92,7 @@ impl pallet_ad::Config for Test {
 	type AdDepositPerByte = ConstU64<1>;
 	type MaxAdTags = ConstU32<2>;
 }
-impl pallet_user_mock::Config for Test {
+impl pallet_user::Config for Test {
 	type RuntimeEvent = RuntimeEvent;
 	type AdData = Ad;
 	type AdIndex = AdIndexType;
