@@ -1,4 +1,4 @@
 (function() {var implementors = {
 "pallet_ad":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; GetCallName for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;"]],
-"pallet_user_mock":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user_mock/pallet/trait.Config.html\" title=\"trait pallet_user_mock::pallet::Config\">Config</a>&gt; GetCallName for <a class=\"enum\" href=\"pallet_user_mock/pallet/enum.Call.html\" title=\"enum pallet_user_mock::pallet::Call\">Call</a>&lt;T&gt;"]]
+"pallet_user":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user/pallet/trait.Config.html\" title=\"trait pallet_user::pallet::Config\">Config</a>&gt; GetCallName for <a class=\"enum\" href=\"pallet_user/pallet/enum.Call.html\" title=\"enum pallet_user::pallet::Call\">Call</a>&lt;T&gt;"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
