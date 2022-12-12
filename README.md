@@ -1,34 +1,130 @@
 # AdMeta
+
 This is the AdMeta blockchain implementation.
 
+## Getting Started
 
-## Overview
+### Rust Setup
 
-AdMeta is a Metaverse advertisement platform that focuses on privacy-preserving. AdMeta uses a TEE-based DID service to identify target groups for advertisers, and with the usage of TEE, AdMeta guarantees not to collect any user data. AdMeta builds multiple forms of ad assets (e.g. billboards, wall paintings) in Metaverse platforms like Decentraland, Bit.Country, to allow land holders to integrate our products easily. Qualified conversions let both users and publishers get rewards from advertisers. 
+First, complete the [basic Rust setup instructions](./docs/rust-setup.md).
 
-Unlike traditional ad platforms, who collect users sensitive data(e.g. location, browsing history) for advertising, AdMeta does not collect or store any user data per se. Instead, users voluntarily decide and control what data can be stored in TEE, and the stored data in TEE cannot be accessed by anyone except users themselves.
+### Run
 
-## Project Details
+Use Rust's native `cargo` command to build and launch the template node:
 
-![AdMeta Demo - the floating billboard](https://user-images.githubusercontent.com/4738254/144754078-1877d8a5-8ef9-49ec-8ef5-f79496a689f0.png)
+```sh
+cargo run --release -- --dev
+```
 
-In the above image, the floating billboard is our [prototype ad component](https://github.com/AdMetaNetwork/admeta-decentraland) built with decentraland SDK. Users who registered on our blockchain, and switched "Ad Display" option on (by default it's off) are able to see a customized ad content on this billboard while gaming in decentraland.
+### Build
 
-The content of this ad component is selected according to user's personal data and preference. Unlike centralized ad platforms, we don't store user's data on or database. Instead, it's stored on the TEE layer of blockchain, and the target group matching and selecting happen also in the TEE layer, which ensures that no private data are exposed during the whole process. Eventually, both user and publisher receive some amount of token as rewards from advertiser.
+The `cargo run` command will perform an initial build. Use the following command to build the node
+without launching it:
 
-Our blockchain is built with Substrate, and the pallet-ad provides the functionality of advertisement proposal, storage and governance. The user pallet will connect to TEE-based external identity aggregation and DID service provided by Litentry (we have already the initial cooperation plan) to match ads with users data and preference.
+```sh
+cargo build --release
+```
 
-## Architecture
+### Embedded Docs
 
-![AdMeta Architecture](https://raw.githubusercontent.com/h4n0/gists/master/admeta/admeta_architecture.svg)
+Once the project has been built, the following command can be used to explore all parameters and
+subcommands:
 
-**Advertisers** can propose an ad with certain acceptance rule, e.g. link clicking, and also advertiser provides how many times the ads are displayed and converted, and how much they pay for each conversion. They need to pay the total price (the number of conversions * price per conversion) while proposing the ad. Each ad display has a unique ID, which is generated while creating the proposal. A Merkle tree are built with all these unique IDs, and the root of Merkle tree will be stored in on-chain storage. A qualified conversion gives the participated user this UID, with which the user can claim for rewards.
+```sh
+./target/release/admeta -h
+```
 
-**Councils** shall approve or reject ad proposals according to the content of ads. Also, advertisers are evaluated on their behavior democratically.
+## Run
 
-**Users** can switch on the "Ad Display" option on AdMeta, so that users can get rewards by viewing and interacting with ads. By default, this option is off, which means users who haven't set up their AdMeta won't see any ads. Users can also provide their data for a better ad matching, by means of this they will get more rewards.
+The provided `cargo run` command will launch a temporary node and its state will be discarded after
+you terminate the process. After the project has been built, there are other ways to launch the
+node.
 
-**Publishers** can simply utilize our Ad Assets on any Metaverse platform and place it on their lands. Users also get rewards by a qualified display conversion.
+### Single-Node Development Chain
+
+This command will start the single-node development chain with non-persistent state:
+
+```bash
+./target/release/node-template --dev
+```
+
+Purge the development chain's state:
+
+```bash
+./target/release/node-template purge-chain --dev
+```
+
+Start the development chain with detailed logging:
+
+```bash
+RUST_BACKTRACE=1 ./target/release/node-template -ldebug --dev
+```
+
+> Development chain means that the state of our chain will be in a tmp folder while the nodes are
+> running. Also, **alice** account will be authority and sudo account as declared in the
+> [genesis state](https://github.com/AdMetaNetwork/admeta/blob/main/node/src/chain_spec.rs#L52).
+> At the same time the following accounts will be pre-funded:
+>
+> - Alice
+> - Bob
+> - Alice//stash
+> - Bob//stash
+
+In case of being interested in maintaining the chain' state between runs a base path must be added
+so the db can be stored in the provided folder instead of a temporal one. We could use this folder
+to store different chain databases, as a different folder will be created per different chain that
+is ran. The following commands shows how to use a newly created folder as our db base path.
+
+```bash
+// Create a folder to use as the db base path
+$ mkdir my-chain-state
+
+// Use of that folder to store the chain state
+$ ./target/release/node-template --dev --base-path ./my-chain-state/
+
+// Check the folder structure created inside the base path after running the chain
+$ ls ./my-chain-state
+chains
+$ ls ./my-chain-state/chains/
+dev
+$ ls ./my-chain-state/chains/dev
+db keystore network
+```
+
+### Connect with Polkadot-JS Apps Front-end
+
+Once the node template is running locally, you can connect it with **Polkadot-JS Apps** front-end
+to interact with your chain. [Click
+here](https://polkadot.js.org/apps/#/explorer?rpc=ws://localhost:9944) connecting the Apps to your
+local node template.
+
+### Run in Docker
+
+First, install [Docker](https://docs.docker.com/get-docker/) and
+[Docker Compose](https://docs.docker.com/compose/install/).
+
+Then run the following command to start a single node development chain.
+
+```bash
+./scripts/docker_run.sh
+```
+
+This command will firstly compile your code, followed by the whole unit test run, and then start a
+local development network.
+
+## Test
+
+### Unit Test
+
+Run `cargo test` command to build and launch all unit tests. The unit tests will stop if all tests
+pass or any of them fails.
+
+```sh
+cargo test
+```
+
+### Test with Polkadot-JS App
 
 ## License
+
 GPLv3
