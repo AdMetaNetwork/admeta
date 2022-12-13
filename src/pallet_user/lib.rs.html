@@ -202,6 +202,12 @@
 <a href="#202" id="202">202</a>
 <a href="#203" id="203">203</a>
 <a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
 </pre><pre class="rust"><code><span class="attr">#![cfg_attr(not(feature = <span class="string">&quot;std&quot;</span>), no_std)]
 </span><span class="kw">pub use </span>pallet::<span class="kw-2">*</span>;
 
@@ -292,7 +298,10 @@
 
 	<span class="attr">#[pallet::call]
 	</span><span class="kw">impl</span>&lt;T: Config&gt; Pallet&lt;T&gt; {
-		<span class="attr">#[pallet::weight(<span class="number">10_000</span>)]
+		<span class="doccomment">/// Add a user profile.
+		///
+		/// The dispatch origin for this call must be `Signed` by the to be added user.
+		</span><span class="attr">#[pallet::weight(<span class="number">10_000</span>)]
 		</span><span class="kw">pub fn </span>add_profile(
 			origin: OriginFor&lt;T&gt;,
 			age: u8,
@@ -331,7 +340,10 @@
 			}
 		}
 
-		<span class="attr">#[pallet::weight(<span class="number">100</span>)]
+		<span class="doccomment">/// Claim rewards for certain ads.
+		///
+		/// The dispatch origin for this call must be `Signed` by the user.
+		</span><span class="attr">#[pallet::weight(<span class="number">100</span>)]
 		</span><span class="kw">pub fn </span>claim_reward(
 			origin: OriginFor&lt;T&gt;,
 			proposer: T::AccountId,
@@ -407,4 +419,4 @@
 	}
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pallet_user" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (bdb07a8ec 2022-12-11)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pallet_user" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (37d7de337 2022-12-12)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
