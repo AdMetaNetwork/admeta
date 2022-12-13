@@ -167,6 +167,16 @@ pub mod pallet {
 
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
+		/// Create an ad proposal.
+		///
+		/// The dispatch origin for this call must be `Signed` by the proposer.
+		/// - 'ad_url': The URL which links to the ad metadata(usually an image stored on IPFS)
+		/// - 'target_url': The jump link of this ad proposal
+		/// - 'title': Title of this ad
+		/// - 'cpi': Cost per impression of this ad
+		/// - 'amount': The total duplications of this ad
+		/// - 'end_block': The expiration time of this ad in Block height
+		/// - 'ad_preference': The preferred target group of this ad
 		#[pallet::weight(10_000)]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
@@ -193,6 +203,9 @@ pub mod pallet {
 
 			Ok(())
 		}
+		/// Approve an ad proposal.
+		///
+		/// The dispatch origin for this call must be `Signed` by the ApproveOrigin.
 		#[pallet::weight(10_000)]
 		pub fn approve_ad(
 			origin: OriginFor<T>,
@@ -214,6 +227,9 @@ pub mod pallet {
 
 			Ok(())
 		}
+		/// Reject an ad proposal.
+		///
+		/// The dispatch origin for this call must be `Signed` by the RejectOrigin.
 		#[pallet::weight(10_000)]
 		pub fn reject_ad(
 			origin: OriginFor<T>,

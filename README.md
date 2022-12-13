@@ -10,7 +10,7 @@ First, complete the [basic Rust setup instructions](./docs/rust-setup.md).
 
 ### Run
 
-Use Rust's native `cargo` command to build and launch the template node:
+Use Rust's native `cargo` command to build and launch the AdMeta node:
 
 ```sh
 cargo run --release -- --dev
@@ -45,19 +45,19 @@ node.
 This command will start the single-node development chain with non-persistent state:
 
 ```bash
-./target/release/node-template --dev
+./target/release/admeta --dev
 ```
 
 Purge the development chain's state:
 
 ```bash
-./target/release/node-template purge-chain --dev
+./target/release/admeta purge-chain --dev
 ```
 
 Start the development chain with detailed logging:
 
 ```bash
-RUST_BACKTRACE=1 ./target/release/node-template -ldebug --dev
+RUST_BACKTRACE=1 ./target/release/admeta -ldebug --dev
 ```
 
 > Development chain means that the state of our chain will be in a tmp folder while the nodes are
@@ -80,7 +80,7 @@ is ran. The following commands shows how to use a newly created folder as our db
 $ mkdir my-chain-state
 
 // Use of that folder to store the chain state
-$ ./target/release/node-template --dev --base-path ./my-chain-state/
+$ ./target/release/admeta --dev --base-path ./my-chain-state/
 
 // Check the folder structure created inside the base path after running the chain
 $ ls ./my-chain-state
@@ -93,10 +93,10 @@ db keystore network
 
 ### Connect with Polkadot-JS Apps Front-end
 
-Once the node template is running locally, you can connect it with **Polkadot-JS Apps** front-end
-to interact with your chain. [Click
+Once the AdMeta node is running locally, you can connect it with **Polkadot-JS Apps** front-end to
+interact with your chain. [Click
 here](https://polkadot.js.org/apps/#/explorer?rpc=ws://localhost:9944) connecting the Apps to your
-local node template.
+local AdMeta node.
 
 ### Run in Docker
 
@@ -123,7 +123,10 @@ pass or any of them fails.
 cargo test
 ```
 
-### Test with Polkadot-JS App
+### Test with WebApp
+
+Please see the [AdMeta WebApp guide](https://docs.admeta.network/guides/how-to-use-admeta-webapp)
+about how to test using AdMeta WebApp to interact with AdMeta Testnet.
 
 ## License
 

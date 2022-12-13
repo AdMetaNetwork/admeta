@@ -88,6 +88,9 @@ pub mod pallet {
 
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
+		/// Add a user profile.
+		///
+		/// The dispatch origin for this call must be `Signed` by the to be added user.
 		#[pallet::weight(10_000)]
 		pub fn add_profile(
 			origin: OriginFor<T>,
@@ -127,6 +130,9 @@ pub mod pallet {
 			}
 		}
 
+		/// Claim rewards for certain ads.
+		///
+		/// The dispatch origin for this call must be `Signed` by the user.
 		#[pallet::weight(100)]
 		pub fn claim_reward(
 			origin: OriginFor<T>,
