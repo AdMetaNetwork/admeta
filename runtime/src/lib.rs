@@ -315,7 +315,7 @@ pub struct OriginPrivilegeCmp;
 impl PrivilegeCmp<OriginCaller> for OriginPrivilegeCmp {
 	fn cmp_privilege(left: &OriginCaller, right: &OriginCaller) -> Option<Ordering> {
 		if left == right {
-			return Some(Ordering::Equal)
+			return Some(Ordering::Equal);
 		}
 
 		match (left, right) {
@@ -508,6 +508,24 @@ impl pallet_sudo::Config for Runtime {
 }
 
 parameter_types! {
+	pub const MaxClassMetadata: u32 = 1024;
+	pub const MaxTokenMetadata: u32 = 1024;
+}
+
+impl orml_nft::Config for Runtime {
+	type ClassId = u32;
+	type TokenId = u32;
+	type ClassData = Vec<u8>;
+	type TokenData = Vec<u8>;
+	type MaxClassMetadata = MaxClassMetadata;
+	type MaxTokenMetadata = MaxTokenMetadata;
+}
+
+impl pallet_nft::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+}
+
+parameter_types! {
 	pub const MaxAdDataLength: u32 = 200;
 	pub const MaxAdTags: u32 = 5;
 	pub const MaxMatchedAds: u32 = 3;
@@ -575,9 +593,13 @@ construct_runtime!(
 		TechnicalCommittee: pallet_collective::<Instance2>::{Pallet, Call, Storage, Origin<T>, Event<T>, Config<T>} = 24,
 		TechnicalCommitteeMembership: pallet_membership::<Instance2>::{Pallet, Call, Storage, Event<T>, Config<T>} = 25,
 
+		// ORML pallets
+		OrmlNft: orml_nft,
+
 		// AdMeta pallets
 		Ad: pallet_ad,
 		User: pallet_user,
+		NFT: pallet_nft,
 	}
 );
 
@@ -767,6 +789,8 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, pallet_collective, Council);
 			list_benchmark!(list, extra, pallet_membership, CouncilMembership);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
+			list_benchmark!(list, extra, orml_nft, OrmlNft);
+			list_benchmark!(list, extra, pallet_nft, NFT);
 			list_benchmark!(list, extra, pallet_ad, Ad);
 			list_benchmark!(list, extra, pallet_user, User);
 
@@ -812,6 +836,8 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, pallet_collective, Council);
 			add_benchmark!(params, batches, pallet_membership, CouncilMembership);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
+			add_benchmark!(params, batches, orml_nft, OrmlNft);
+			add_benchmark!(params, batches, pallet_nft, NFT);
 			add_benchmark!(params, batches, pallet_ad, Ad);
 			add_benchmark!(params, batches, pallet_user, User);
 

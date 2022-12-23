@@ -190,19 +190,19 @@ pub mod pallet {
 						if let Some(user) = user_op {
 							for ad in matched_vec {
 								if user.matched_ads.contains(&ad) {
-									continue
+									continue;
 								} else {
 									// Err should never thrown here
 									let _ = user.matched_ads.try_push(ad);
 								}
 								if (iter.1.matched_ads.len() as u32) >= T::MaxMatchedAds::get() {
-									break
+									break;
 								}
 							}
 						}
 					});
 				} else {
-					continue
+					continue;
 				}
 			}
 		}

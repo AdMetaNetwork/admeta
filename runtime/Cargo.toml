@@ -54,9 +54,13 @@ pallet-transaction-payment-rpc-runtime-api = { version = "4.0.0-dev", default-fe
 frame-benchmarking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", optional = true , branch = "polkadot-v0.9.31" }
 frame-system-benchmarking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", optional = true , branch = "polkadot-v0.9.31" }
 
+# ORML pallets
+orml-nft = { version = "0.4.1-dev", default-features = false, git = "https://github.com/open-web3-stack/open-runtime-module-library.git", branch = "polkadot-v0.9.31" }
+
 # AdMeta pallets
 pallet-ad = { default-features = false, path = '../pallets/ad', package = 'pallet-ad' }
 pallet-user = { default-features = false, path = '../pallets/user', package = 'pallet-user' }
+pallet-nft = { default-features = false, path = '../pallets/nft', package = 'pallet-nft' }
 
 [build-dependencies]
 substrate-wasm-builder = { version = "5.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.31" }
@@ -87,6 +91,7 @@ std = [
   'frame-support/std',
   'frame-system-rpc-runtime-api/std',
   'frame-system/std',
+  "orml-nft/std",
   'pallet-ad/std',
   'pallet-aura/std',
   'pallet-balances/std',

@@ -260,10 +260,10 @@ pub mod pallet {
 		) -> Vec<(T::AccountId, T::AdIndex)> {
 			let mut matched_vec = Vec::new();
 			for ad in ImpressionAds::<T>::iter() {
-				if ad.2.preference.age.is_in_range(age) &&
-					ad.2.preference.tags.contains(&tag) &&
-					ad.2.amount > 0 && ad.2.approved &&
-					ad.2.end_block >= block_number
+				if ad.2.preference.age.is_in_range(age)
+					&& ad.2.preference.tags.contains(&tag)
+					&& ad.2.amount > 0 && ad.2.approved
+					&& ad.2.end_block >= block_number
 				{
 					// Decrease the total amount of this ad by 1
 					ImpressionAds::<T>::mutate(&ad.0, &ad.1, |ad_op| {

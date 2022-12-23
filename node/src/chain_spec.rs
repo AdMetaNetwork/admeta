@@ -175,5 +175,6 @@ fn testnet_genesis(
 			phantom: Default::default(),
 		},
 		treasury: Default::default(),
+		orml_nft: Default::default(),
 	}
 }
