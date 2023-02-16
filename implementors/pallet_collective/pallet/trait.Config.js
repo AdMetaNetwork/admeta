@@ -1,3 +1,3 @@
 (function() {var implementors = {
-"admeta_runtime":[["impl Config&lt;Instance1&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.Runtime.html\" title=\"struct admeta_runtime::Runtime\">Runtime</a>"],["impl Config&lt;Instance2&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.Runtime.html\" title=\"struct admeta_runtime::Runtime\">Runtime</a>"]]
+"admeta_runtime":[["impl Config&lt;Instance2&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.Runtime.html\" title=\"struct admeta_runtime::Runtime\">Runtime</a>"],["impl Config&lt;Instance1&gt; for <a class=\"struct\" href=\"admeta_runtime/struct.Runtime.html\" title=\"struct admeta_runtime::Runtime\">Runtime</a>"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

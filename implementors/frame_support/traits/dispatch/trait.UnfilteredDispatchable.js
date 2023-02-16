@@ -1,5 +1,5 @@
 (function() {var implementors = {
 "admeta_runtime":[["impl UnfilteredDispatchable for <a class=\"enum\" href=\"admeta_runtime/enum.RuntimeCall.html\" title=\"enum admeta_runtime::RuntimeCall\">RuntimeCall</a>"]],
-"pallet_ad":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; UnfilteredDispatchable for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;"]],
-"pallet_user":[["impl&lt;T:&nbsp;<a class=\"trait\" href=\"pallet_user/pallet/trait.Config.html\" title=\"trait pallet_user::pallet::Config\">Config</a>&gt; UnfilteredDispatchable for <a class=\"enum\" href=\"pallet_user/pallet/enum.Call.html\" title=\"enum pallet_user::pallet::Call\">Call</a>&lt;T&gt;"]]
+"pallet_ad":[["impl&lt;T: <a class=\"trait\" href=\"pallet_ad/pallet/trait.Config.html\" title=\"trait pallet_ad::pallet::Config\">Config</a>&gt; UnfilteredDispatchable for <a class=\"enum\" href=\"pallet_ad/pallet/enum.Call.html\" title=\"enum pallet_ad::pallet::Call\">Call</a>&lt;T&gt;"]],
+"pallet_user":[["impl&lt;T: <a class=\"trait\" href=\"pallet_user/pallet/trait.Config.html\" title=\"trait pallet_user::pallet::Config\">Config</a>&gt; UnfilteredDispatchable for <a class=\"enum\" href=\"pallet_user/pallet/enum.Call.html\" title=\"enum pallet_user::pallet::Call\">Call</a>&lt;T&gt;"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
