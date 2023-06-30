@@ -27,6 +27,7 @@ pub mod pallet {
 	pub struct User<T: Config> {
 		pub age: u8,
 		pub tag: TargetTag,
+		pub level: u8,
 		pub ad_display: bool,
 		pub matched_ads: BoundedVec<(T::AccountId, T::AdIndex), T::MaxMatchedAds>,
 	}
@@ -120,6 +121,54 @@ pub mod pallet {
 				let user = User::<T> {
 					age,
 					tag,
+					// User level is set to 0 for self defined users
+					level: 0,
+					ad_display,
+					// try_into() should be always successful
+					matched_ads: Vec::new().try_into().unwrap(),
+				};
+				Users::<T>::insert(who.clone(), user);
+				Self::deposit_event(Event::NewUserAdded(who));
+				Ok(())
+			}
+		}
+
+		/// Add a zk user profile.
+		///
+		/// The dispatch origin for this call must be `Signed` by the to be added user.
+		#[pallet::call_index(1)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(0,1).ref_time())]
+		pub fn add_zk_profile(
+			origin: OriginFor<T>,
+			age: u8,
+			tag: TargetTag,
+			level: u8,
+			ad_display: bool,
+		) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+
+			// Check if user exists
+			if Users::<T>::contains_key(&who) {
+				// Update user profile if user already exists
+				Users::<T>::mutate(who.clone(), |user_op| {
+					if let Some(user) = user_op {
+						user.age = age;
+						user.tag = tag;
+						user.level = level;
+						user.ad_display = ad_display;
+						Self::deposit_event(Event::UserSetAdDisplay(who, ad_display));
+						Ok(())
+					} else {
+						// Here shall never be reached as user profile is proven existing
+						Err(Error::<T>::UserDoesNotExist)
+					}
+				})?;
+				Ok(())
+			} else {
+				let user = User::<T> {
+					age,
+					tag,
+					level,
 					ad_display,
 					// try_into() should be always successful
 					matched_ads: Vec::new().try_into().unwrap(),
@@ -133,7 +182,7 @@ pub mod pallet {
 		/// Claim rewards for certain ads.
 		///
 		/// The dispatch origin for this call must be `Signed` by the user.
-		#[pallet::call_index(1)]
+		#[pallet::call_index(2)]
 		#[pallet::weight(T::DbWeight::get().reads_writes(1,1).ref_time())]
 		pub fn claim_reward(
 			origin: OriginFor<T>,
@@ -183,8 +232,12 @@ pub mod pallet {
 				// Start matching if there is no matched ads and ad_display is true
 				if (iter.1.matched_ads.len() as u32) < T::MaxMatchedAds::get() && iter.1.ad_display
 				{
-					let matched_vec =
-						T::AdData::match_ad_for_user(iter.1.age, iter.1.tag, block_number);
+					let matched_vec = T::AdData::match_ad_for_user(
+						iter.1.age,
+						iter.1.tag,
+						iter.1.level,
+						block_number,
+					);
 
 					// Push matched ads to user's matched_ad vector
 					Users::<T>::mutate(&iter.0, |user_op| {

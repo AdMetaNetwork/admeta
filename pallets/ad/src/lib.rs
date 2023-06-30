@@ -258,12 +258,14 @@ pub mod pallet {
 		fn match_ad_for_user(
 			age: u8,
 			tag: TargetTag,
+			level: u8,
 			block_number: T::BlockNumber,
 		) -> Vec<(T::AccountId, T::AdIndex)> {
 			let mut matched_vec = Vec::new();
 			for ad in ImpressionAds::<T>::iter() {
 				if ad.2.preference.age.is_in_range(age)
 					&& ad.2.preference.tags.contains(&tag)
+					&& ad.2.preference.min_level <= level
 					&& ad.2.amount > 0 && ad.2.approved
 					&& ad.2.end_block >= block_number
 				{
