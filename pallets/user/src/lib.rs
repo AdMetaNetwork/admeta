@@ -51,7 +51,6 @@ pub mod pallet {
 	}
 
 	#[pallet::pallet]
-	#[pallet::generate_store(pub(super) trait Store)]
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
@@ -82,7 +81,7 @@ pub mod pallet {
 			log::info!("on_idle #{:?}, {:?})", block_number, remaining_weight);
 			Self::do_matching(block_number);
 			// TODO calculate the actual consumed weights
-			Weight::from_ref_time(300 as u64)
+			Weight::from_parts(300 as u64, 64)
 		}
 	}
 
@@ -91,6 +90,7 @@ pub mod pallet {
 		/// Add a user profile.
 		///
 		/// The dispatch origin for this call must be `Signed` by the to be added user.
+		#[pallet::call_index(0)]
 		#[pallet::weight(10_000)]
 		pub fn add_profile(
 			origin: OriginFor<T>,
@@ -133,6 +133,7 @@ pub mod pallet {
 		/// Claim rewards for certain ads.
 		///
 		/// The dispatch origin for this call must be `Signed` by the user.
+		#[pallet::call_index(1)]
 		#[pallet::weight(100)]
 		pub fn claim_reward(
 			origin: OriginFor<T>,
@@ -190,19 +191,19 @@ pub mod pallet {
 						if let Some(user) = user_op {
 							for ad in matched_vec {
 								if user.matched_ads.contains(&ad) {
-									continue
+									continue;
 								} else {
 									// Err should never thrown here
 									let _ = user.matched_ads.try_push(ad);
 								}
 								if (iter.1.matched_ads.len() as u32) >= T::MaxMatchedAds::get() {
-									break
+									break;
 								}
 							}
 						}
 					});
 				} else {
-					continue
+					continue;
 				}
 			}
 		}

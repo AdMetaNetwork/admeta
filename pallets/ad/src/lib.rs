@@ -105,7 +105,6 @@ pub mod pallet {
 	}
 
 	#[pallet::pallet]
-	#[pallet::generate_store(pub(super) trait Store)]
 	pub struct Pallet<T>(_);
 
 	/// Number of ad proposals that have been made.
@@ -177,6 +176,7 @@ pub mod pallet {
 		/// - 'amount': The total duplications of this ad
 		/// - 'end_block': The expiration time of this ad in Block height
 		/// - 'ad_preference': The preferred target group of this ad
+		#[pallet::call_index(0)]
 		#[pallet::weight(10_000)]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
@@ -206,6 +206,7 @@ pub mod pallet {
 		/// Approve an ad proposal.
 		///
 		/// The dispatch origin for this call must be `Signed` by the ApproveOrigin.
+		#[pallet::call_index(1)]
 		#[pallet::weight(10_000)]
 		pub fn approve_ad(
 			origin: OriginFor<T>,
@@ -230,6 +231,7 @@ pub mod pallet {
 		/// Reject an ad proposal.
 		///
 		/// The dispatch origin for this call must be `Signed` by the RejectOrigin.
+		#[pallet::call_index(2)]
 		#[pallet::weight(10_000)]
 		pub fn reject_ad(
 			origin: OriginFor<T>,
@@ -260,10 +262,10 @@ pub mod pallet {
 		) -> Vec<(T::AccountId, T::AdIndex)> {
 			let mut matched_vec = Vec::new();
 			for ad in ImpressionAds::<T>::iter() {
-				if ad.2.preference.age.is_in_range(age) &&
-					ad.2.preference.tags.contains(&tag) &&
-					ad.2.amount > 0 && ad.2.approved &&
-					ad.2.end_block >= block_number
+				if ad.2.preference.age.is_in_range(age)
+					&& ad.2.preference.tags.contains(&tag)
+					&& ad.2.amount > 0 && ad.2.approved
+					&& ad.2.end_block >= block_number
 				{
 					// Decrease the total amount of this ad by 1
 					ImpressionAds::<T>::mutate(&ad.0, &ad.1, |ad_op| {
