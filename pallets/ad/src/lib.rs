@@ -177,7 +177,7 @@ pub mod pallet {
 		/// - 'end_block': The expiration time of this ad in Block height
 		/// - 'ad_preference': The preferred target group of this ad
 		#[pallet::call_index(0)]
-		#[pallet::weight(10_000)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(2,1).ref_time())]
 		pub fn propose_ad(
 			origin: OriginFor<T>,
 			ad_url: GeneralData<T>,
@@ -207,7 +207,7 @@ pub mod pallet {
 		///
 		/// The dispatch origin for this call must be `Signed` by the ApproveOrigin.
 		#[pallet::call_index(1)]
-		#[pallet::weight(10_000)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(1,1).ref_time())]
 		pub fn approve_ad(
 			origin: OriginFor<T>,
 			proposer: T::AccountId,
@@ -232,7 +232,7 @@ pub mod pallet {
 		///
 		/// The dispatch origin for this call must be `Signed` by the RejectOrigin.
 		#[pallet::call_index(2)]
-		#[pallet::weight(10_000)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(1,1).ref_time())]
 		pub fn reject_ad(
 			origin: OriginFor<T>,
 			proposer: T::AccountId,

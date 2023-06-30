@@ -91,7 +91,7 @@ pub mod pallet {
 		///
 		/// The dispatch origin for this call must be `Signed` by the to be added user.
 		#[pallet::call_index(0)]
-		#[pallet::weight(10_000)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(0,1).ref_time())]
 		pub fn add_profile(
 			origin: OriginFor<T>,
 			age: u8,
@@ -134,7 +134,7 @@ pub mod pallet {
 		///
 		/// The dispatch origin for this call must be `Signed` by the user.
 		#[pallet::call_index(1)]
-		#[pallet::weight(100)]
+		#[pallet::weight(T::DbWeight::get().reads_writes(1,1).ref_time())]
 		pub fn claim_reward(
 			origin: OriginFor<T>,
 			proposer: T::AccountId,
