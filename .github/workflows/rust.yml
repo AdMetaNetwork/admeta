@@ -2,7 +2,7 @@ name: Rust
 
 on:
   push:
-    branches: [main]
+    branches: [main, feat/drumbeat]
   pull_request:
     branches: [main]
 

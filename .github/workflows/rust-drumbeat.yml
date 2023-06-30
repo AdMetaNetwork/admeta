@@ -1,0 +1,24 @@
+name: Rust
+on:
+  push:
+    branches: [feat/drumbeat]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add wasm toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          target: wasm32-unknown-unknown
+          override: true
+      - name: Install Protobuf on Ubuntu
+        run: sudo apt install -y protobuf-compiler
+      - name: Build AdMeta
+        run: cargo build --release
