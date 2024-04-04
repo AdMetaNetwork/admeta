@@ -4,5 +4,6 @@ members = [
     'pallets/ad',
     'runtime',
 ]
+resolver = "2"
 [profile.release]
 panic = 'unwind'
